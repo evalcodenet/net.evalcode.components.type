@@ -45,6 +45,22 @@
     {
       // TODO Implement
     }
+
+    /**
+     * @return Color
+     */
+    public static function white()
+    {
+      return new self(255, 255, 255);
+    }
+
+    /**
+     * @return Color
+     */
+    public static function black()
+    {
+      return new self(0, 0, 0);
+    }
     //--------------------------------------------------------------------------
 
 
