@@ -87,7 +87,6 @@
 
     public static function containsKey($name_)
     {
-      var_dump(self::$m_enums[get_called_class()]);
       return array_key_exists($name_, self::$m_enums[get_called_class()]);
     }
 
@@ -101,7 +100,10 @@
       return static::$name_();
     }
 
-    public abstract static function values();
+    public static function values()
+    {
+      throw new Exception_Abstract_Method('type/enumeration', 'Abstract method.');
+    }
     //--------------------------------------------------------------------------
 
 

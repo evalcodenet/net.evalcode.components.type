@@ -9,8 +9,20 @@
    *
    * @author evalcode.net
    */
-  class String implements Object, Cloneable, Comparable
+  class String extends Primitive implements Object, Cloneable, Comparable
   {
+    // CONSTANTS
+    /**
+     * @var string Name of this type.
+     */
+    const TYPE=__CLASS__;
+    /**
+     * @var string Name of native representation of this type.
+     */
+    const TYPE_NATIVE='string';
+    //--------------------------------------------------------------------------
+
+
     // CONSTRUCTION
     /**
      * @param string $value_
@@ -23,6 +35,32 @@
 
 
     // STATIC ACCESSORS
+    /**
+     * @return String
+     */
+    public static function valueOf($value_)
+    {
+      return new self((string)$value_);
+    }
+
+    /**
+     * @return string
+     */
+    public static function native()
+    {
+      return self::TYPE_NATIVE;
+    }
+
+    /**
+     * @param mixed $value_
+     *
+     * @return String
+     */
+    public static function cast($value_)
+    {
+      return new self((string)$value_);
+    }
+
     /**
      * Determines whether given string is 'null' or of zero-length.
      *
@@ -478,14 +516,6 @@
     {
       return htmlentities($string_, ENT_NOQUOTES, 'utf-8');
     }
-
-    /**
-     * @return String
-     */
-    public static function valueOf($value_)
-    {
-      return new self((string)$value_);
-    }
     //--------------------------------------------------------------------------
 
 
@@ -545,11 +575,6 @@
     {
       return $this->m_value;
     }
-    //--------------------------------------------------------------------------
-
-
-    // IMPLEMENTATION
-    private $m_value;
     //--------------------------------------------------------------------------
   }
 ?>
