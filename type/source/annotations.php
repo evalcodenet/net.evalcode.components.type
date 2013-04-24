@@ -433,7 +433,7 @@
         }
 
         $instance=new self($type_);
-        $instance->m_annotations=$annotations[$type];
+        $instance->m_annotations=$annotations[$type_];
       }
       else
       {

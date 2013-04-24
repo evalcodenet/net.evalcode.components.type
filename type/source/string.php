@@ -382,6 +382,24 @@
     }
 
     /**
+     * Determines whether passed string contains second passed string.
+     *
+     * <p>
+     *   Returns 'true' if $string0_ contains contents of $string1_,
+     *   otherwise returns 'false'.
+     * </p>
+     *
+     * @param string $string0_
+     * @param string $string1_
+     *
+     * @return boolean
+     */
+    public static function contains($string0_, $string1_)
+    {
+      return false!==mb_strpos($string0_, $string1_);
+    }
+
+    /**
      * Determines whether passed string starts with second passed string.
      *
      * <p>

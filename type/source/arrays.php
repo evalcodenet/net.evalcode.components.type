@@ -121,9 +121,9 @@
 
         if(false===$exists)
         {
-          $exists=String::indexOf($key, $substring_);
+          $exists=String::contains($key, $substring_);
 
-          if(false!==$exists)
+          if(-1<$exists)
           {
             $exists=$key;
 
@@ -194,7 +194,7 @@
         }
         else if(false===$exists)
         {
-          $exists=String::indexOf($value, $substring_);
+          $exists=String::contains($value, $substring_);
 
           if(false!==$exists)
           {

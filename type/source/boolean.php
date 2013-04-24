@@ -95,13 +95,6 @@
       if(true===$value_ || false===$value_)
         return $value_;
 
-      if(false===Types::canBeString($value_))
-      {
-        throw new Exception_IllegalCast('type/boolean', sprintf(
-          'Can not cast given parameter to %s [%s].', __CLASS__, $value_
-        ));
-      }
-
       if(1===(int)$value_ || 'true'===(string)$value_ || 'true'===trim(strtolower((string)$value_)))
         return true;
 
