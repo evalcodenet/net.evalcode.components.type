@@ -1,6 +1,9 @@
 <?php
 
 
+namespace Components;
+
+
   /**
    * Exception_Flat
    *
@@ -49,11 +52,11 @@
     /**
      * Creates instance from given exception.
      *
-     * @param Exception $exception_
+     * @param \Exception $exception_
      *
      * @return Exception_Flat
      */
-    public static function create(Exception $exception_)
+    public static function create(\Exception $exception_)
     {
       $exception=static::createEmpty();
 
@@ -66,7 +69,7 @@
       $exception->file=$exception_->getFile();
       $exception->line=$exception_->getLine();
 
-      if($exception_ instanceof ErrorException)
+      if($exception_ instanceof \ErrorException)
         $exception->isErrorException=true;
 
       return $exception;

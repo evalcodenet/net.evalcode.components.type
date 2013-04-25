@@ -1,6 +1,9 @@
 <?php
 
 
+namespace Components;
+
+
   /**
    * Annotations
    *
@@ -416,7 +419,7 @@
 
         if(null===($typeLocation=Runtime::cache()->get($cacheKeyTypeLocation)))
         {
-          $type=new ReflectionClass($type_);
+          $type=new \ReflectionClass($type_);
           $typeLocation=$type->getFileName();
 
           Runtime::cache()->set($cacheKeyTypeLocation, $typeLocation);

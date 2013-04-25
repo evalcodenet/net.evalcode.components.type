@@ -1,6 +1,9 @@
 <?php
 
 
+namespace Components;
+
+
   /**
    * Map
    *
@@ -9,7 +12,7 @@
    *
    * @author evalcode.net
    */
-  interface Map extends ArrayAccess, Countable
+  interface Map extends \ArrayAccess, Countable
   {
     // ACCESSORS
     /**

@@ -1,6 +1,9 @@
 <?php
 
 
+namespace Components;
+
+
   /**
    * String
    *
@@ -82,16 +85,7 @@
     */
     public static function hash($string_)
     {
-      $hash=0;
-
-      if(false===is_string($string_))
-        $string_=(string)$string_;
-
-      $len=strlen($string_);
-      for($i=0; $i<$len; $i++)
-        $hash=31*$hash+ord($string_[$i]);
-
-      return $hash;
+      return string_hash($string_);
     }
 
     /**
