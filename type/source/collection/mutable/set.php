@@ -24,7 +24,7 @@ namespace Components;
     }
 
     /**
-     * @see Object::__toString()
+     * @see Components.Object::__toString()
      */
     public function __toString()
     {

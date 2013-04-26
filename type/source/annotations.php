@@ -265,7 +265,7 @@ namespace Components;
     // IMPLEMENTS
     /**
      * (non-PHPdoc)
-     * @see Object::hashCode()
+     * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
@@ -274,7 +274,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Object::equals()
+     * @see Components.Object::equals()
      */
     public function equals($object_)
     {
@@ -286,7 +286,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Object::__toString()
+     * @see Components.Object::__toString()
      */
     public function __toString()
     {
@@ -413,26 +413,30 @@ namespace Components;
      */
     private static function resolveInstance($type_)
     {
-      if(null===($cached=Runtime::cache()->get("type/annotation/$type_")))
+      $cacheKeyType='components/type/annotations/'.md5($type_);
+
+      if(null===($cached=Runtime::cache()->get($cacheKeyType)))
       {
-        $cacheKeyTypeLocation="type/annotation/file/$type_";
+        $cacheKeyTypeLocation="$cacheKeyType/file";
 
         if(null===($typeLocation=Runtime::cache()->get($cacheKeyTypeLocation)))
         {
           $type=new \ReflectionClass($type_);
+          $namespace=$type->getNamespaceName();
           $typeLocation=$type->getFileName();
 
           Runtime::cache()->set($cacheKeyTypeLocation, $typeLocation);
         }
 
-        $annotations=self::parseAnnotations($typeLocation);
+        // FIXME (CSH) Support multiple namespaces ...
+        $annotations=self::parseAnnotations($namespace, $typeLocation);
         // Cache all parsed types for file of given type.
         foreach($annotations as $type=>$typeAnnotations)
         {
-          Runtime::cache()->set("type/annotation/$type", $typeAnnotations);
+          Runtime::cache()->set($cacheKeyType, $typeAnnotations);
 
           if($type!==$type_)
-            Runtime::cache()->set("type/annotation/file/$type", $typeLocation);
+            Runtime::cache()->set('components/type/annotations/'.md5($type).'/file', $typeLocation);
         }
 
         $instance=new self($type_);
@@ -455,7 +459,7 @@ namespace Components;
      *
      * @return array|string
      */
-    private static function parseAnnotations($path_)
+    private static function parseAnnotations($namespace_, $path_)
     {
       $annotations=array();
 
@@ -484,7 +488,7 @@ namespace Components;
 
         if($matches[3][$idx])
         {
-          $type=$matches[3][$idx];
+          $type=$namespace_.'\\'.$matches[3][$idx];
 
           $annotations[$type][self::TYPE_ANNOTATION][$type]=$buffer;
           $buffer=array();

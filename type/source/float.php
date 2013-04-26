@@ -14,12 +14,7 @@ namespace Components;
    * @package net.evalcode.components
    * @subpackage type
    *
-   * @since 1.0
-   * @access public
-   *
-   * @author Carsten Schipke <carsten.schipke@evalcode.net>
-   * @copyright Copyright (C) 2012 evalcode.net
-   * @license GNU General Public License 3
+   * @author evalcode.net
    */
   final class Float extends Primitive implements Number
   {
@@ -114,7 +109,8 @@ namespace Components;
     }
 
     /**
-     * @see Serializable::serialize()
+     * (non-PHPdoc)
+     * @see Components.Serializable_Php::serialize()
      */
     public function serialize()
     {
@@ -122,11 +118,25 @@ namespace Components;
     }
 
     /**
-     * @see Serializable::unserialize()
+     * (non-PHPdoc)
+     * @see Components.Serializable_Php::unserialize()
+     *
+     * @return \Components\Float
      */
-    public function unserialize($serialized_)
+    public function unserialize($data_)
     {
-      $this->m_value=unserialize($serialized_);
+      $this->m_value=unserialize($data_);
+
+      return $this;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable::serialVersionUid()
+     */
+    public function serialVersionUid()
+    {
+      return 1;
     }
 
     public function __sleep()
@@ -140,7 +150,8 @@ namespace Components;
     }
 
     /**
-     * @see Cloneable::__clone()
+     * (non-PHPdoc)
+     * @see Components.Cloneable::__clone()
      */
     public function __clone()
     {
@@ -148,7 +159,8 @@ namespace Components;
     }
 
     /**
-     * @see Object::hashCode()
+     * (non-PHPdoc)
+     * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
@@ -156,7 +168,7 @@ namespace Components;
     }
 
     /**
-     * @see Object::equals()
+     * @see Components.Object::equals()
      */
     public function equals($object_)
     {
@@ -167,7 +179,7 @@ namespace Components;
     }
 
     /**
-     * @see Object::__toString()
+     * @see Components.Object::__toString()
      */
     public function __toString()
     {

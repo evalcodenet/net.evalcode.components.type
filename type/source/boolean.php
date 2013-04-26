@@ -14,12 +14,7 @@ namespace Components;
    * @package net.evalcode.components
    * @subpackage type
    *
-   * @since 1.0
-   * @access public
-   *
-   * @author Carsten Schipke <carsten.schipke@evalcode.net>
-   * @copyright Copyright (C) 2012 evalcode.net
-   * @license GNU General Public License 3
+   * @author evalcode.net
    */
   final class Boolean extends Primitive implements Comparable, Cloneable
   {
@@ -178,7 +173,7 @@ namespace Components;
     }
 
     /**
-     * @see Object::hashCode()
+     * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
@@ -186,7 +181,7 @@ namespace Components;
     }
 
     /**
-     * @see Object::equals()
+     * @see Components.Object::equals()
      */
     public function equals($object_)
     {
@@ -197,7 +192,7 @@ namespace Components;
     }
 
     /**
-     * @see Object::__toString()
+     * @see Components.Object::__toString()
      */
     public function __toString()
     {
