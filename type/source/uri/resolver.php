@@ -5,22 +5,28 @@ namespace Components;
 
 
   /**
-   * Net_Uri_Resolver
+   * Uri_Resolver
    *
-   * @package tncNetPlugin
-   * @subpackage lib.uri
+   * @package net.evalcode.components
+   * @subpackage type.uri
    *
    * @author evalcode.net
    */
-  interface Net_Uri_Resolver
+  interface Uri_Resolver
   {
     // ACCESSORS/MUTATORS
-    function resolve(Net_Uri $uri_);
-
-    function getContents(Net_Uri $uri_);
+    /**
+     * @param \Components\Uri $uri_
+     */
+    function resolve(Uri $uri_);
 
     /**
-     * @return Misc_BitSet
+     * @param \Components\Uri $uri_
+     */
+    function getContents(Uri $uri_);
+
+    /**
+     * @return \Components\Bitmask
      */
     function getOptions();
     //--------------------------------------------------------------------------

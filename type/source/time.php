@@ -5,14 +5,14 @@ namespace Components;
 
 
   /**
-   * Misc_Time
+   * Time
    *
-   * @package tncMiscPlugin
-   * @subpackage lib
+   * @package net.evalcode.components
+   * @subpackage type
    *
    * @author evalcode.net
    */
-  class Misc_Time implements Core_Class_Serializable, Core_Class_Comparable
+  class Time extends Integer
   {
     // PREDEFINED PROPERTIES
     const TIMEUNIT_SECONDS=1;
@@ -40,7 +40,8 @@ namespace Components;
     // CONSTRUCTION
     /*protected*/ function __construct($value_=null, $timeUnit_=null)
     {
-      $this->m_value=$value_;
+      parent::__construct($value_);
+
       $this->m_timeUnit=$timeUnit_;
     }
     //--------------------------------------------------------------------------
@@ -49,63 +50,63 @@ namespace Components;
     // STATIC ACCESSORS
     /**
      * @param int $value_
-     * @param Misc_Time::TIMEUNIT $timeUnit_
+     * @param \Components\Time::TIMEUNIT $timeUnit_
      *
-     * @return Misc_Time
+     * @return \Components\Time
      */
     public static function get($value_, $timeUnit_=self::TIMEUNIT_SECONDS)
     {
-      return new self($value_, $timeUnit_);
+      return new static($value_, $timeUnit_);
     }
 
     /**
      * @param int $value_
      *
-     * @return Misc_Time
+     * @return \Components\Time
      */
     public static function forSeconds($value_)
     {
-      return new self($value_, self::TIMEUNIT_SECONDS);
+      return new static($value_, self::TIMEUNIT_SECONDS);
     }
 
     /**
      * @param int $value_
      *
-     * @return Misc_Time
+     * @return \Components\Time
      */
     public static function forMinutes($value_)
     {
-      return new self($value_, self::TIMEUNIT_MINUTES);
+      return new static($value_, self::TIMEUNIT_MINUTES);
     }
 
     /**
      * @param int $value_
      *
-     * @return Misc_Time
+     * @return \Components\Time
      */
     public static function forHours($value_)
     {
-      return new self($value_, self::TIMEUNIT_HOURS);
+      return new static($value_, self::TIMEUNIT_HOURS);
     }
 
     /**
      * @param int $value_
      *
-     * @return Misc_Time
+     * @return \Components\Time
      */
     public static function forDays($value_)
     {
-      return new self($value_, self::TIMEUNIT_DAYS);
+      return new static($value_, self::TIMEUNIT_DAYS);
     }
 
     /**
      * @param int $value_
      *
-     * @return Misc_Time
+     * @return \Components\Time
      */
     public static function forWeeks($value_)
     {
-      return new self($value_, self::TIMEUNIT_WEEKS);
+      return new static($value_, self::TIMEUNIT_WEEKS);
     }
     //--------------------------------------------------------------------------
 
@@ -114,16 +115,16 @@ namespace Components;
     /**
      * Convert to given time unit.
      *
-     * @param Misc_Time::TIMEUNIT $timeUnit_
+     * @param \Components\Time::TIMEUNIT $timeUnit_
      *
      * @return int
      */
     public function to($timeUnit_=self::TIMEUNIT_SECONDS)
     {
       if($this->m_timeUnit>=$timeUnit_)
-        return $this->m_value*self::$m_conversions[$this->m_timeUnit][$timeUnit_];
+        return $this->m_value*self::$m_conversionTable[$this->m_timeUnit][$timeUnit_];
 
-      return $this->m_value/self::$m_conversions[$this->m_timeUnit][$timeUnit_];
+      return $this->m_value/self::$m_conversionTable[$this->m_timeUnit][$timeUnit_];
     }
 
     /**
@@ -170,9 +171,37 @@ namespace Components;
 
     // OVERRIDES/IMPLEMENTS
     /**
-     * @see Core_Class_Comparable::compareTo()
+     * (non-PHPdoc)
+     * @see Components.Number::intValue()
      */
-    public function compareTo(Core_Class_Comparable $object_)
+    public function intValue()
+    {
+      return $this->toSeconds();
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Number::doubleValue()
+     */
+    public function doubleValue()
+    {
+      return (double)$this->toSeconds();
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Number::floatValue()
+     */
+    public function floatValue()
+    {
+      return (float)$this->toSeconds();
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Comparable::compareTo()
+     */
+    public function compareTo(Comparable $object_)
     {
       if($object_ instanceof self)
       {
@@ -187,65 +216,80 @@ namespace Components;
     }
 
     /**
-     * @see Core_Class::equals()
+     * (non-PHPdoc)
+     * @see Components.Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof self)
-        return $this->toSeconds()==$object_->toSeconds();
+      if($object_ instanceof static)
+        return $this->toSeconds()===$object_->toSeconds();
 
       return false;
     }
 
     /**
-     * @see Core_Class::hashCode()
+     * (non-PHPdoc)
+     * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
-      return spl_object_hash($this);
+      return Integer::hash($this->toSeconds());
     }
 
     /**
-     * @see Core_Class_Serializable::serialize()
+     * (non-PHPdoc)
+     * @see Components.Serializable_Php::serialize()
      */
     public function serialize()
     {
-      return (string)$this;
+      return serialize($this->toSeconds());
     }
 
     /**
-     * @see Core_Class_Serializable::unserialize()
+     * (non-PHPdoc)
+     * @see Components.Serializable_Php::unserialize()
+     *
+     * @return \Components\Time
      */
-    public function unserialize($seconds_)
+    public function unserialize($data_)
     {
-      $this->m_value=(int)$seconds_;
+      $this->m_value=unserialize($data_);
       $this->m_timeUnit=self::TIMEUNIT_SECONDS;
 
       return $this;
     }
 
     /**
-     * @see Core_Class_Serializable::serialVersionUid()
+     * (non-PHPdoc)
+     * @see Components.Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
       return 1;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Components.Object::__toString()
+     */
     public function __toString()
     {
       return (string)$this->toSeconds();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Components.Cloneable::__clone()
+     */
     public function __clone()
     {
-      return new self($this->m_value, $this->m_timeUnit);
+      return new static($this->m_value, $this->m_timeUnit);
     }
     //--------------------------------------------------------------------------
 
 
     // IMPLEMENTATION
-    protected static $m_conversions=array(
+    protected static $m_conversionTable=array(
       self::TIMEUNIT_SECONDS=>array(
         self::TIMEUNIT_SECONDS=>1,
         self::TIMEUNIT_MINUTES=>self::SECONDS_MINUTE,
@@ -284,7 +328,6 @@ namespace Components;
     );
 
     protected $m_timeUnit;
-    protected $m_value;
     //--------------------------------------------------------------------------
   }
 ?>

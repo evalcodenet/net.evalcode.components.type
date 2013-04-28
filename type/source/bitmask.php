@@ -12,15 +12,10 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Bitmask implements Number
+  class Bitmask extends Integer
   {
-    // CONSTANTS
-    const TYPE=__CLASS__;
-    //--------------------------------------------------------------------------
-
-
     // CONSTRUCTION
-    private function __construct($value_)
+    public function __construct($value_)
     {
       $this->m_value=$value_;
     }
@@ -33,7 +28,7 @@ namespace Components;
      *
      * @param int $bitmask_
      *
-     * @return Bitmask
+     * @return \Components\Bitmask
      */
     public static function forBitmask($bitmask_)
     {
@@ -45,7 +40,7 @@ namespace Components;
      *
      * @param array $bits_
      *
-     * @return Bitmask
+     * @return \Components\Bitmask
      */
     public static function forBits(array $bits_)
     {
@@ -55,9 +50,9 @@ namespace Components;
     /**
      * Returns instance for given bitset.
      *
-     * @param Bitset $bitset_
+     * @param \Components\Bitset $bitset_
      *
-     * @return Bitmask
+     * @return \Components\Bitmask
      */
     public static function forBitset(Bitset $bitset_)
     {
@@ -65,7 +60,7 @@ namespace Components;
     }
 
     /**
-     * @return Bitmask
+     * @return \Components\Bitmask
      */
     public static function createEmpty()
     {
@@ -173,7 +168,7 @@ namespace Components;
      *
      * @param int $bit_
      *
-     * @return Bitmask
+     * @return \Components\Bitmask
      */
     public function add($bit_)
     {
@@ -187,7 +182,7 @@ namespace Components;
      *
      * @param int $bit_
      *
-     * @return Bitset
+     * @return \Components\Bitmask
      */
     public function remove($bit_)
     {
@@ -213,18 +208,19 @@ namespace Components;
     }
 
     /**
-     * @return Bitset
+     * @return \Components\Bitset
      */
     public function toBitset()
     {
-      // TODO Implement
+      return Bitset::forBitmask($this->m_value);
     }
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES
+    // OVERRIDES/IMPLEMENTS
     /**
-     * @see Number::intValue()
+     * (non-PHPdoc)
+     * @see Components.Number::intValue()
      */
     public function intValue()
     {
@@ -232,7 +228,8 @@ namespace Components;
     }
 
     /**
-     * @see Number::doubleValue()
+     * (non-PHPdoc)
+     * @see Components.Number::doubleValue()
      */
     public function doubleValue()
     {
@@ -240,7 +237,8 @@ namespace Components;
     }
 
     /**
-     * @see Number::floatValue()
+     * (non-PHPdoc)
+     * @see Components.Number::floatValue()
      */
     public function floatValue()
     {
@@ -248,7 +246,8 @@ namespace Components;
     }
 
     /**
-     * @see Comparable::compareTo()
+     * (non-PHPdoc)
+     * @see Components.Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -274,7 +273,7 @@ namespace Components;
         return -1;
       }
 
-      throw new Exception_IllegalArgument('components/type/bitmask', sprintf(
+      throw new Exception_IllegalCast('components/type/bitmask', sprintf(
         'Can not compare to given parameter [%s].', $object_
       ));
     }
@@ -330,6 +329,7 @@ namespace Components;
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::hashCode()
      */
     public function hashCode()
@@ -338,6 +338,7 @@ namespace Components;
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::equals()
      */
     public function equals($object_)
@@ -349,20 +350,13 @@ namespace Components;
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::__toString()
      */
     public function __toString()
     {
       return (string)$this->m_value;
     }
-    //--------------------------------------------------------------------------
-
-
-    // IMPLEMENTATION
-    /**
-     * @var int
-     */
-    private $m_value;
     //--------------------------------------------------------------------------
   }
 ?>

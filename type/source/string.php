@@ -14,10 +14,10 @@ namespace Components;
    */
   class String extends Primitive implements Object, Cloneable, Comparable
   {
-    // CONSTANTS
+    // PREDEFINED PROPERTIES
     /**
-     * @var string Name of this type.
-     */
+    * @var string Name of this type.
+    */
     const TYPE=__CLASS__;
     /**
      * @var string Name of native representation of this type.
@@ -28,8 +28,8 @@ namespace Components;
 
     // CONSTRUCTION
     /**
-     * @param string $value_
-     */
+    * @param string $value_
+    */
     public function __construct($value_)
     {
       $this->m_value=$value_;
@@ -39,8 +39,8 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
-     * @return String
-     */
+    * @return String
+    */
     public static function valueOf($value_)
     {
       return new self((string)$value_);
@@ -65,6 +65,36 @@ namespace Components;
     }
 
     /**
+     * Determines whether two passed strings are equal to each other.
+     *
+     * <p>
+     *   Returns 'true' if passed $string0_, $string1_ are equal, otherwise
+     *   returns 'false'.
+     * </p>
+     *
+     * @param string $string0_
+     * @param string $string1_
+     *
+     * @return boolean
+     */
+    public static function equal($string0_, $string1_)
+    {
+      return 0===strnatcmp($string0_, $string1_);
+    }
+
+    /**
+     * Calculates hash code for given string.
+     *
+     * @param string $string_
+     *
+     * @return integer
+     */
+    public static function hash($string_)
+    {
+      return string_hash($string_);
+    }
+
+    /**
      * Determines whether given string is 'null' or of zero-length.
      *
      * @param string $string_
@@ -77,55 +107,68 @@ namespace Components;
     }
 
     /**
-    * Calculates hash code for given string.
-    *
-    * @param string $string_
-    *
-    * @return integer
-    */
-    public static function hash($string_)
-    {
-      return string_hash($string_);
-    }
-
-    /**
+     * Determines whether given string contains any readable non-zero
+     * nor 'null' characters.
+     *
      * @param string $string_
      *
-     * @return string
+     * @return boolean
      */
-    public static function encodeBase64($string_)
+    public static function isNullOrEmpty($string_)
     {
-      return base64_encode($string_);
+      return null===$string_ || (!trim($string_) && !self::isZero($string_));
     }
 
     /**
-     * @param string $stringEncoded_
+     * Determines whether given string is equal to '0' (zero).
      *
-     * @return string
-     */
-    public static function decodeBase64($stringEncoded_)
-    {
-      return base64_decode($stringEncoded_);
-    }
-
-    /**
      * @param string $string_
      *
-     * @return string
+     * @return boolean
      */
-    public static function urlEncodeBase64($string_)
+    public static function isZero($string_)
     {
-      return rtrim(strtr(base64_encode($string_), '+/', '-_'), '=');
+      return 1===preg_match('/^[0]+$/', (string)$string_);
     }
 
     /**
-     * @param string $stringEncoded_
+     * Determines whether given string consists only of integers.
      *
-     * @return string
+     * @param string $string_
+     *
+     * @return boolean
      */
-    public static function urlDecodeBase64($stringEncoded_)
+    public static function isInteger($string_)
     {
-      return base64_decode(str_pad(strtr($stringEncoded_, '-_', '+/'), strlen($stringEncoded_)%4, '=', STR_PAD_RIGHT));
+      return 1===preg_match('/^[+-]?[0-9]+$/', (string)$string_);
+    }
+
+    /**
+     * Determines whether given argument is of type or can be cast to string.
+     *
+     * @param mixed $object_
+     *
+     * @return boolean
+     */
+    public static function isTypeCompatible($object_)
+    {
+      return is_string($object_) || $object_ instanceof static || method_exists(array($object_, '__toString'));
+    }
+
+    /**
+     * Returns length of passed string.
+     *
+     * <p>
+     *   Returns length of passed $string_.
+     * </p>
+     *
+     * @param string $string_
+     *
+     * @return integer
+     */
+    public static function length($string_)
+    {
+      return mb_strlen($string_);
     }
 
     /**
@@ -146,95 +189,6 @@ namespace Components;
     public static function uppercase($string_)
     {
       return mb_strtoupper($string_);
-    }
-
-    /**
-     * @param string $string_
-     *
-     * @return string
-     */
-    public static function camelcase($string_)
-    {
-      if(false===is_string($string_))
-        $string_=(string)$string_;
-
-      $string='';
-
-      $string_=mb_strtolower(trim($string_));
-      $len=mb_strlen($string_);
-      for($i=0; $i<$len; $i++)
-      {
-        if(32===($dec=ord($string_[$i])))
-          $string.=mb_strtoupper($string_[++$i]);
-        else
-          $string.=$string_[$i];
-      }
-
-      return $string;
-    }
-
-    /**
-     * @param string $string_
-     *
-     * @return string
-     */
-    public static function camelcaseToUppercase($string_)
-    {
-      if(false===is_string($string_))
-        $string_=(string)$string_;
-
-      $string='';
-
-      $len=mb_strlen($string_);
-      for($i=0; $i<$len; $i++)
-      {
-        $dec=ord($string_[$i]);
-        if(64<$dec && 91>$dec)
-        {
-          if(0<$i)
-            $string.=' ';
-
-          $string.=$string_[$i];
-        }
-        else
-        {
-          $string.=chr($dec-32);
-        }
-      }
-
-      return $string;
-    }
-
-    /**
-     * @param string $string_
-     *
-     * @return string
-     */
-    public static function camelcaseToLowercase($string_)
-    {
-      if(false===is_string($string_))
-        $string_=(string)$string_;
-
-      $string='';
-
-      $len=mb_strlen($string_);
-      for($i=0; $i<$len; $i++)
-      {
-        $dec=ord($string_[$i]);
-        if(64<$dec && 91>$dec)
-        {
-          if(0<$i)
-            $string.=' ';
-
-          $string.=chr($dec+32);
-        }
-        else
-        {
-          $string.=$string_[$i];
-        }
-      }
-
-      return $string;
     }
 
     /**
@@ -301,40 +255,6 @@ namespace Components;
         return mb_substr($string_, $offset_);
 
       return mb_substr($string_, $offset_, $length_);
-    }
-
-    /**
-     * Returns length of passed string.
-     *
-     * <p>
-     *   Returns length of passed $string_.
-     * </p>
-     *
-     * @param string $string_
-     *
-     * @return integer
-     */
-    public static function length($string_)
-    {
-      return mb_strlen($string_);
-    }
-
-    /**
-     * Determines whether two passed strings are equal to each other.
-     *
-     * <p>
-     *   Returns 'true' if passed $string0_, $string1_ are equal, otherwise
-     *   returns 'false'.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     *
-     * @return boolean
-     */
-    public static function equal($string0_, $string1_)
-    {
-      return 0===strnatcmp($string0_, $string1_);
     }
 
     /**
@@ -524,21 +444,481 @@ namespace Components;
       return $string.mb_substr($string_, $length_, $truncatePos-$length_).$append_;
     }
 
-    public static function escapeHtml($string_)
+    /**
+     * Checks for ASCII string.
+     *
+     * @param string $string_
+     *
+     * @return bool
+     */
+    public static function isASCII($string_)
     {
-      return htmlentities($string_, ENT_NOQUOTES, 'utf-8');
+      return 1!==preg_match('/[^\x00-\x7F]/', $string_);
+    }
+
+    /**
+     * Converts string to ASCII.
+     *
+     * @param string $string_
+     *
+     * @return string
+     *
+     * FIXME Internationalize
+     */
+    public static function toASCII($string_)
+    {
+      static $s_table=array(
+        'ä'=>'ae', 'ö'=>'oe', 'ü'=>'ue', 'Ä'=>'Ae', 'Ö'=>'Oe', 'Ü'=>'Ue',
+        'ß'=>'ss', 'æ'=>'ae', 'œ'=>'oe', 'Æ'=>'Ae', 'Œ'=>'Oe', 'à'=>'a',
+        'á'=>'a', 'â'=>'a', 'å'=>'a', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e',
+        'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ò'=>'o','ó'=>'o', 'ô'=>'o',
+        'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ÿ'=>'y', 'ç'=>'c', 'š'=>'s', 'À'=>'A',
+        'Á'=>'A', 'Â'=>'A', 'Å'=>'A', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'ë'=>'E',
+        'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ò'=>'O','Ó'=>'O', 'Ô'=>'O', 'Ù'=>'U',
+        'Ú'=>'U', 'Û'=>'U', 'Ç'=>'C', 'Š'=>'S'
+      );
+
+      return strtr($string_, $s_table);
+    }
+
+
+    /**
+     * Checks for LATIN-1 string.
+     *
+     * @param string $string_
+     *
+     * @return bool
+     */
+    public static function isLatin1($string_)
+    {
+      $len=mb_strlen($string_);
+
+      for($i=0; $i<$len; ++$i)
+      {
+        $ord=ord($string_[$i]);
+
+        // ASCII?
+        if($ord>=0 && $ord<=127)
+          continue;
+
+        // 2 byte sequence?
+        if($ord>=192 && $ord<=223)
+        {
+          $ord=($ord-192)*64+ord($string_[++$i])-128;
+
+          // LATIN-1?
+          if($ord<=0xFF)
+            continue;
+        }
+
+        return false;
+      }
+
+      return true;
+    }
+
+    /**
+     * Checks for camelcase name.
+     *
+     * @param string $string_
+     *
+     * @return bool
+     */
+    public static function isCamelCase($string_)
+    {
+      return 1===preg_match('/^[a-z][a-zA-Z0-9]*$/', $string_);
+    }
+
+    /**
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function toCamelCase($string_)
+    {
+      if(false===is_string($string_))
+        $string_=(string)$string_;
+
+      $string='';
+
+      $string_=mb_strtolower(trim($string_));
+      $len=mb_strlen($string_);
+      for($i=0; $i<$len; $i++)
+      {
+        if(32===($dec=ord($string_[$i])))
+          $string.=mb_strtoupper($string_[++$i]);
+        else
+          $string.=$string_[$i];
+      }
+
+      return $string;
+    }
+
+    /**
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function camelCaseToUppercase($string_)
+    {
+      if(false===is_string($string_))
+        $string_=(string)$string_;
+
+      $string='';
+
+      $len=mb_strlen($string_);
+      for($i=0; $i<$len; $i++)
+      {
+        $dec=ord($string_[$i]);
+        if(64<$dec && 91>$dec)
+        {
+          if(0<$i)
+            $string.=' ';
+
+          $string.=$string_[$i];
+        }
+        else
+        {
+          $string.=chr($dec-32);
+        }
+      }
+
+      return $string;
+    }
+
+    /**
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function camelCaseToLowercase($string_)
+    {
+      if(false===is_string($string_))
+        $string_=(string)$string_;
+
+      $string='';
+
+      $len=mb_strlen($string_);
+      for($i=0; $i<$len; $i++)
+      {
+        $dec=ord($string_[$i]);
+        if(64<$dec && 91>$dec)
+        {
+          if(0<$i)
+            $string.=' ';
+
+          $string.=chr($dec+32);
+        }
+        else
+        {
+          $string.=$string_[$i];
+        }
+      }
+
+      return $string;
+    }
+
+    /**
+     * Converts camelcase names to underscore.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function camelCaseToUnderscore($string_)
+    {
+      static $stringTable=array(
+        'A'=>'_a', 'B'=>'_b', 'C'=>'_c', 'D'=>'_d', 'E'=>'_e', 'F'=>'_f', 'G'=>'_g', 'H'=>'_h',
+        'I'=>'_i', 'J'=>'_j', 'K'=>'_k', 'L'=>'_l', 'M'=>'_m', 'N'=>'_n', 'O'=>'_o', 'P'=>'_p',
+        'Q'=>'_q', 'R'=>'_r', 'S'=>'_s', 'T'=>'_t', 'U'=>'_u', 'V'=>'_v', 'W'=>'_w', 'X'=>'_x',
+        'Y'=>'_y', 'Z'=>'_z'
+      );
+
+      return strtr(self::trim($string_), $stringTable);
+    }
+
+    /**
+     * Converts underscore names to camelcase.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function underscoreToCamelCase($string_)
+    {
+      $camelcase=ucwords(strtr(self::trim($string_), '_', ' '));
+      $camelcase[0]=self::lowercase($camelcase[0]);
+
+      return self::replace($camelcase, ' ', '');
+    }
+
+    /**
+     * Converts underscore names to namespaces.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function underscoreToNamespace($string_)
+    {
+      return strtolower(strtr($string_, '_', '/'));
+    }
+
+    /**
+     * Converts PHP type names to namespaces.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function typeToNamespace($string_)
+    {
+      return strtolower(strtr($string_, '\\_', '//'));
+    }
+
+    /**
+     * Checks for lowercase url friendly string.
+     *
+     * @param string $string_
+     *
+     * @return bool
+     */
+    public static function isLowercaseUrlIdentifier($string_)
+    {
+      return 1==preg_match('/^[a-z][a-z0-9_]*$/', $string_);
+    }
+
+    /**
+     * Converts to lowercase url friendly string.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function toLowercaseUrlIdentifier($string_, $preserveUnicode_=false)
+    {
+      $string_=strtolower(static::toASCII($string_));
+      if($preserveUnicode_)
+        $string_=mb_convert_encoding($string_, 'HTML-ENTITIES', 'UTF-8');
+
+      $string_=preg_replace('/[^a-z0-9]/', '-', $string_);
+
+      return preg_replace('/-+/', '-', $string_);
+    }
+
+    /**
+     * @param string $string_
+     * @param Io_Charset $charset_
+     *
+     * @return string
+     */
+    public static function escapeHtml($string_, Io_Charset $charset_=null)
+    {
+      if(null===$charset_)
+        return htmlentities($string_, ENT_COMPAT, 'UTF-8');
+
+      return htmlentities($string_, ENT_COMPAT, $charset_->name());
+    }
+
+    /**
+     * Escapes string for use with javascript.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function escapeJs($string_)
+    {
+      static $match=array("/\\\\/", "/\n/", "/\r/", "/\"/", "/\'/", "/&/", "/</", "/>/");
+      static $replace=array("\\\\\\\\", "\\n", "\\r", "\\\"", "\\'", "\\x26", "\\x3C", "\\x3E");
+
+      return self::replaceAll($string_, $match, $replace);
+    }
+
+    /**
+     * Encodes to base64.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function toBase64($string_)
+    {
+      return base64_encode($string_);
+    }
+
+    /**
+     * Decodes from base64.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function fromBase64($string_)
+    {
+      return base64_decode($string_);
+    }
+
+    /**
+     * Encodes to url-friendly base64.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function toBase64Url($string_)
+    {
+      return self::replaceAll(self::toBase64($string_), array('+', '/'), array('-', '_'));
+    }
+
+    /**
+     * Decodes from url-friendly base64.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function fromBase64Url($string_)
+    {
+      return self::fromBase64(self::replaceAll($string_, array('-', '_'), array('+', '/')));
+    }
+
+    /**
+     * Encodes to quoted printable.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function toQuotedPrintable($string_)
+    {
+      return preg_replace_callback('/[^\x21-\x3C\x3E-\x7E\x09]/', array('Text', 'toQuotedPrintableImpl'), $string_);
+    }
+
+    /**
+     * Decodes from quoted printable.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function fromQuotedPrintable($string_)
+    {
+      return quoted_printable_decode($string_);
+    }
+
+    /**
+     * Checks if given string is encoded by rawurlencode.
+     *
+     * @param string $string_
+     *
+     * @return boolean
+     */
+    public static function isUrlEncoded($string_)
+    {
+      static $m_urlEncoded=array(
+        '%20', '%21', '%2A', '%27',
+        '%28', '%29', '%3B', '%3A',
+        '%40', '%26', '%3D', '%2B',
+        '%24', '%2C', '%2F', '%3F',
+        '%25', '%23', '%5B', '%5D'
+      );
+      static $m_urlDecoded=array(
+        ' ', '!', '*', "'",
+        "(", ")", ";", ":",
+        "@", "&", "=", "+",
+        "$", ",", "/", "?",
+        "%", "#", "[", "]"
+      );
+
+      $count=0;
+      str_replace($m_urlEncoded, $m_urlDecoded, $string_, $count);
+
+      return 0<$count;
+    }
+
+    /**
+     * Encodes to url-friendly string.
+     *
+     * @param string $string_
+     * @param boolean $avoidDoubleEncoding_ Only encodes if given string is not already encoded.
+     *
+     * @return string
+     */
+    public static function urlEncode($string_, $avoidDoubleEncoding_=true)
+    {
+      if(false===$avoidDoubleEncoding_ || false===self::isUrlEncoded($string_))
+        return rawurlencode($string_);
+
+      return $string_;
+    }
+
+    /**
+     * Decodes back from url-friendly string.
+     *
+     * @param string $string_
+     * @param boolean $avoidDoubleDecoding_ Only decodes if given string is url encoded.
+     *
+     * @return string
+     */
+    public static function urlDecode($string_, $avoidDoubleDecoding_=true)
+    {
+      if(false===$avoidDoubleDecoding_ || self::isUrlEncoded($string_))
+        return rawurldecode($string_);
+
+      return $string_;
+    }
+
+    /**
+     * @param string $length_
+     * @param string $complexity_
+     *
+     * @throws Exception_IllegalArgument
+     *
+     * @return string
+     */
+    public static function generatePassword($length_=8, $complexity_=3)
+    {
+      if($length_>25 || $length_<6)
+      {
+        throw new Exception_IllegalArgument('components/text',
+          'Password length must be greater than 6 and less than 25.'
+        );
+      }
+
+      static $maxValues=array(1=>60, 2=>80, 3=>90, 4=>100);
+
+      $password='';
+      for($i=0; $i<$length_; $i++)
+      {
+        $value=rand(1, $maxValues[$complexity_]);
+        // alphanumeric lowercase
+        if($value>0 && $value<=$maxValues[1])
+          $password.=chr(rand(97, 122));
+        // alphanumeric uppercase
+        if($value>$maxValues[1] && $value<=$maxValues[2])
+          $password.=chr(rand(65, 90));
+        // numeric
+        if($value>$maxValues[2] && $value<=$maxValues[3])
+          $password.=chr(rand(48, 57));
+        // peculiar
+        if($value>$maxValues[3] && $value<=$maxValues[4])
+          $password.=chr(rand(35, 38));
+      }
+
+      return $password;
     }
     //--------------------------------------------------------------------------
 
 
     // OVERRIDES/IMPLEMENTS
     /**
-     * (non-PHPdoc)
-     * @see Cloneable::__clone()
-     */
+    * (non-PHPdoc)
+    * @see Cloneable::__clone()
+    */
     public function __clone()
     {
-      return new self($this->m_value);
+      return new static($this->m_value);
     }
 
     /**
@@ -547,13 +927,13 @@ namespace Components;
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof self)
-        return self::compare($this->m_value, $object_->m_value);
+      if($object_ instanceof static)
+        return static::compare($this->m_value, $object_->m_value);
 
       if(is_string($object_))
-        return self::compare($this->m_value, $object_);
+        return static::compare($this->m_value, $object_);
 
-      throw new Runtime_Exception('type/string', sprintf(
+      throw new Exception_IllegalCast('type/string', sprintf(
         'Can not compare to given parameter [%s].', $object_
       ));
     }
@@ -564,7 +944,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return self::hash($this->m_value);
+      return static::hash($this->m_value);
     }
 
     /**
@@ -573,8 +953,8 @@ namespace Components;
      */
     public function equals($object_)
     {
-      if($object_ instanceof self)
-        return self::equals($this->m_value, $object_->m_value);
+      if($object_ instanceof static)
+        return static::equals($this->m_value, $object_->m_value);
 
       return $this->m_value===$object_;
     }

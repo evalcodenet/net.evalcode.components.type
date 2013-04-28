@@ -135,7 +135,7 @@ namespace Components;
      *   String::native();
      * </code>
      *
-     * @see Primitive::native()
+     * @see Components.Primitive::native()
      *
      * @param string $type_
      *
@@ -160,7 +160,7 @@ namespace Components;
      */
     public static function native()
     {
-      throw new Exception_NotImplemented('type/primitive', 'Override Primitive::native()');
+      throw new Exception_NotImplemented('components/type/primitive', 'Override Primitive::native()');
     }
 
     /**
@@ -172,7 +172,7 @@ namespace Components;
      */
     public static function cast($value_)
     {
-      throw new Exception_NotImplemented('type/primitive', 'Override Primitive::cast().');
+      throw new Exception_NotImplemented('components/type/primitive', 'Override Primitive::cast().');
     }
 
     /**
@@ -184,7 +184,7 @@ namespace Components;
      */
     public static function valueOf($value_)
     {
-      throw new Exception_NotImplemented('type/primitive', 'Override Primitive::valueOf().');
+      throw new Exception_NotImplemented('components/type/primitive', 'Override Primitive::valueOf().');
     }
     //--------------------------------------------------------------------------
 

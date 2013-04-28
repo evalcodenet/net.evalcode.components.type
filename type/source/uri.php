@@ -5,7 +5,7 @@ namespace Components;
 
 
   /**
-   * Net_Uri
+   * Uri
    *
    * scheme://username:password@domain.tld:port/path/file.ext?key0=val0#fragment
    * \____/   \_______________/ \________/ \__/      \__/ \_/ \_______/ \______/
@@ -19,16 +19,14 @@ namespace Components;
    *                                                       |
    *                                                   file-extension
    *
-   * @package tncNetPlugin
-   * @subpackage lib
+   * @package net.evalcode.components
+   * @subpackage type
    *
    * @author evalcode.net
    */
-  class Net_Uri implements Core_Class_Serializable
+  class Uri implements Object, Cloneable, Serializable_Php, Serializable_Json
   {
     // PREDEFINED PROPERTIES
-    const NAME_CLASS_URI=__CLASS__;
-
     /**
      * [DEFAULT] Format arrays in query strings without array index.
      *
@@ -61,21 +59,20 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
-     * Parses given string and returns an corresponding instance of Net_Uri.
+     * Parses given string and returns an corresponding instance of Uri.
      *
      * @param string $url_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public static function parse($uri_)
     {
       $uri=self::arrayForString($uri_);
 
-      if(isset($uri['scheme'])
-        && ($impl=Net_Scheme::getImplTypeForScheme($uri['scheme'])))
+      if(isset($uri['scheme']) && ($impl=Uri_Scheme::getImplTypeForScheme($uri['scheme'])))
         $instance=new $impl();
       else
-        $instance=new self();
+        $instance=new static();
 
       $instance->parseImpl($uri);
 
@@ -86,23 +83,26 @@ namespace Components;
 
     // ACCESSORS/MUTATORS
     /**
-     * @return Net_Uri_Resolver
+     * @return \Components\Uri_Resolver
      */
     public function getResolver()
     {
       // TODO Should be definable.
       if(null===$this->m_resolver)
       {
-        if(Net_Uri_Resolver_Curl::isCurlSupported())
-          $this->m_resolver=new Net_Uri_Resolver_Curl();
+        if(Uri_Resolver_Curl::isSupported())
+          $this->m_resolver=new Uri_Resolver_Curl();
         else
-          $this->m_resolver=new Net_Uri_Resolver_Default();
+          $this->m_resolver=new Uri_Resolver_Default();
       }
 
       return $this->m_resolver;
     }
 
-    public function setResolver(Net_Uri_Resolver $resolver_)
+    /**
+     * @param \Components\Uri_Resolver $resolver_
+     */
+    public function setResolver(Uri_Resolver $resolver_)
     {
       $this->m_resolver=$resolver_;
     }
@@ -115,7 +115,7 @@ namespace Components;
      *    ^^^^^^^
      * </pre>
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function getScheme()
     {
@@ -132,7 +132,7 @@ namespace Components;
      *
      * @param string $scheme_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setScheme($scheme_)
     {
@@ -163,10 +163,10 @@ namespace Components;
 
       if($user=$this->getUsername())
       {
-        $user=Misc_Text::urlEncode($user);
+        $user=String::urlEncode($user);
 
         if($password=$this->getPassword())
-          $user.=':'.Misc_Text::urlEncode($password);
+          $user.=':'.String::urlEncode($password);
 
         return $user.'@'.$host;
       }
@@ -199,7 +199,7 @@ namespace Components;
      *
      * @param string $host_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setHost($host_)
     {
@@ -216,7 +216,7 @@ namespace Components;
      *                                     ^^^^
      * </pre>
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function reduceToHost()
     {
@@ -251,7 +251,7 @@ namespace Components;
      *
      * @param int $port_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setPort($port_)
     {
@@ -285,7 +285,7 @@ namespace Components;
      *
      * @param string $username_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setUsername($username_)
     {
@@ -319,7 +319,7 @@ namespace Components;
      *
      * @param string $password_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setPassword($password_)
     {
@@ -342,7 +342,7 @@ namespace Components;
     {
       $pathParams=array();
       foreach($this->getPathParams() as $pathParam)
-        array_push($pathParams, Misc_Text::urlEncode($pathParam));
+        array_push($pathParams, String::urlEncode($pathParam));
 
       return '/'.implode('/', $pathParams);
     }
@@ -357,19 +357,19 @@ namespace Components;
      *
      * @param sting $path_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setPath($path_)
     {
       $this->m_pathParams=array();
 
-      if(0==mb_strpos($path_, '/'))
+      if(0===mb_strpos($path_, '/'))
         $pathParams=explode('/', mb_substr($path_, 1));
       else
         $pathParams=explode('/', $path_);
 
       foreach($pathParams as $pathParam)
-        $this->pushPathParam(Misc_Text::urlDecode($pathParam));
+        $this->pushPathParam(String::urlDecode($pathParam));
 
       return $this;
     }
@@ -384,7 +384,7 @@ namespace Components;
      *
      * @param array $pathParams_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setPathParams(array $pathParams_)
     {
@@ -442,11 +442,11 @@ namespace Components;
      * @param int $idx_ Array-index of path parameters / Position of parameter in path.
      * @param string $pathParam_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setPathParam($idx_, $pathParam_)
     {
-      if(null===$pathParam_ || 1>Misc_Text::len($pathParam_))
+      if(null===$pathParam_ || 1>String::length($pathParam_))
         return $this;
 
       $this->m_pathParams[$idx_]=$pathParam_;
@@ -479,11 +479,11 @@ namespace Components;
      *
      * @param string $pathParam_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function pushPathParam($pathParam_)
     {
-      if(null===$pathParam_ || 1>Misc_Text::len($pathParam_))
+      if(null===$pathParam_ || 1>String::len($pathParam_))
         return $this;
 
       array_push($this->m_pathParams, $pathParam_);
@@ -516,7 +516,7 @@ namespace Components;
      *
      * @param string $pathParam_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function unshiftPathParam($pathParam_)
     {
@@ -566,7 +566,7 @@ namespace Components;
      *
      * @param string $queryString_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setQueryString($queryString_)
     {
@@ -611,7 +611,7 @@ namespace Components;
      * @param string $key_
      * @param mixed $value_
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setQueryParam($key_, $value_)
     {
@@ -643,7 +643,7 @@ namespace Components;
      *                                                          ^^^^^^^^^^^^
      * </pre>
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setQueryParams(array $queryParams_)
     {
@@ -675,7 +675,7 @@ namespace Components;
      *                                                                         ^^^^^^^^
      * </pre>
      *
-     * @return Net_Uri
+     * @return \Components\Uri
      */
     public function setFragment($fragment_)
     {
@@ -687,32 +687,23 @@ namespace Components;
     /**
      * Connects to & resolves contents for this url.
      *
-     * @throws Core_Exception
-     *
      * @return string
      */
     public function getContents()
     {
-      if(false===($contents=$this->getResolver()->getContents($this)))
-      {
-        throw new Core_Exception('net/uri',
-          sprintf('Unable to retrieve contents for URL [%1$s]', $this)
-        );
-      }
-
-      return $contents;
+      return $contents=$this->getResolver()->getContents($this);
     }
 
     /**
-     * Returns bitset of activated options for this url.
+     * Returns bitmask of activated options for this url.
      *
-     * @return Misc_BitSet
+     * @return \Components\Bitmask
      */
     public function getOptions()
     {
       if(null===$this->m_options)
       {
-        $this->m_options=Misc_BitSet::forBitSet(array(
+        $this->m_options=Bitmask::forBits(array(
           self::OPTION_QUERY_STRING_FORMAT_PHP
         ));
       }
@@ -724,48 +715,30 @@ namespace Components;
 
     // OVERRIDES/IMPLEMENTS
     /**
-     * @see Core_Class::equals()
+     * (non-PHPdoc)
+     * @see Components.Object::equals()
      */
     public function equals($object_)
     {
       if($object_ instanceof self)
-        return Misc_Text::equals((string)$this, (string)$this);
+        return String::equals((string)$this, (string)$this);
 
       return false;
     }
 
     /**
-     * @see Core_Class::hashCode()
+     * (non-PHPdoc)
+     * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
-      return spl_object_hash($this);
+      return string_hash((string)$this);
     }
 
     /**
-     * @see Core_Class_Serializable::serialize()
+     * (non-PHPdoc)
+     * @see Components.Object::__toString()
      */
-    public function serialize()
-    {
-      return (string)$this;
-    }
-
-    /**
-     * @see Core_Class_Serializable::unserialize()
-     */
-    public function unserialize($string_)
-    {
-      return self::parse($string_);
-    }
-
-    /**
-     * @see Core_Class_Serializable::serialVersionUid()
-     */
-    public function serialVersionUid()
-    {
-      return 1;
-    }
-
     public function __toString()
     {
       $string='';
@@ -780,11 +753,15 @@ namespace Components;
         $string.='?'.$queryString;
 
       if($fragment=$this->getFragment())
-        $string.='#'.Misc_Text::urlEncode($fragment);
+        $string.='#'.String::urlEncode($fragment);
 
       return $string;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Components.Cloneable::__clone()
+     */
     public function __clone()
     {
       $url=new self();
@@ -805,9 +782,54 @@ namespace Components;
       }
 
       if(null!==$this->m_options)
-        $url->getOptions()->set($this->getOptions()->toBitMask());
+        $url->getOptions()->set($this->getOptions()->toBitmask());
 
       return $url;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable_Php::serialize()
+     */
+    public function serialize()
+    {
+      return (string)$this;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable_Php::serialize()
+     */
+    public function unserialize($string_)
+    {
+      return self::parse($string_);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable_Json::serialize()
+     */
+    public function serializeJson()
+    {
+      return json_encode((string)$this);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable_Json::serialize()
+     */
+    public function unserializeJson($json_)
+    {
+      return self::parse(json_decode($json_));
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable::serialVersionUid()
+     */
+    public function serialVersionUid()
+    {
+      return 1;
     }
 
     public function __sleep()
@@ -836,11 +858,11 @@ namespace Components;
     // IMPLEMENTATION
     protected $m_asString;
     /**
-     * @var Net_Uri_Resolver
+     * @var \Components\Uri_Resolver
      */
     protected $m_resolver;
     /**
-     * @var Misc_BitSet
+     * @var \Components\Bitmask
      */
     protected $m_options;
     protected $m_scheme;
@@ -859,11 +881,11 @@ namespace Components;
       $this->setScheme(isset($uri_['scheme'])?$uri_['scheme']:null);
       $this->setHost(isset($uri_['host'])?$uri_['host']:null);
       $this->setPort(isset($uri_['port'])?$uri_['port']:null);
-      $this->setUsername(isset($uri_['user'])?Misc_Text::urlDecode($uri_['user']):null);
-      $this->setPassword(isset($uri_['pass'])?Misc_Text::urlDecode($uri_['pass']):null);
+      $this->setUsername(isset($uri_['user'])?String::urlDecode($uri_['user']):null);
+      $this->setPassword(isset($uri_['pass'])?String::urlDecode($uri_['pass']):null);
       $this->setPath(isset($uri_['path'])?$uri_['path']:null);
       $this->setQueryString(isset($uri_['query'])?$uri_['query']:null);
-      $this->setFragment(isset($uri_['fragment'])?Misc_Text::urlDecode($uri_['fragment']):null);
+      $this->setFragment(isset($uri_['fragment'])?String::urlDecode($uri_['fragment']):null);
     }
 
 
@@ -880,9 +902,9 @@ namespace Components;
         $chunks=explode('=', $pair);
 
         if(isset($chunks[1]))
-          $queryParams[Misc_Text::urlDecode($chunks[0])]=Misc_Text::urlDecode($chunks[1]);
+          $queryParams[String::urlDecode($chunks[0])]=String::urlDecode($chunks[1]);
         else
-          $queryParams[Misc_Text::urlDecode($chunks[0])]=null;
+          $queryParams[String::urlDecode($chunks[0])]=null;
       }
 
       return $queryParams;
@@ -892,7 +914,7 @@ namespace Components;
     {
       if(false===($uri=@parse_url($uri_)))
       {
-        throw new Core_Exception('net/uri',
+        throw new Exception_IllegalArgument('components/type/uri',
           sprintf('Unable to parse URI for string [%1$s].', $uri_)
         );
       }

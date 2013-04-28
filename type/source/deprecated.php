@@ -14,11 +14,6 @@ namespace Components;
    */
   class Deprecated extends Runtime_Exception
   {
-    // PREDEFINED PROPERTIES
-    const NAMESPACE_DEFAULT='deprecated';
-    //--------------------------------------------------------------------------
-
-
     // STATIC ACCESSORS
     /**
      * Throws an deprecated exception if given version is older than
@@ -29,10 +24,10 @@ namespace Components;
      * invoked - respectively the location of the deprecated code.
      *
      * @param string $namespace_
-     * @param Version $version_
+     * @param \Components\Version $version_
      * @param string $message_
      *
-     * @throws Deprecated
+     * @throws \Components\Deprecated
      */
     public static function since($namespace_, Version $version_, $message_=null)
     {
@@ -40,7 +35,13 @@ namespace Components;
       if(Environment::isLive())
         return;
 
-      // TODO Implement when we have proper release planning & versioning
+      if(0>Runtime::version()->compareTo($version_))
+      {
+        if(null===$message_)
+          throw static::createDefaultException($namespace_);
+
+        throw new static($namespace_, $message_, null, true);
+      }
     }
 
     /**
@@ -52,10 +53,10 @@ namespace Components;
      * invoked - respectively the location of the deprecated code.
      *
      * @param string $namespace_
-     * @param Date $date_
+     * @param \Components\Date $date_
      * @param string $message_
      *
-     * @throws Deprecated
+     * @throws \Components\Deprecated
      */
     public static function sinceDate($namespace_, Date $date_, $message_=null)
     {
@@ -66,9 +67,9 @@ namespace Components;
       if(Date::now()->isAfter($date_))
       {
         if(null===$message_)
-          throw self::createDefaultException($namespace_);
+          throw static::createDefaultException($namespace_);
 
-        throw new self($namespace_, $message_, null, true);
+        throw new static($namespace_, $message_, null, true);
       }
     }
 
@@ -83,7 +84,7 @@ namespace Components;
      * @param string $clazz_
      * @param string $message_
      *
-     * @throws Deprecated
+     * @throws \Components\Deprecated
      */
     public static function ifClassExists($namespace_, $clazz_, $message_=null)
     {
@@ -94,9 +95,9 @@ namespace Components;
       if(false===@class_exists($clazz_))
       {
         if(null===$message_)
-          throw self::createDefaultException($namespace_);
+          throw static::createDefaultException($namespace_);
 
-        throw new self($namespace_, $message_, null, true);
+        throw new static($namespace_, $message_, null, true);
       }
     }
     //--------------------------------------------------------------------------
@@ -109,10 +110,12 @@ namespace Components;
      * invokes an public static accessor of this class.
      *
      * @param string $namespace_
+     *
+     * @return \Components\Deprecated
      */
     private static function createDefaultException($namespace_)
     {
-      $exception=new self($namespace_, null, null, false);
+      $exception=new static($namespace_, null, null, false);
       $stackTrace=$exception->getTrace();
 
       $exception->message=sprintf(

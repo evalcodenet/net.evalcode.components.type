@@ -5,42 +5,45 @@ namespace Components;
 
 
   /**
-   * Net_Uri_Resolver_Default
+   * Uri_Resolver_Default
    *
-   * @package tncNetPlugin
-   * @subpackage lib.uri.resolver
+   * @package net.evalcode.components
+   * @subpackage type.uri.resolver
    *
    * @author evalcode.net
    */
-  class Net_Uri_Resolver_Default implements Net_Uri_Resolver
+  class Uri_Resolver_Default implements Uri_Resolver
   {
     // CONSTRUCTION
     public function __construct()
     {
-      $this->m_options=Misc_BitSet::forBitMask(0);
+      $this->m_options=Bitmask::createEmpty();
     }
     //--------------------------------------------------------------------------
 
 
     // OVERRIDES/IMPLEMENTS
     /**
-     * @see Net_Resolver::resolve()
+     * (non-PHPdoc)
+     * @see Components.Uri_Resolver::resolve()
      */
-    public function resolve(Net_Uri $uri_)
+    public function resolve(Uri $uri_)
     {
       // TODO Implement
     }
 
     /**
-     * @see Net_Resolver::getContents()
+     * (non-PHPdoc)
+     * @see Components.Uri_Resolver::getContents()
      */
-    public function getContents(Net_Uri $uri_)
+    public function getContents(Uri $uri_)
     {
       return @file_get_contents((string)$uri_);
     }
 
     /**
-     * @see Net_Resolver::getOptions()
+     * (non-PHPdoc)
+     * @see Components.Uri_Resolver::getOptions()
      */
     public function getOptions()
     {
@@ -51,7 +54,7 @@ namespace Components;
 
     // IMPLEMENTATION
     /**
-     * @var Misc_BitSet
+     * @var \Components\Bitmask
      */
     private $m_options;
     //--------------------------------------------------------------------------

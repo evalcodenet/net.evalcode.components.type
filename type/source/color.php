@@ -42,32 +42,37 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
-     * @return Color
+     * @param string $string_ CSS-like RGB color value / hex value
+     *
+     * @return \Components\Color
      */
     public static function valueOf($string_)
     {
-      // TODO Implement
+      // TODO Parse rgb(255, 255, 255) / #ffffff
     }
 
     /**
-     * @return Color
+     * @return \Components\Color
      */
     public static function white()
     {
-      return new self(255, 255, 255);
+      return new static(255, 255, 255);
     }
 
     /**
-     * @return Color
+     * @return \Components\Color
      */
     public static function black()
     {
-      return new self(0, 0, 0);
+      return new static(0, 0, 0);
     }
     //--------------------------------------------------------------------------
 
 
     // ACCESSORS/MUTATORS
+    /**
+     * @return string
+     */
     public function toHexString()
     {
       return dechex($this->r).dechex($this->g).dechex($this->b);
@@ -78,11 +83,11 @@ namespace Components;
     // OVERRIDES/IMPLEMENTS
     /**
      * (non-PHPdoc)
-     * @see Cloneable::__clone()
+     * @see Components.Cloneable::__clone()
      */
     public function __clone()
     {
-      return new self($this->r, $this->g, $this->b);
+      return new static($this->r, $this->g, $this->b);
     }
 
     /**
@@ -91,10 +96,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      $hash=31*$this->r+$this->g;
-      $hash+=31*$hash+$this->b;
-
-      return $hash;
+      return integer_hash($this->r, $this->g, $this->b);
     }
 
     /**
@@ -103,7 +105,7 @@ namespace Components;
      */
     public function equals($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
       {
         return (int)$this->r===(int)$object_->r
           && (int)$this->g===(int)$object_->g

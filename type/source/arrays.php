@@ -14,7 +14,7 @@ namespace Components;
    */
   final class Arrays
   {
-    // CONSTANTS
+    // PREDEFINED PROPERTIES
     /**
      * Process arrays recursively
      *
@@ -51,7 +51,7 @@ namespace Components;
         {
           if(is_array($value))
           {
-            if(Bitmask::hasBitForBitMask($mode_, self::RECURSIVE))
+            if(Bitmask::hasBitForBitmask($mode_, self::RECURSIVE))
             {
               $values[]=$key.$separatorKeyValue_.self::toString(
                 $value,
@@ -90,7 +90,7 @@ namespace Components;
       // search current level
       $exists=array_key_exists($key_, $array_);
 
-      if($exists || false===Bitmask::hasBitForBitMask($mode_, self::RECURSIVE))
+      if($exists || false===Bitmask::hasBitForBitmask($mode_, self::RECURSIVE))
         return $exists;
 
       // proceed with nested levels if requested
@@ -114,7 +114,7 @@ namespace Components;
     {
       $exists=false;
       $nestedArrays=array();
-      $recursive=Bitmask::hasBitForBitMask($mode_, self::RECURSIVE);
+      $recursive=Bitmask::hasBitForBitmask($mode_, self::RECURSIVE);
 
       // search current level
       foreach($array_ as $key=>$value)
@@ -162,7 +162,7 @@ namespace Components;
       // search current level
       $exists=array_search($value_, $array_);
 
-      if(false!==$exists || false===Bitmask::hasBitForBitMask($mode_, self::RECURSIVE))
+      if(false!==$exists || false===Bitmask::hasBitForBitmask($mode_, self::RECURSIVE))
         return $exists;
 
       // proceed with nested levels if requested
@@ -186,7 +186,7 @@ namespace Components;
     {
       $exists=false;
       $nestedArrays=array();
-      $recursive=Bitmask::hasBitForBitMask($mode_, self::RECURSIVE);
+      $recursive=Bitmask::hasBitForBitmask($mode_, self::RECURSIVE);
 
       // search current level
       foreach($array_ as $key=>$value)

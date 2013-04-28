@@ -5,14 +5,14 @@ namespace Components;
 
 
   /**
-   * Misc_Date
+   * Date
    *
-   * @package tncMiscPlugin
-   * @subpackage lib
+   * @package net.evalcode.components
+   * @subpackage type
    *
    * @author evalcode.net
    */
-  class Misc_Date implements Core_Class_Serializable, Core_Class_Comparable
+  class Date implements Object, Cloneable, Comparable, Serializable_Php
   {
     // PREDEFINED PROPERTIES
     const ANTE_MERIDIEM='am';
@@ -30,7 +30,7 @@ namespace Components;
 
 
     // CONSTRUCTION
-    /*protected*/ function __construct(\DateTime $date_=null)
+    public function __construct(\DateTime $date_=null)
     {
       $this->m_date=$date_;
     }
@@ -41,14 +41,14 @@ namespace Components;
     /**
      * Returns current time for UTC.
      *
-     * @param Misc_TimeZone $timezone_
+     * @param \Components\TimeZone $timezone_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public static function now()
     {
       $date=new \DateTime();
-      $date->setTimezone(Misc_TimeZone::utc()->get());
+      $date->setTimezone(TimeZone::utc()->get());
 
       return new self($date);
     }
@@ -59,19 +59,19 @@ namespace Components;
      *
      * @param string $date_
      * @param string $expectedFormat_
-     * @param Misc_TimeZone $timezone_
+     * @param \Components\TimeZone $timezone_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
-    public static function parse($date_, Misc_TimeZone $timezone_=null, $expectedFormat_=null)
+    public static function parse($date_, TimeZone $timezone_=null, $expectedFormat_=null)
     {
       extract(date_parse($date_));
 
       if(null===$timezone_ && isset($zone))
-        $timezone_=Misc_TimeZone::forOffset($zone/60);
+        $timezone_=TimeZone::forOffset($zone/60);
 
       if(null===$timezone_)
-        $timezone_=Misc_TimeZone::utc();
+        $timezone_=TimeZone::utc();
 
       // TODO Validate input against expected format.
 
@@ -80,7 +80,7 @@ namespace Components;
         $timezone_->get()
       );
 
-      $date->setTimezone(Misc_TimeZone::utc()->get());
+      $date->setTimezone(TimeZone::utc()->get());
 
       return new self($date);
     }
@@ -92,17 +92,17 @@ namespace Components;
      * timezone than the current system's one.
      *
      * @param int $timestamp_
-     * @param Misc_TimeZone $timezone_
+     * @param \Components\TimeZone $timezone_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
-    public static function fromUnixTimestamp($timestamp_, Misc_TimeZone $timezone_=null)
+    public static function fromUnixTimestamp($timestamp_, TimeZone $timezone_=null)
     {
       if(null===$timezone_)
-        $timezone_=Misc_TimeZone::forSystemDefault();
+        $timezone_=TimeZone::forSystemDefault();
 
       $date=new \DateTime('@'.$timestamp_, $timezone_->get());
-      $date->setTimezone(Misc_TimeZone::utc()->get());
+      $date->setTimezone(TimeZone::utc()->get());
 
       return new self($date);
     }
@@ -110,11 +110,11 @@ namespace Components;
     /**
      * @param string $date_ ISO-8601 formatted date/time string in UTC.
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public static function fromISO8601($date_)
     {
-      $utc=Misc_TimeZone::utc()->get();
+      $utc=TimeZone::utc()->get();
 
       $date=new \DateTime($date_, $utc);
       $date->setTimezone($utc);
@@ -127,16 +127,16 @@ namespace Components;
     // ACCESSORS/MUTATORS
     /**
      * @param string $format_
-     * @param Misc_TimeZone $timezone_
+     * @param \Components\TimeZone $timezone_
      *
      * @return string
      */
-    public function format($format_=self::FORMAT_DEFAULT, Misc_TimeZone $timezone_=null)
+    public function format($format_=self::FORMAT_DEFAULT, TimeZone $timezone_=null)
     {
       $date=clone $this->m_date;
 
       if(null===$timezone_)
-        $timezone_=Misc_TimeZone::forSystemDefault();
+        $timezone_=TimeZone::forSystemDefault();
 
       $date->setTimezone($timezone_->get());
 
@@ -144,9 +144,20 @@ namespace Components;
     }
 
     /**
+     * @param string $format_
+     * @param \Components\TimeZone $timezone_
+     *
+     * @return string
+     */
+    public function formatLocalized($format_='common/date/pattern/full', TimeZone $timezone_=null)
+    {
+      return $this->format(translate($format_), $timezone_);
+    }
+
+    /**
      * @return int
      */
-    public function toUnixTimestamp(Misc_TimeZone $timezone_=null)
+    public function toUnixTimestamp(TimeZone $timezone_=null)
     {
       return (int)$this->format('U', $timezone_);
     }
@@ -154,30 +165,18 @@ namespace Components;
     /**
      * @return string
      */
-    public function toISO8601(Misc_TimeZone $timezone_=null)
+    public function toISO8601(TimeZone $timezone_=null)
     {
       if(null===$timezone_)
-        $timezone_=Misc_TimeZone::utc();
+        $timezone_=TimeZone::utc();
 
       return $this->format(self::FORMAT_ISO8601, $timezone_);
     }
 
     /**
-     * @return string
-     */
-    public function toLocaleString(Misc_TimeZone $timezone_=null)
-    {
-      // FIXME Implement I18N based formatting.
-
-      throw new Core_Exception_NotImplemented('misc/date',
-        'Converting to local format is not implemented yet.'
-      );
-    }
-
-    /**
      * @return boolean
      */
-    public function isBefore(Misc_Date $date_)
+    public function isBefore(Date $date_)
     {
       return $this->toUnixTimestamp()<$date_->toUnixTimestamp();
     }
@@ -185,7 +184,7 @@ namespace Components;
     /**
      * @return boolean
      */
-    public function isAfter(Misc_Date $date_)
+    public function isAfter(Date $date_)
     {
       return $this->toUnixTimestamp()>$date_->toUnixTimestamp();
     }
@@ -193,7 +192,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getDay(Misc_TimeZone $timezone_=null)
+    public function getDay(TimeZone $timezone_=null)
     {
       return (int)$this->format('j', $timezone_);
     }
@@ -201,7 +200,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getDayOfYear(Misc_TimeZone $timezone_=null)
+    public function getDayOfYear(TimeZone $timezone_=null)
     {
       return (int)$this->format('z', $timezone_);
     }
@@ -209,7 +208,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getDayOfWeek(Misc_TimeZone $timezone_=null)
+    public function getDayOfWeek(TimeZone $timezone_=null)
     {
       return (int)$this->format('w', $timezone_);
     }
@@ -217,7 +216,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getWeek(Misc_TimeZone $timezone_=null)
+    public function getWeek(TimeZone $timezone_=null)
     {
       return (int)$this->format('W', $timezone_);
     }
@@ -225,7 +224,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getMonth(Misc_TimeZone $timezone_=null)
+    public function getMonth(TimeZone $timezone_=null)
     {
       return (int)$this->format('n', $timezone_);
     }
@@ -233,7 +232,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getLengthOfMonth(Misc_TimeZone $timezone_=null)
+    public function getLengthOfMonth(TimeZone $timezone_=null)
     {
       return (int)$this->format('t', $timezone_);
     }
@@ -241,7 +240,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getYear(Misc_TimeZone $timezone_=null)
+    public function getYear(TimeZone $timezone_=null)
     {
       return (int)$this->format('Y', $timezone_);
     }
@@ -249,7 +248,7 @@ namespace Components;
     /**
      * @return string
      */
-    public function getShortYear(Misc_TimeZone $timezone_=null)
+    public function getShortYear(TimeZone $timezone_=null)
     {
       return $this->format('y', $timezone_);
     }
@@ -257,7 +256,7 @@ namespace Components;
     /**
      * @return boolean
      */
-    public function isLeapYear(Misc_TimeZone $timezone_=null)
+    public function isLeapYear(TimeZone $timezone_=null)
     {
       return 1==(int)$this->format('L', $timezone_);
     }
@@ -265,7 +264,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getHour(Misc_TimeZone $timezone_=null)
+    public function getHour(TimeZone $timezone_=null)
     {
       return (int)$this->format('H', $timezone_);
     }
@@ -273,7 +272,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getMinute(Misc_TimeZone $timezone_=null)
+    public function getMinute(TimeZone $timezone_=null)
     {
       return (int)$this->format('i', $timezone_);
     }
@@ -281,7 +280,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getSecond(Misc_TimeZone $timezone_=null)
+    public function getSecond(TimeZone $timezone_=null)
     {
       return (int)$this->format('s', $timezone_);
     }
@@ -289,7 +288,7 @@ namespace Components;
     /**
      * @return int
      */
-    public function getMicroSecond(Misc_TimeZone $timezone_=null)
+    public function getMicroSecond(TimeZone $timezone_=null)
     {
       return (int)$this->format('u', $timezone_);
     }
@@ -297,7 +296,7 @@ namespace Components;
     /**
      * @return boolean
      */
-    public function isMorning(Misc_TimeZone $timezone_=null)
+    public function isMorning(TimeZone $timezone_=null)
     {
       return self::ANTE_MERIDIEM==$this->format('a', $timezone_);
     }
@@ -305,7 +304,7 @@ namespace Components;
     /**
      * @return boolean
      */
-    public function isAfternoon(Misc_TimeZone $timezone_=null)
+    public function isAfternoon(TimeZone $timezone_=null)
     {
       return self::POST_MERIDIEM==$this->format('a', $timezone_);
     }
@@ -313,13 +312,13 @@ namespace Components;
     /**
     * @return boolean
      */
-    public function isSummerTime(Misc_TimeZone $timezone_=null)
+    public function isSummerTime(TimeZone $timezone_=null)
     {
       return 1==$this->format('I', $timezone_);
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function nextDay()
     {
@@ -327,7 +326,7 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function prevDay()
     {
@@ -335,7 +334,7 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function nextMonth()
     {
@@ -343,7 +342,7 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function prevMonth()
     {
@@ -351,7 +350,7 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function nextYear()
     {
@@ -359,7 +358,7 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function prevYear()
     {
@@ -367,21 +366,21 @@ namespace Components;
     }
 
     /**
-     * @param Misc_Time $time_
+     * @param \Components\Time $time_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
-    public function after(Misc_Time $time_)
+    public function after(Time $time_)
     {
       return $this->modified('+'.$time_->toSeconds().' second');
     }
 
     /**
-     * @param Misc_Time $time_
+     * @param \Components\Time $time_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
-    public function before(Misc_Time $time_)
+    public function before(Time $time_)
     {
       return $this->modified('-'.$time_->toSeconds().' second');
     }
@@ -389,27 +388,27 @@ namespace Components;
     /**
      * Returns time between this and any given date.
      *
-     * @param Misc_Date $date_
+     * @param \Components\Date $date_
      *
-     * @return Misc_Time
+     * @return \Components\Time
      */
-    public function during(Misc_Date $date_)
+    public function during(Date $date_)
     {
       $interval=$this->m_date->diff($date_->m_date);
 
       $seconds=0;
-      $seconds+=$interval->days*Misc_Time::SECONDS_DAY;
-      $seconds+=$interval->h*Misc_Time::SECONDS_HOUR;
-      $seconds+=$interval->i*Misc_Time::SECONDS_MINUTE;
+      $seconds+=$interval->days*Time::SECONDS_DAY;
+      $seconds+=$interval->h*Time::SECONDS_HOUR;
+      $seconds+=$interval->i*Time::SECONDS_MINUTE;
       $seconds+=$interval->s;
 
-      return Misc_Time::forSeconds($seconds);
+      return Time::forSeconds($seconds);
     }
 
     /**
      * @param int $days_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function afterDays($days_)
     {
@@ -419,7 +418,7 @@ namespace Components;
     /**
      * @param int $days_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function beforeDays($days_)
     {
@@ -429,7 +428,7 @@ namespace Components;
     /**
      * @param int $months_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function afterMonths($months_)
     {
@@ -439,7 +438,7 @@ namespace Components;
     /**
      * @param int $months_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function beforeMonths($months_)
     {
@@ -449,7 +448,7 @@ namespace Components;
     /**
      * @param int $years_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function afterYears($years_)
     {
@@ -459,7 +458,7 @@ namespace Components;
     /**
      * @param int $years_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function beforeYears($years_)
     {
@@ -467,11 +466,11 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function beginningOfDay()
     {
-      $utc=Misc_TimeZone::utc();
+      $utc=TimeZone::utc();
 
       $date=new \DateTime($this->format('Y-m-dT00:00:00+0000', $utc), $utc->get());
       $date->setTimezone($utc->get());
@@ -480,21 +479,21 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function endOfDay()
     {
       return $this->beginningOfDay()->after(
-        Misc_Time::get(Misc_Time::SECONDS_DAY-1, Misc_Time::TIMEUNIT_SECONDS)
+        Time::get(Time::SECONDS_DAY-1, Time::TIMEUNIT_SECONDS)
       );
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function beginningOfMonth()
     {
-      $utc=Misc_TimeZone::utc();
+      $utc=TimeZone::utc();
 
       $date=new \DateTime($this->format('Y-m-01T00:00:00+0000', $utc), $utc->get());
       $date->setTimezone($utc->get());
@@ -503,11 +502,11 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function beginningOfYear()
     {
-      $utc=Misc_TimeZone::utc();
+      $utc=TimeZone::utc();
 
       $date=new \DateTime($this->format('Y-01-01T00:00:00+0000', $utc), $utc->get());
       $date->setTimezone($utc->get());
@@ -516,7 +515,7 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function endOfMonth()
     {
@@ -524,7 +523,7 @@ namespace Components;
     }
 
     /**
-     * @return Misc_Date
+     * @return \Components\Date
      */
     public function endOfYear()
     {
@@ -533,13 +532,14 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // IMPLEMENTS
+    // OVERRIDES/IMPLEMENTS
     /**
-     * @see Core_Class_Comparable::compareTo()
+     * (non-PHPdoc)
+     * @see Components.Comparable::compareTo()
      */
-    public function compareTo(Core_Class_Comparable $object_)
+    public function compareTo($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
       {
         $timestampSelf=$this->toUnixTimestamp();
         $timestampObject=$object_->toUnixTimestamp();
@@ -555,59 +555,72 @@ namespace Components;
     }
 
     /**
-     * @see Core_Class::equals()
+     * (non-PHPdoc)
+     * @see Components.Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof self)
-        return $this->toUnixTimestamp()==$object_->toUnixTimestamp();
+      if($object_ instanceof static)
+        return $this->toUnixTimestamp()===$object_->toUnixTimestamp();
 
       return false;
     }
 
     /**
-     * @see Core_Class::hashCode()
+     * (non-PHPdoc)
+     * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
-      return spl_object_hash($this);
+      return integer_hash($this->toUnixTimestamp());
     }
 
     /**
-     * @see Core_Class_Serializable::serialize()
+     * (non-PHPdoc)
+     * @see Components.Serializable_Php::serialize()
      */
     public function serialize()
     {
-      return $this->toISO8601();
+      return serialize($this->toISO8601());
     }
 
     /**
-     * @see Core_Class_Serializable::unserialize()
+     * (non-PHPdoc)
+     * @see Components.Serializable_Php::unserialize()
      */
-    public function unserialize($string_)
+    public function unserialize($data_)
     {
-      $this->m_asString=$string_;
+      $this->m_asString=unserialize($data_);
       $this->__wakeup();
 
       return $this;
     }
 
     /**
-     * @see Core_Class_Serializable::serialVersionUid()
+     * (non-PHPdoc)
+     * @see Components.Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
       return 1;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Components.Object::__toString()
+     */
     public function __toString()
     {
-      return $this->format(self::FORMAT_UTC, Misc_TimeZone::utc());
+      return $this->format(self::FORMAT_UTC, TimeZone::utc());
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Components.Cloneable::__clone()
+     */
     public function __clone()
     {
-      return self::fromISO8601($this->toISO8601());
+      return static::fromISO8601($this->toISO8601());
     }
 
     public function __sleep()
@@ -619,7 +632,7 @@ namespace Components;
 
     public function __wakeup()
     {
-      $utc=Misc_TimeZone::utc()->get();
+      $utc=TimeZone::utc()->get();
 
       $this->m_date=new \DateTime($this->m_asString, $utc);
       $this->m_date->setTimezone($utc);
@@ -631,11 +644,11 @@ namespace Components;
     /**
      * @var string
      */
-    protected $m_asString;
+    private $m_asString;
     /**
      * @var \DateTime
      */
-    protected $m_date;
+    private $m_date;
     //-----
 
 
@@ -644,12 +657,12 @@ namespace Components;
      *
      * @param string $modification_
      *
-     * @return Misc_Date
+     * @return \Components\Date
      */
     protected function modified($modification_=null)
     {
       // FIXME clone does not seem to work...
-      $instance=self::fromISO8601($this->toISO8601());
+      $instance=static::fromISO8601($this->toISO8601());
 
       if(null!==$modification_)
         $instance->m_date->modify($modification_);

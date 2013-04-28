@@ -14,7 +14,7 @@ namespace Components;
    */
   class Type_Test_Unit_Suite implements Test_Unit_Suite
   {
-    // IMPLEMENTS
+    // OVERRIDES/IMPLEMENTS
     public function name()
     {
       return 'type/test/unit/suite';

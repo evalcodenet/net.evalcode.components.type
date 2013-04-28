@@ -14,7 +14,7 @@ namespace Components;
    */
   abstract class Annotation
   {
-    // CONSTANTS
+    // PREDEFINED PROPERTIES
     /**
      * Annotation
      *

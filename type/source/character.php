@@ -16,9 +16,9 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  final class Character extends Primitive implements Number
+  class Character extends Primitive implements Number
   {
-    // CONSTANTS
+    // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;
     const TYPE_NATIVE=Integer::TYPE_NATIVE; // Emulate native type.
     //--------------------------------------------------------------------------
@@ -44,36 +44,26 @@ namespace Components;
         return $character0_-$character1_;
 
       $a. $b=null;
-      if($character0_ instanceof self)
+      if($character0_ instanceof static)
         $a->$character0_->m_value;
       else if(is_integer($character0_))
         $a=$character0_;
 
-      if($character1_ instanceof self)
+      if($character1_ instanceof static)
         $b->$character1_->m_value;
       else if(is_integer($character1_))
         $b=$character1_;
 
-      try
-      {
-        if(null===$a)
-          $a=self::cast($character0_);
-        if(null===$b)
-          $b=self::cast($character1_);
-      }
-      catch(Exception_IllegalCast $e)
-      {
-        throw new Exception_IllegalArgument('type/character', sprintf(
-          'Can not compare given parameters [0: %s, 1: %s].',
-            $character0_, $character1_
-        ));
-      }
+      if(null===$a)
+        $a=static::cast($character0_);
+      if(null===$b)
+        $b=static::cast($character1_);
 
       return $a-$b;
     }
 
     /**
-     * @see Primitive::native()
+     * @see Components.Primitive::native()
      */
     public static function native()
     {
@@ -81,35 +71,36 @@ namespace Components;
     }
 
     /**
-     * @see Primitive::cast()
+     * @see Components.Primitive::cast()
+     *
+     * @return int
      */
     public static function cast($value_)
     {
-      if(false===Types::canBeString($value_))
+      if(false===String::isTypeCompatible($value_))
       {
-        throw new Exception_IllegalCast('type/character', sprintf(
+        throw new Exception_IllegalCast('components/type/character', sprintf(
           'Can not cast given parameter to %s [%s].', __CLASS__, $value_
         ));
       }
 
-      // TODO Handle character arrays or only respect first character (if multiple given)?
-      if(Types::isString($value_))
-        return ord($value_);
-
-      return (int)$value_;
+      // FIXME (CSH) Handle character arrays or only respect first character (if multiple given)?
+      return ord((string)$value_);
     }
 
     /**
-     * @see Primitive::valueOf()
+     * @see Components.Primitive::valueOf()
+     *
+     * @return \Components\Character
      */
     public static function valueOf($value_)
     {
-      return new self(self::cast($value_));
+      return new static(static::cast($value_));
     }
     //--------------------------------------------------------------------------
 
 
-    // IMPLEMENTS
+    // OVERRIDES/IMPLEMENTS
     /**
      * @return int
      */
@@ -181,7 +172,7 @@ namespace Components;
      */
     public function __clone()
     {
-      return new self($this->m_value);
+      return new static($this->m_value);
     }
 
     /**
@@ -190,41 +181,35 @@ namespace Components;
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
         return $this->m_value-$object_->m_value;
 
-      try
-      {
-        return $this->m_value-self::cast($object_);
-      }
-      catch(Exception_IllegalCast $e)
-      {
-        throw new Exception_IllegalArgument('type/character', sprintf(
-          'Can not compare to given parameter [%s].', $object_
-        ));
-      }
+      return $this->m_value-static::cast($object_);
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
-      return $this->m_value;
+      return Integer::hash($this->m_value);
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
         return $this->m_value===$object_->m_value;
 
       return false;
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::__toString()
      */
     public function __toString()

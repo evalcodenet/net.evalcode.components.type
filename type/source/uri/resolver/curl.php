@@ -5,14 +5,14 @@ namespace Components;
 
 
   /**
-   * Net_Uri_Resolver_Curl
+   * Uri_Resolver_Curl
    *
-   * @package tncNetPlugin
-   * @subpackage lib.uri.resolver
+   * @package net.evalcode.components
+   * @subpackage type.uri.resolver
    *
    * @author evalcode.net
    */
-  class Net_Uri_Resolver_Curl implements Net_Uri_Resolver
+  class Uri_Resolver_Curl implements Uri_Resolver
   {
     // PREDEFINED PROPERTIES
     // TODO CURL options
@@ -22,42 +22,45 @@ namespace Components;
     // CONSTRUCTION
     public function __construct()
     {
-      $this->m_options=Misc_BitSet::forBitMask(0);
+      $this->m_options=Bitmask::createEmpty();
     }
     //--------------------------------------------------------------------------
 
 
     // STATIC ACCESSORS
-    public static function isCurlSupported()
+    public static function isSupported()
     {
-      if(null===self::$m_isCurlSupported)
-        self::$m_isCurlSupported=extension_loaded('curl');
+      if(null===self::$m_isSupported)
+        self::$m_isSupported=extension_loaded('curl');
 
-      return self::$m_isCurlSupported;
+      return self::$m_isSupported;
     }
     //--------------------------------------------------------------------------
 
 
     // OVERRIDES/IMPLEMENTS
     /**
-     * @see Net_Resolver::resolve()
+     * (non-PHPdoc)
+     * @see Components.Uri_Resolver::resolve()
      */
-    public function resolve(Net_Uri $uri_)
+    public function resolve(Uri $uri_)
     {
       // TODO Implement
     }
 
     /**
-     * @see Net_Resolver::getContents()
+     * (non-PHPdoc)
+     * @see Components.Uri_Resolver::getContents()
      */
-    public function getContents(Net_Uri $uri_)
+    public function getContents(Uri $uri_)
     {
       // TODO Implement curl
       return @file_get_contents((string)$uri_);
     }
 
     /**
-     * @see Net_Resolver::getOptions()
+     * (non-PHPdoc)
+     * @see Components.Uri_Resolver::getOptions()
      */
     public function getOptions()
     {
@@ -67,9 +70,13 @@ namespace Components;
 
 
     // IMPLEMENTATION
-    private static $m_isCurlSupported;
     /**
-     * @var Misc_BitSet
+     * @var boolean
+     */
+    private static $m_isSupported;
+
+    /**
+     * @var \Components\Bitmask
      */
     private $m_options;
     //--------------------------------------------------------------------------

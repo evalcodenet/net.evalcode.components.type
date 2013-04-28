@@ -5,14 +5,14 @@ namespace Components;
 
 
   /**
-   * Net_Scheme
+   * Scheme
    *
-   * @package tncNetPlugin
-   * @subpackage lib
+   * @package net.evalcode.components
+   * @subpackage type.uri
    *
    * @author evalcode.net
    */
-  class Net_Scheme
+  class Scheme
   {
     // SUPPORTED PROTOCOL IDENTIFIER SCHEMES <CLASSIFICATION> <NAME> <SYNTAX>
     // [URI] Apple Filing Protocol [afp://[<user>@]<host>[:<port>][/[<path>]]]
@@ -103,8 +103,8 @@ namespace Components;
 
 
     // PROTOCOL IDENTIFIER IMPLEMENTATIONS
-    const IMPL_URI=Net_Uri::NAME_CLASS_URI;
-    const IMPL_URN=Net_Urn::NAME_CLASS_URN;
+    const IMPL_URI='\\Components\\Uri';
+    const IMPL_URN='\\Components\\Urn';
 
     const IMPL_GENERIC=self::IMPL_URI;
     //--------------------------------------------------------------------------

@@ -16,9 +16,9 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  final class Integer extends Primitive implements Number
+  class Integer extends Primitive implements Number
   {
-    // CONSTANTS
+    // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;
     const TYPE_NATIVE='integer';
     //--------------------------------------------------------------------------
@@ -62,7 +62,18 @@ namespace Components;
     }
 
     /**
-     * @see Primitive::native()
+     * @return int
+     */
+    public static function hash($integer0_/*, $integer1_, $integer2_, ...*/)
+    {
+      return integer_hash(func_get_args());
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Primitive::cast()
+     *
+     * @return string
      */
     public static function native()
     {
@@ -70,7 +81,10 @@ namespace Components;
     }
 
     /**
-     * @see Primitive::cast()
+     * (non-PHPdoc)
+     * @see Components.Primitive::cast()
+     *
+     * @return int
      */
     public static function cast($value_)
     {
@@ -78,18 +92,22 @@ namespace Components;
     }
 
     /**
-     * @see Primitive::valueOf()
+     * (non-PHPdoc)
+     * @see Components.Primitive::valueOf()
+     *
+     * @return \Components\Integer
      */
     public static function valueOf($value_)
     {
-      return new self(self::cast($value_));
+      return new static(static::cast($value_));
     }
     //--------------------------------------------------------------------------
 
 
-    // IMPLEMENTS
+    // OVERRIDES/IMPLEMENTS
     /**
-     * @see Number::intValue()
+     * (non-PHPdoc)
+     * @see Components.Number::intValue()
      */
     public function intValue()
     {
@@ -97,7 +115,8 @@ namespace Components;
     }
 
     /**
-     * @see Number::doubleValue()
+     * (non-PHPdoc)
+     * @see Components.Number::doubleValue()
      */
     public function doubleValue()
     {
@@ -105,7 +124,8 @@ namespace Components;
     }
 
     /**
-     * @see Number::floatValue()
+     * (non-PHPdoc)
+     * @see Components.Number::floatValue()
      */
     public function floatValue()
     {
@@ -113,11 +133,12 @@ namespace Components;
     }
 
     /**
-     * @see Comparable::compareTo()
+     * (non-PHPdoc)
+     * @see Components.Comparable::compareTo()
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
       {
         if($this->m_value==$object_->m_value)
           return 0;
@@ -139,7 +160,7 @@ namespace Components;
         return -1;
       }
 
-      throw new Exception_IllegalArgument('type/integer', sprintf(
+      throw new Exception_IllegalCast('components/type/integer', sprintf(
         'Can not compare to given parameter [%s].', $object_
       ));
     }
@@ -198,7 +219,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return $this->m_value;
+      return integer_hash($this->m_value);
     }
 
     /**

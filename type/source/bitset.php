@@ -14,11 +14,6 @@ namespace Components;
    */
   class Bitset implements Object
   {
-    // CONSTANTS
-    const TYPE=__CLASS__;
-    //--------------------------------------------------------------------------
-
-
     // CONSTRUCTION
     private function __construct(array $value_)
     {
@@ -29,39 +24,27 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
-     * @param Bitmask $bitmask_
+     * @param \Components\Bitmask $bitmask_
      *
-     * @return Bitset
+     * @return \Components\Bitset
      */
     public static function forBitmask(Bitmask $bitmask_)
     {
       $bitset=array(); /* TODO Implement self::internalConvertImpl($bitmask_->toBits())*/
 
-      return new self($bitset);
+      return new static($bitset);
     }
     //--------------------------------------------------------------------------
 
 
-    // ACCESSORS
-    //--------------------------------------------------------------------------
-
-
-    // IMPLEMENTS
+    // OVERRIDES/IMPLEMENTS
     /**
      * (non-PHPdoc)
      * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
-      $hash=1234;
-
-      foreach($this->m_value as $bit=>$set)
-      {
-        if($set)
-          $hash=31*$hash+$bit;
-      }
-
-      return $hash;
+      return integer_hash($this->m_value);
     }
 
     /**
@@ -98,7 +81,7 @@ namespace Components;
 
     // IMPLEMENTATION
     /**
-     * @var int|array
+     * @var array|int
      */
     private $m_value=array();
     //--------------------------------------------------------------------------

@@ -16,9 +16,9 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  final class Boolean extends Primitive implements Comparable, Cloneable
+  class Boolean extends Primitive implements Comparable, Cloneable
   {
-    // CONSTANTS
+    // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;
     const TYPE_NATIVE='boolean';
 
@@ -36,10 +36,10 @@ namespace Components;
      * when comparing instances of {@code Boolean} and use
      * this static accessor for native booleans exclusively.
      *
-     * @param Boolean|boolean $boolean0_
-     * @param Boolean|boolean $boolean1_
+     * @param \Components\Boolean|boolean $boolean0_
+     * @param \Components\Boolean|boolean $boolean1_
      *
-     * @throws Exception_IllegalArgument
+     * @throws \Components\Exception_IllegalCast
      */
     public static function compare($boolean0_, $boolean1_)
     {
@@ -52,12 +52,12 @@ namespace Components;
       if(true===$boolean1_)
         return -1;
 
-      if($boolean0_ instanceof self)
+      if($boolean0_ instanceof static)
         $boolean0=$boolean0_->m_value;
       else
         $boolean0=$boolean0_;
 
-      if($boolean1_ instanceof self)
+      if($boolean1_ instanceof static)
         $boolean1=$boolean1_->m_value;
       else
         $boolean1=$boolean1_;
@@ -71,14 +71,14 @@ namespace Components;
       if(true===$boolean1)
         return -1;
 
-      throw new Exception_IllegalArgument('type/boolean', sprintf(
+      throw new Exception_IllegalCast('components/type/boolean', sprintf(
         'Can not compare given parameters [0: %s, 1: %s].',
           $boolean0_, $boolean1_
       ));
     }
 
     /**
-     * @see Primitive::native()
+     * @see Components.Primitive::native()
      */
     public static function native()
     {
@@ -86,7 +86,9 @@ namespace Components;
     }
 
     /**
-     * @see Primitive::cast()
+     * @see Components.Primitive::cast()
+     *
+     * @return boolean
      */
     public static function cast($value_)
     {
@@ -100,18 +102,22 @@ namespace Components;
     }
 
     /**
-     * @see Primitive::valueOf()
+     * (non-PHPdoc)
+     * @see Components.Primitive::valueOf()
      *
-     * @return Boolean
+     * @return \Components\Boolean
      */
     public static function valueOf($value_)
     {
-      return new self(self::cast($value_));
+      return new static(static::cast($value_));
     }
     //--------------------------------------------------------------------------
 
 
-    // ACCESSORS
+    // ACCESSORS/MUTATORS
+    /**
+     * @return boolean
+     */
     public function booleanValue()
     {
       return $this->m_value;
@@ -119,13 +125,14 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // IMPLEMENTS
+    // OVERRIDES/IMPLEMENTS
     /**
-     * @see Comparable::compareTo()
+     * (non-PHPdoc)
+     * @see Components.Comparable::compareTo()
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
       {
         if($this->m_value===$object_->m_value)
           return 0;
@@ -152,16 +159,7 @@ namespace Components;
         return 1;
       }
 
-      try
-      {
-        $objectAsBoolean=self::cast($object_);
-      }
-      catch(Exception_IllegalCast $e)
-      {
-        throw new Exception_IllegalArgument('type/boolean', sprintf(
-          'Can not compare to given parameter [%s].', $object_
-        ));
-      }
+      $objectAsBoolean=static::cast($object_);
 
       if($this->m_value===$objectAsBoolean)
         return 0;
@@ -173,6 +171,7 @@ namespace Components;
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::hashCode()
      */
     public function hashCode()
@@ -181,17 +180,19 @@ namespace Components;
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
         return $this->m_value===$object_->m_value;
 
       return false;
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::__toString()
      */
     public function __toString()
@@ -202,9 +203,13 @@ namespace Components;
       return self::FALSE_AS_STRING;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Components.Cloneable::__clone()
+     */
     public function __clone()
     {
-      return new self($this->m_value);
+      return new static($this->m_value);
     }
     //--------------------------------------------------------------------------
   }

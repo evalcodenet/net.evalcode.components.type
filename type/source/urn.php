@@ -5,7 +5,7 @@ namespace Components;
 
 
   /**
-   * Net_Urn
+   * Urn
    *
    *  urn:namespace:namespace-specific-string
    *  \_/ \_______/ \_______________________/
@@ -15,18 +15,13 @@ namespace Components;
    *   |             |
    * scheme         path
    *
-   * @package tncNetPlugin
-   * @subpackage lib
+   * @package net.evalcode.components
+   * @subpackage type
    *
    * @author evalcode.net
    */
-  class Net_Urn extends Net_Uri
+  class Urn extends Uri
   {
-    // PREDEFINED PROPERTIES
-    const NAME_CLASS_URN=__CLASS__;
-    //--------------------------------------------------------------------------
-
-
     // ACCESSORS/MUTATORS
     public function getNamespace()
     {
@@ -41,12 +36,12 @@ namespace Components;
 
 
     // OVERRIDES/IMPLEMENTS
-    // FIXME Should be not necessary if Net_Uri()->getPath() is correct.
+    // FIXME Should be not necessary if Uri()->getPath() is correct.
     public function getPath()
     {
       $pathParams=array();
       foreach($this->getPathParams() as $pathParam)
-        array_push($pathParams, Misc_Text::urlEncode($pathParam));
+        array_push($pathParams, String::urlEncode($pathParam));
 
       return implode(':', $pathParams);
     }
@@ -55,24 +50,21 @@ namespace Components;
     {
       $this->m_pathParams=array();
 
-      if(0==Misc_Text::pos($path_, ':'))
-        $pathParams=explode(':', Misc_Text::sub($path_, 1));
+      if(0==String::indexOf($path_, ':'))
+        $pathParams=explode(':', String::substring($path_, 1));
       else
         $pathParams=explode(':', $path_);
 
       foreach($pathParams as $pathParam)
-        $this->pushPathParam(Misc_Text::urlDecode($pathParam));
+        $this->pushPathParam(String::urlDecode($pathParam));
 
       return $this;
     }
 
-    /**
-     * @see Core_Class::equals()
-     */
     public function equals($object_)
     {
       if($object_ instanceof self)
-        return Misc_Text::equals((string)$this, (string)$this);
+        return String::equal((string)$this, (string)$this);
 
       return false;
     }
@@ -105,7 +97,7 @@ namespace Components;
 
       if(1>count($urn))
       {
-        throw new Core_Exception('net/urn',
+        throw new Exception_IllegalArgument('components/type/urn',
           'An urn must contain at least [<scheme>:<namespace>:'.
           '<path|namespace-specific-string>].'
         );

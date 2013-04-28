@@ -14,7 +14,7 @@ namespace Components;
    */
   class HashMap extends Primitive implements Map, Cloneable
   {
-    // CONSTANTS
+    // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;
     const TYPE_NATIVE='array';
     //--------------------------------------------------------------------------
@@ -30,6 +30,8 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
+     *
+     * @see Components.Primitive::native()
      * @return string
      */
     public static function native()
@@ -38,6 +40,8 @@ namespace Components;
     }
 
     /**
+     * @param mixed $value_
+     *
      * @return array
      */
     public static function cast($value_)
@@ -46,7 +50,9 @@ namespace Components;
     }
 
     /**
-     * @return HashMap
+     * @param mixed $value_
+     *
+     * @return \Components\HashMap
      */
     public static function valueOf($value_)
     {
@@ -54,7 +60,7 @@ namespace Components;
     }
 
     /**
-     * @return HashMap
+     * @return \Components\HashMap
      */
     public static function createEmpty()
     {
@@ -71,9 +77,10 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // IMPLEMENTS
+    // OVERRIDES/IMPLEMENTS
     /**
-     * @see Map::isEmpty()
+     * (non-PHPdoc)
+     * @see Components.Map::isEmpty()
      */
     public function isEmpty()
     {
@@ -81,7 +88,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::containsKey()
+     * (non-PHPdoc)
+     * @see Components.Map::containsKey()
      */
     public function containsKey($key_)
     {
@@ -89,7 +97,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::containsValue()
+     * (non-PHPdoc)
+     * @see Components.Map::containsValue()
      */
     public function containsValue($value_)
     {
@@ -97,7 +106,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::get()
+     * (non-PHPdoc)
+     * @see Components.Map::get()
      */
     public function get($key_)
     {
@@ -105,7 +115,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::put()
+     * (non-PHPdoc)
+     * @see Components.Map::put()
      */
     public function put($key_, $value_)
     {
@@ -113,7 +124,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::putMap()
+     * (non-PHPdoc)
+     * @see Components.Map::putMap()
      */
     public function putMap(Map $map_)
     {
@@ -122,7 +134,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::putArray()
+     * (non-PHPdoc)
+     * @see Components.Map::putArray()
      */
     public function putArray(array $array_)
     {
@@ -131,7 +144,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::remove()
+     * (non-PHPdoc)
+     * @see Components.Map::remove()
      */
     public function remove($key_)
     {
@@ -143,7 +157,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::clear()
+     * (non-PHPdoc)
+     * @see Components.Map::clear()
      */
     public function clear()
     {
@@ -151,7 +166,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::keys()
+     * (non-PHPdoc)
+     * @see Components.Map::keys()
      */
     public function keys()
     {
@@ -159,7 +175,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::keySet()
+     * (non-PHPdoc)
+     * @see Components.Map::keySet()
      */
     public function keySet()
     {
@@ -167,7 +184,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::values()
+     * (non-PHPdoc)
+     * @see Components.Map::values()
      */
     public function values()
     {
@@ -175,7 +193,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::valueSet()
+     * (non-PHPdoc)
+     * @see Components.Map::valueSet()
      */
     public function valueSet()
     {
@@ -183,7 +202,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::__isset()
+     * (non-PHPdoc)
+     * @see Components.Map::__isset()
      */
     public function __isset($key_)
     {
@@ -191,7 +211,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::__unset()
+     * (non-PHPdoc)
+     * @see Components.Map::__unset()
      */
     public function __unset($key_)
     {
@@ -199,7 +220,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::__get()
+     * (non-PHPdoc)
+     * @see Components.Map::__get()
      */
     public function __get($key_)
     {
@@ -207,7 +229,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::__set()
+     * (non-PHPdoc)
+     * @see Components.Map::__set()
      */
     public function __set($key_, $value_)
     {
@@ -215,7 +238,8 @@ namespace Components;
     }
 
     /**
-     * @see Countable::count()
+     * (non-PHPdoc)
+     * @see Components.Countable::count()
      */
     public function count()
     {
@@ -223,7 +247,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::offsetExists()
+     * (non-PHPdoc)
+     * @see Components.Map::offsetExists()
      */
     public function offsetExists($offset_)
     {
@@ -231,7 +256,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::offsetGet()
+     * (non-PHPdoc)
+     * @see Components.Map::offsetGet()
      */
     public function offsetGet($offset_)
     {
@@ -239,7 +265,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::offsetSet()
+     * (non-PHPdoc)
+     * @see Components.Map::offsetSet()
      */
     public function offsetSet($offset_, $value_)
     {
@@ -247,7 +274,8 @@ namespace Components;
     }
 
     /**
-     * @see Map::offsetUnset()
+     * (non-PHPdoc)
+     * @see Components.Map::offsetUnset()
      */
     public function offsetUnset($offset_)
     {
@@ -256,7 +284,8 @@ namespace Components;
     }
 
     /**
-     * @see Cloneable::__clone()
+     * (non-PHPdoc)
+     * @see Components.Cloneable::__clone()
      */
     public function __clone()
     {
@@ -264,26 +293,29 @@ namespace Components;
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
       // TODO Implement
-      return spl_object_hash($this);
+      return object_hash($this);
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
         return $this->hashCode()===$object_->hashCode();
 
       return false;
     }
 
     /**
+     * (non-PHPdoc)
      * @see Components.Object::__toString()
      */
     public function __toString()

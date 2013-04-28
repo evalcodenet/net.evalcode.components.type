@@ -14,7 +14,7 @@ namespace Components;
    */
   class Annotation_Type extends Annotation
   {
-    // CONSTANTS
+    // PREDEFINED PROPERTIES
     /**
      * (non-PHPdoc)
      * @see Annotation::NAME

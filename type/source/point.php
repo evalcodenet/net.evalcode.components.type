@@ -46,7 +46,7 @@ namespace Components;
      */
     public function __clone()
     {
-      return new self($this->x, $this->y);
+      return new static($this->x, $this->y);
     }
 
     /**
@@ -55,7 +55,7 @@ namespace Components;
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
       {
         $a=$this->x+$this->y;
         $b=$object_->x+$object_->y;
@@ -75,7 +75,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return 31*$this->x+$this->y;
+      return integer_hash($this->x, $this->y);
     }
 
     /**
@@ -84,7 +84,7 @@ namespace Components;
      */
     public function equals($object_)
     {
-      if($object_ instanceof self)
+      if($object_ instanceof static)
         return $this->x===$object_->x && $this->y===$object_->y;
 
       return false;

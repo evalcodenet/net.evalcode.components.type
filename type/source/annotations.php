@@ -14,7 +14,7 @@ namespace Components;
    */
   final class Annotations implements Object
   {
-    // CONSTANTS
+    // PREDEFINED PROPERTIES
     const TYPE_ANNOTATION=1;
     const METHOD_ANNOTATION=2;
     const PROPERTY_ANNOTATION=4;
@@ -37,7 +37,7 @@ namespace Components;
      *
      * @param string $type_
      *
-     * @return Annotations
+     * @return \Components\Annotations
      */
     public static function get($type_)
     {
@@ -100,7 +100,7 @@ namespace Components;
      * Returns all type annotations the corresponding type of this instance is
      * decorated with.
      *
-     * @return Annotation|array
+     * @return \Components\Annotation|array
      */
     public function getTypeAnnotations()
     {
@@ -126,7 +126,7 @@ namespace Components;
      *
      * @param string $annotationName_
      *
-     * @return Annotation
+     * @return \Components\Annotation
      */
     public function getTypeAnnotation($annotationName_)
     {
@@ -147,7 +147,7 @@ namespace Components;
      *
      * @param string $methodName_
      *
-     * @return Annotation|array
+     * @return \Components\Annotation|array
      */
     public function getMethodAnnotations($methodName_=null)
     {
@@ -186,7 +186,7 @@ namespace Components;
      * @param string $methodName_
      * @param string $annotationName_
      *
-     * @return Annotation
+     * @return \Components\Annotation
      */
     public function getMethodAnnotation($methodName_, $annotationName_)
     {
@@ -207,7 +207,7 @@ namespace Components;
      *
      * @param string $propertyName_
      *
-     * @return Annotation|array
+     * @return \Components\Annotation|array
      */
     public function getPropertyAnnotations($propertyName_=null)
     {
@@ -246,7 +246,7 @@ namespace Components;
      * @param string $propertyName_
      * @param string $annotationName_
      *
-     * @return Annotation
+     * @return \Components\Annotation
      */
     public function getPropertyAnnotation($propertyName_, $annotationName_)
     {
@@ -262,7 +262,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // IMPLEMENTS
+    // OVERRIDES/IMPLEMENTS
     /**
      * (non-PHPdoc)
      * @see Components.Object::hashCode()
@@ -409,34 +409,47 @@ namespace Components;
      *
      * @param string $type_ Name of annotated type.
      *
-     * @return Annotations
+     * @return \Components\Annotations
      */
     private static function resolveInstance($type_)
     {
       $cacheKeyType='components/type/annotations/'.md5($type_);
 
-      if(null===($cached=Runtime::cache()->get($cacheKeyType)))
+      if(false===($cached=Cache::get($cacheKeyType)))
       {
         $cacheKeyTypeLocation="$cacheKeyType/file";
+        $cacheKeyTypeNamespace="$cacheKeyType/namespace";
 
-        if(null===($typeLocation=Runtime::cache()->get($cacheKeyTypeLocation)))
+        $typeLocation=null;
+        $typeNamespace=null;
+
+        // FIXME (CSH) Extract namespaces during annotation parsing.
+        if(false===($typeLocation=Cache::get($cacheKeyTypeLocation)))
         {
           $type=new \ReflectionClass($type_);
-          $namespace=$type->getNamespaceName();
           $typeLocation=$type->getFileName();
+          $typeNamespace=$type->getNamespaceName();
 
-          Runtime::cache()->set($cacheKeyTypeLocation, $typeLocation);
+          Cache::set($cacheKeyTypeLocation, $typeLocation);
+          Cache::set($cacheKeyTypeNamespace, $typeNamespace);
         }
 
-        // FIXME (CSH) Support multiple namespaces ...
-        $annotations=self::parseAnnotations($namespace, $typeLocation);
+        if(null===$typeNamespace || false===($typeNamespace=Cache::get($cacheKeyTypeNamespace)))
+        {
+          $type=new \ReflectionClass($type_);
+          $typeNamespace=$type->getNamespaceName();
+
+          Cache::set($cacheKeyTypeNamespace, $typeNamespace);
+        }
+
+        $annotations=self::parseAnnotations($typeNamespace, $typeLocation);
         // Cache all parsed types for file of given type.
         foreach($annotations as $type=>$typeAnnotations)
         {
-          Runtime::cache()->set($cacheKeyType, $typeAnnotations);
+          Cache::set($cacheKeyType, $typeAnnotations);
 
           if($type!==$type_)
-            Runtime::cache()->set('components/type/annotations/'.md5($type).'/file', $typeLocation);
+            Cache::set('components/type/annotations/'.md5($type).'/file', $typeLocation);
         }
 
         $instance=new self($type_);
