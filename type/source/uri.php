@@ -543,7 +543,7 @@ namespace Components;
         http_build_query($this->getQueryParams())
       );
 
-      // FIXME Depends on php.ini configuration - Abstract with tncCorePlugin / Core_Config.
+      // FIXME Depends on php.ini configuration - Abstract components/config.
       $queryString=str_replace(
         array('&amp;'),
         array('&'),

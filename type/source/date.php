@@ -12,7 +12,8 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Date implements Object, Cloneable, Comparable, Serializable_Php
+  class Date implements Object, Cloneable, Comparable,
+    Serializable_Php, Serializable_Json
   {
     // PREDEFINED PROPERTIES
     const ANTE_MERIDIEM='am';
@@ -587,10 +588,35 @@ namespace Components;
     /**
      * (non-PHPdoc)
      * @see Components.Serializable_Php::unserialize()
+     *
+     * @return \Components\Date
      */
     public function unserialize($data_)
     {
       $this->m_asString=unserialize($data_);
+      $this->__wakeup();
+
+      return $this;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable_Json::serializeJson()
+     */
+    public function serializeJson()
+    {
+      return json_encode($this->toISO8601());
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable_Json::unserializeJson()
+     *
+     * @return \Components\Date
+     */
+    public function unserializeJson($json_)
+    {
+      $this->m_asString=json_decode($json_);
       $this->__wakeup();
 
       return $this;
@@ -617,6 +643,8 @@ namespace Components;
     /**
      * (non-PHPdoc)
      * @see Components.Cloneable::__clone()
+     *
+     * @return \Components\Date
      */
     public function __clone()
     {
