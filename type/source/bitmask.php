@@ -26,7 +26,7 @@ namespace Components;
     /**
      * Returns instance for given bitmask.
      *
-     * @param int $bitmask_
+     * @param integer $bitmask_
      *
      * @return \Components\Bitmask
      */
@@ -70,9 +70,9 @@ namespace Components;
     /**
      * Returns bits for given bitmask.
      *
-     * @param int $bitmask_
+     * @param integer $bitmask_
      *
-     * @return int|array
+     * @return integer|array
      */
     public static function getBitsForBitmask($bitmask_)
     {
@@ -96,9 +96,9 @@ namespace Components;
     /**
      * Returns bitmask for given bits.
      *
-     * @param int|array $bits_
+     * @param integer|array $bits_
      *
-     * @return int
+     * @return integer
      */
     public static function getBitmaskForBits(array $bits_)
     {
@@ -112,10 +112,10 @@ namespace Components;
     /**
      * Adds given bit to given bitmask.
      *
-     * @param int $bitmask_
-     * @param int $bit_
+     * @param integer $bitmask_
+     * @param integer $bit_
      *
-     * @return int
+     * @return integer
      */
     public static function addBitToBitmask($bitmask_, $bit_)
     {
@@ -125,10 +125,10 @@ namespace Components;
     /**
      * Remove given bit from given bitmask.
      *
-     * @param int $bitmask_
-     * @param int $bit_
+     * @param integer $bitmask_
+     * @param integer $bit_
      *
-     * @return int
+     * @return integer
      */
     public static function removeBitFromBitmask($bitmask_, $bit_)
     {
@@ -138,8 +138,8 @@ namespace Components;
     /**
      * Checks if given bitmask contains given bit.
      *
-     * @param int $bitmask_
-     * @param int $bit_
+     * @param integer $bitmask_
+     * @param integer $bit_
      *
      * @return boolean
      */
@@ -154,7 +154,7 @@ namespace Components;
     /**
      * Checks if given bit is set.
      *
-     * @param int $bit_
+     * @param integer $bit_
      *
      * @return boolean
      */
@@ -166,7 +166,7 @@ namespace Components;
     /**
      * Adds given bit.
      *
-     * @param int $bit_
+     * @param integer $bit_
      *
      * @return \Components\Bitmask
      */
@@ -180,7 +180,7 @@ namespace Components;
     /**
      * Removes given bit.
      *
-     * @param int $bit_
+     * @param integer $bit_
      *
      * @return \Components\Bitmask
      */
@@ -192,7 +192,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function toBitmask()
     {
@@ -200,7 +200,7 @@ namespace Components;
     }
 
     /**
-     * @return int|array
+     * @return integer|array
      */
     public function toBits()
     {
@@ -217,7 +217,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * (non-PHPdoc)
      * @see Components.Number::intValue()

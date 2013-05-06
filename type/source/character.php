@@ -73,7 +73,7 @@ namespace Components;
     /**
      * @see Components.Primitive::cast()
      *
-     * @return int
+     * @return integer
      */
     public static function cast($value_)
     {
@@ -100,9 +100,9 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
-     * @return int
+     * @return integer
      */
     function intValue()
     {

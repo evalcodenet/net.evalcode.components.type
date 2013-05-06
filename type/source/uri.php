@@ -65,7 +65,7 @@ namespace Components;
      *
      * @return \Components\Uri
      */
-    public static function parse($uri_)
+    public static function valueOf($uri_)
     {
       $uri=self::arrayForString($uri_);
 
@@ -78,10 +78,18 @@ namespace Components;
 
       return $instance;
     }
+
+    /**
+     * @return \Components\Uri
+     */
+    public static function createEmpty()
+    {
+      return new static();
+    }
     //--------------------------------------------------------------------------
 
 
-    // ACCESSORS/MUTATORS
+    // ACCESSORS
     /**
      * @return \Components\Uri_Resolver
      */
@@ -234,7 +242,7 @@ namespace Components;
      *                                            ^^^^
      * </pre>
      *
-     * @return int
+     * @return integer
      */
     public function getPort()
     {
@@ -249,7 +257,7 @@ namespace Components;
      *                                            ^^^^
      * </pre>
      *
-     * @param int $port_
+     * @param integer $port_
      *
      * @return \Components\Uri
      */
@@ -419,7 +427,7 @@ namespace Components;
      *                                                   ^^^^
      * </pre>
      *
-     * @param int $idx_ Array-index of path parameters / Position of parameter in path.
+     * @param integer $idx_ Array-index of path parameters / Position of parameter in path.
      *
      * @return string
      */
@@ -439,7 +447,7 @@ namespace Components;
      *                                                   ^^^^
      * </pre>
      *
-     * @param int $idx_ Array-index of path parameters / Position of parameter in path.
+     * @param integer $idx_ Array-index of path parameters / Position of parameter in path.
      * @param string $pathParam_
      *
      * @return \Components\Uri
@@ -483,7 +491,7 @@ namespace Components;
      */
     public function pushPathParam($pathParam_)
     {
-      if(null===$pathParam_ || 1>String::len($pathParam_))
+      if(null===$pathParam_ || 1>String::length($pathParam_))
         return $this;
 
       array_push($this->m_pathParams, $pathParam_);
@@ -713,7 +721,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * (non-PHPdoc)
      * @see Components.Object::equals()
@@ -802,7 +810,7 @@ namespace Components;
      */
     public function unserialize($string_)
     {
-      return self::parse($string_);
+      return self::valueOf($string_);
     }
 
     /**
@@ -820,7 +828,7 @@ namespace Components;
      */
     public function unserializeJson($json_)
     {
-      return self::parse(json_decode($json_));
+      return self::valueOf(json_decode($json_));
     }
 
     /**

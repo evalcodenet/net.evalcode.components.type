@@ -38,7 +38,7 @@ namespace Components;
 
 
     // CONSTRUCTION
-    /*protected*/ function __construct($value_=null, $timeUnit_=null)
+    public function __construct($value_=null, $timeUnit_=null)
     {
       parent::__construct($value_);
 
@@ -49,8 +49,8 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
-     * @param int $value_
-     * @param \Components\Time::TIMEUNIT $timeUnit_
+     * @param integer $value_
+     * @param integer $timeUnit_
      *
      * @return \Components\Time
      */
@@ -60,7 +60,7 @@ namespace Components;
     }
 
     /**
-     * @param int $value_
+     * @param integer $value_
      *
      * @return \Components\Time
      */
@@ -70,7 +70,7 @@ namespace Components;
     }
 
     /**
-     * @param int $value_
+     * @param integer $value_
      *
      * @return \Components\Time
      */
@@ -80,7 +80,7 @@ namespace Components;
     }
 
     /**
-     * @param int $value_
+     * @param integer $value_
      *
      * @return \Components\Time
      */
@@ -90,7 +90,7 @@ namespace Components;
     }
 
     /**
-     * @param int $value_
+     * @param integer $value_
      *
      * @return \Components\Time
      */
@@ -100,7 +100,7 @@ namespace Components;
     }
 
     /**
-     * @param int $value_
+     * @param integer $value_
      *
      * @return \Components\Time
      */
@@ -111,13 +111,13 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // ACCESSORS/MUTATORS
+    // ACCESSORS
     /**
      * Convert to given time unit.
      *
-     * @param \Components\Time::TIMEUNIT $timeUnit_
+     * @param integer $timeUnit_
      *
-     * @return int
+     * @return integer
      */
     public function to($timeUnit_=self::TIMEUNIT_SECONDS)
     {
@@ -128,7 +128,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function toSeconds()
     {
@@ -136,7 +136,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function toMinutes()
     {
@@ -144,7 +144,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function toHours()
     {
@@ -152,7 +152,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function toDays()
     {
@@ -160,7 +160,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function toWeeks()
     {
@@ -169,7 +169,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * (non-PHPdoc)
      * @see Components.Number::intValue()
@@ -201,7 +201,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Comparable::compareTo()
      */
-    public function compareTo(Comparable $object_)
+    public function compareTo($object_)
     {
       if($object_ instanceof self)
       {
@@ -221,7 +221,7 @@ namespace Components;
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return $this->toSeconds()===$object_->toSeconds();
 
       return false;
@@ -233,7 +233,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return Integer::hash($this->toSeconds());
+      return integer_hash($this->toSeconds());
     }
 
     /**

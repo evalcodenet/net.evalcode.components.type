@@ -14,7 +14,7 @@ namespace Components;
    */
   interface Uri_Resolver
   {
-    // ACCESSORS/MUTATORS
+    // ACCESSORS
     /**
      * @param \Components\Uri $uri_
      */

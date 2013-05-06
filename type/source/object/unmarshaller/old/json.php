@@ -21,7 +21,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     public function unmarshall($string_, $type_=Core_Class::NAME_CLASS)
     {
       if(false===@class_exists($type_))

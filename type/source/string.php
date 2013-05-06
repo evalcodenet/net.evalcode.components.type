@@ -39,8 +39,8 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
-    * @return String
-    */
+     * @return \Components\String
+     */
     public static function valueOf($value_)
     {
       return new self((string)$value_);
@@ -57,7 +57,7 @@ namespace Components;
     /**
      * @param mixed $value_
      *
-     * @return String
+     * @return \Components\String
      */
     public static function cast($value_)
     {
@@ -273,6 +273,7 @@ namespace Components;
      */
     public static function compare($string0_, $string1_)
     {
+      // FIXME Multi-byte support?
       return strnatcmp($string0_, $string1_);
     }
 
@@ -292,6 +293,7 @@ namespace Components;
      */
     public static function compareIgnoreCase($string0_, $string1_)
     {
+      // FIXME Multi-byte support?
       return strnatcasecmp($string0_, $string1_);
     }
 
@@ -467,6 +469,7 @@ namespace Components;
      */
     public static function toASCII($string_)
     {
+      // FIXME Multi-byte support (drop characters that are not translatable and not ascii?).
       static $s_table=array(
         'ä'=>'ae', 'ö'=>'oe', 'ü'=>'ue', 'Ä'=>'Ae', 'Ö'=>'Oe', 'Ü'=>'Ue',
         'ß'=>'ss', 'æ'=>'ae', 'œ'=>'oe', 'Æ'=>'Ae', 'Œ'=>'Oe', 'à'=>'a',
@@ -911,23 +914,23 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
     * (non-PHPdoc)
-    * @see Cloneable::__clone()
+    * @see Components.Cloneable::__clone()
     */
     public function __clone()
     {
-      return new static($this->m_value);
+      return new self($this->m_value);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Comparable::compareTo()
+     * @see Components.Comparable::compareTo()
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return static::compare($this->m_value, $object_->m_value);
 
       if(is_string($object_))

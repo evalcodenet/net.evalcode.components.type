@@ -62,7 +62,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public static function hash($integer0_/*, $integer1_, $integer2_, ...*/)
     {
@@ -84,7 +84,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Primitive::cast()
      *
-     * @return int
+     * @return integer
      */
     public static function cast($value_)
     {
@@ -104,7 +104,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * (non-PHPdoc)
      * @see Components.Number::intValue()

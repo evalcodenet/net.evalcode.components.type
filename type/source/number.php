@@ -16,7 +16,7 @@ namespace Components;
   {
     // ACCESSORS
     /**
-     * @return int
+     * @return integer
      */
     function intValue();
 

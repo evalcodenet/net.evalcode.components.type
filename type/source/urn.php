@@ -22,7 +22,7 @@ namespace Components;
    */
   class Urn extends Uri
   {
-    // ACCESSORS/MUTATORS
+    // ACCESSORS
     public function getNamespace()
     {
       return $this->m_namespace;
@@ -35,7 +35,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     // FIXME Should be not necessary if Uri()->getPath() is correct.
     public function getPath()
     {

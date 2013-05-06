@@ -16,15 +16,15 @@ namespace Components;
   {
     // PROPERTIES
     /**
-     * @var int
+     * @var integer
      */
     public $r;
     /**
-     * @var int
+     * @var integer
      */
     public $g;
     /**
-     * @var int
+     * @var integer
      */
     public $b;
     //--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // ACCESSORS/MUTATORS
+    // ACCESSORS
     /**
      * @return string
      */
@@ -80,7 +80,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * (non-PHPdoc)
      * @see Components.Cloneable::__clone()

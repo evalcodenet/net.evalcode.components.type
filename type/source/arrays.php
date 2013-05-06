@@ -18,19 +18,19 @@ namespace Components;
     /**
      * Process arrays recursively
      *
-     * @var int
+     * @var integer
      */
     const RECURSIVE=1;
     /**
      * Process arrays by their given order.
      *
-     * @var int
+     * @var integer
      */
     const UNSORTED=2;
     /**
      * Process arrays sequential one level after another.
      *
-     * @var int
+     * @var integer
      */
     const ONE_BY_ONE=4;
     //--------------------------------------------------------------------------

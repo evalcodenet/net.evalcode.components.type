@@ -5,14 +5,14 @@ namespace Components;
 
 
   /**
-   * Scheme
+   * Uri_Scheme
    *
    * @package net.evalcode.components
    * @subpackage type.uri
    *
    * @author evalcode.net
    */
-  class Scheme
+  class Uri_Scheme
   {
     // SUPPORTED PROTOCOL IDENTIFIER SCHEMES <CLASSIFICATION> <NAME> <SYNTAX>
     // [URI] Apple Filing Protocol [afp://[<user>@]<host>[:<port>][/[<path>]]]

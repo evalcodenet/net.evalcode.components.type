@@ -52,12 +52,12 @@ namespace Components;
       if(true===$boolean1_)
         return -1;
 
-      if($boolean0_ instanceof static)
+      if($boolean0_ instanceof self)
         $boolean0=$boolean0_->m_value;
       else
         $boolean0=$boolean0_;
 
-      if($boolean1_ instanceof static)
+      if($boolean1_ instanceof self)
         $boolean1=$boolean1_->m_value;
       else
         $boolean1=$boolean1_;
@@ -114,7 +114,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // ACCESSORS/MUTATORS
+    // ACCESSORS
     /**
      * @return boolean
      */
@@ -125,14 +125,14 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * (non-PHPdoc)
      * @see Components.Comparable::compareTo()
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
       {
         if($this->m_value===$object_->m_value)
           return 0;
@@ -185,7 +185,7 @@ namespace Components;
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return $this->m_value===$object_->m_value;
 
       return false;
@@ -209,7 +209,7 @@ namespace Components;
      */
     public function __clone()
     {
-      return new static($this->m_value);
+      return new self($this->m_value);
     }
     //--------------------------------------------------------------------------
   }

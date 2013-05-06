@@ -16,11 +16,11 @@ namespace Components;
   {
     // PROPERTIES
     /**
-     * @var int
+     * @var integer
      */
     public $x;
     /**
-     * @var int
+     * @var integer
      */
     public $y;
     //--------------------------------------------------------------------------
@@ -28,8 +28,8 @@ namespace Components;
 
     // CONSTRUCTION
     /**
-     * @param int $x_
-     * @param int $y_
+     * @param integer $x_
+     * @param integer $y_
      */
     public function __construct($x_, $y_)
     {
@@ -39,23 +39,23 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Cloneable::__clone()
+     * @see Components.Cloneable::__clone()
      */
     public function __clone()
     {
-      return new static($this->x, $this->y);
+      return new self($this->x, $this->y);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Comparable::compareTo()
+     * @see Components.Comparable::compareTo()
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
       {
         $a=$this->x+$this->y;
         $b=$object_->x+$object_->y;
@@ -84,7 +84,7 @@ namespace Components;
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return $this->x===$object_->x && $this->y===$object_->y;
 
       return false;

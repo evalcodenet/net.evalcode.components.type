@@ -262,14 +262,14 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * (non-PHPdoc)
      * @see Components.Object::hashCode()
      */
     public function hashCode()
     {
-      return spl_object_hash($this);
+      return object_hash($this);
     }
 
     /**

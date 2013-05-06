@@ -46,7 +46,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * @see Collection::contains()
      */
@@ -172,7 +172,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return spl_object_hash($this);
+      return object_hash($this);
     }
 
     /**
@@ -180,7 +180,7 @@ namespace Components;
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return $this->hashCode()===$object_->hashCode();
 
       return false;

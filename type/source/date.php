@@ -92,7 +92,7 @@ namespace Components;
      * Pass optional timezone parameter if given timestamp is of another
      * timezone than the current system's one.
      *
-     * @param int $timestamp_
+     * @param integer $timestamp_
      * @param \Components\TimeZone $timezone_
      *
      * @return \Components\Date
@@ -125,7 +125,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // ACCESSORS/MUTATORS
+    // ACCESSORS
     /**
      * @param string $format_
      * @param \Components\TimeZone $timezone_
@@ -156,7 +156,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function toUnixTimestamp(TimeZone $timezone_=null)
     {
@@ -191,7 +191,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getDay(TimeZone $timezone_=null)
     {
@@ -199,7 +199,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getDayOfYear(TimeZone $timezone_=null)
     {
@@ -207,7 +207,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getDayOfWeek(TimeZone $timezone_=null)
     {
@@ -215,7 +215,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getWeek(TimeZone $timezone_=null)
     {
@@ -223,7 +223,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMonth(TimeZone $timezone_=null)
     {
@@ -231,7 +231,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getLengthOfMonth(TimeZone $timezone_=null)
     {
@@ -239,7 +239,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getYear(TimeZone $timezone_=null)
     {
@@ -263,7 +263,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getHour(TimeZone $timezone_=null)
     {
@@ -271,7 +271,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMinute(TimeZone $timezone_=null)
     {
@@ -279,7 +279,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getSecond(TimeZone $timezone_=null)
     {
@@ -287,7 +287,7 @@ namespace Components;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMicroSecond(TimeZone $timezone_=null)
     {
@@ -407,7 +407,7 @@ namespace Components;
     }
 
     /**
-     * @param int $days_
+     * @param integer $days_
      *
      * @return \Components\Date
      */
@@ -417,7 +417,7 @@ namespace Components;
     }
 
     /**
-     * @param int $days_
+     * @param integer $days_
      *
      * @return \Components\Date
      */
@@ -427,7 +427,7 @@ namespace Components;
     }
 
     /**
-     * @param int $months_
+     * @param integer $months_
      *
      * @return \Components\Date
      */
@@ -437,7 +437,7 @@ namespace Components;
     }
 
     /**
-     * @param int $months_
+     * @param integer $months_
      *
      * @return \Components\Date
      */
@@ -447,7 +447,7 @@ namespace Components;
     }
 
     /**
-     * @param int $years_
+     * @param integer $years_
      *
      * @return \Components\Date
      */
@@ -457,7 +457,7 @@ namespace Components;
     }
 
     /**
-     * @param int $years_
+     * @param integer $years_
      *
      * @return \Components\Date
      */
@@ -533,7 +533,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES/IMPLEMENTS
+    // OVERRIDES
     /**
      * (non-PHPdoc)
      * @see Components.Comparable::compareTo()
