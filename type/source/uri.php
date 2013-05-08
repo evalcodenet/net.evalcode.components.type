@@ -414,8 +414,23 @@ namespace Components;
      *
      * @return array
      */
-    public function getPathParams()
+    public function getPathParams($stipFileExtension_=false)
     {
+      if(true===$stipFileExtension_)
+      {
+        $pathParams=$this->m_pathParams;
+
+        if($filename=array_pop($pathParams))
+        {
+          if(false!==($pos=strpos($filename, '.')))
+            $filename=substr($filename, 0, strpos($filename, '.'));
+
+          array_push($pathParams, $filename);
+        }
+
+        return $pathParams;
+      }
+
       return $this->m_pathParams;
     }
 
@@ -693,6 +708,39 @@ namespace Components;
     }
 
     /**
+     * @return boolean
+     */
+    public function hasFileExtension()
+    {
+      return false!==strpos(end($this->m_pathParams), '.');
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileExtension()
+    {
+      $filename=end($this->m_pathParams);
+
+      return substr($filename, strpos($filename, '.')+1);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilename($stripFileExtension_=false)
+    {
+      if(true===$stripFileExtension_)
+      {
+        $filename=end($this->m_pathParams);
+
+        return substr($filename, 0, strpos($filename, '.'));
+      }
+
+      return end($this->m_pathParams);
+    }
+
+    /**
      * Connects to & resolves contents for this url.
      *
      * @return string
@@ -886,14 +934,16 @@ namespace Components;
 
     protected function parseImpl(array $uri_)
     {
-      $this->setScheme(isset($uri_['scheme'])?$uri_['scheme']:null);
-      $this->setHost(isset($uri_['host'])?$uri_['host']:null);
-      $this->setPort(isset($uri_['port'])?$uri_['port']:null);
-      $this->setUsername(isset($uri_['user'])?String::urlDecode($uri_['user']):null);
-      $this->setPassword(isset($uri_['pass'])?String::urlDecode($uri_['pass']):null);
+      $this->m_scheme=isset($uri_['scheme'])?$uri_['scheme']:null;
+      $this->m_host=isset($uri_['host'])?$uri_['host']:null;
+      $this->m_port=isset($uri_['port'])?(int)$uri_['port']:null;
+      $this->m_username=isset($uri_['user'])?String::urlDecode($uri_['user']):null;
+      $this->m_password=isset($uri_['pass'])?String::urlDecode($uri_['pass']):null;
+
       $this->setPath(isset($uri_['path'])?$uri_['path']:null);
-      $this->setQueryString(isset($uri_['query'])?$uri_['query']:null);
-      $this->setFragment(isset($uri_['fragment'])?String::urlDecode($uri_['fragment']):null);
+      $this->m_queryParams=isset($uri_['query'])?self::parseQueryString($uri_['query']):array();
+
+      $this->m_fragment=isset($uri_['fragment'])?String::urlDecode($uri_['fragment']):null;
     }
 
 
