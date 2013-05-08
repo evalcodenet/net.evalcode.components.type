@@ -43,7 +43,7 @@ namespace Components;
      */
     public static function valueOf($value_)
     {
-      return new self((string)$value_);
+      return new static((string)$value_);
     }
 
     /**
@@ -61,7 +61,7 @@ namespace Components;
      */
     public static function cast($value_)
     {
-      return new self((string)$value_);
+      return new static((string)$value_);
     }
 
     /**
@@ -649,7 +649,7 @@ namespace Components;
      */
     public static function underscoreToCamelCase($string_)
     {
-      $camelcase=ucwords(strtr(self::trim($string_), '_', ' '));
+      $camelcase=ucwords(strtr(trim($string_), '_', ' '));
       $camelcase[0]=self::lowercase($camelcase[0]);
 
       return self::replace($camelcase, ' ', '');
@@ -936,7 +936,7 @@ namespace Components;
       if(is_string($object_))
         return static::compare($this->m_value, $object_);
 
-      throw new Exception_IllegalCast('type/string', sprintf(
+      throw new Exception_IllegalCast('components/type/string', sprintf(
         'Can not compare to given parameter [%s].', $object_
       ));
     }
@@ -956,7 +956,7 @@ namespace Components;
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return static::equals($this->m_value, $object_->m_value);
 
       return $this->m_value===$object_;

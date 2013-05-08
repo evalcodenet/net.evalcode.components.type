@@ -122,6 +122,22 @@ namespace Components;
     {
       return $this->m_value;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isTrue()
+    {
+      return true===$this->m_value;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isFalse()
+    {
+      return true!==$this->m_value;
+    }
     //--------------------------------------------------------------------------
 
 
