@@ -36,10 +36,10 @@ namespace Components;
      * when comparing instances of {@code Boolean} and use
      * this static accessor for native booleans exclusively.
      *
-     * @param \Components\Boolean|boolean $boolean0_
-     * @param \Components\Boolean|boolean $boolean1_
+     * @param Components\Boolean|boolean $boolean0_
+     * @param Components\Boolean|boolean $boolean1_
      *
-     * @throws \Components\Exception_IllegalCast
+     * @throws Components\Exception_IllegalCast
      */
     public static function compare($boolean0_, $boolean1_)
     {
@@ -105,7 +105,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Primitive::valueOf()
      *
-     * @return \Components\Boolean
+     * @return Components\Boolean
      */
     public static function valueOf($value_)
     {

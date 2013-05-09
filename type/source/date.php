@@ -42,9 +42,9 @@ namespace Components;
     /**
      * Returns current time for UTC.
      *
-     * @param \Components\TimeZone $timezone_
+     * @param Components\TimeZone $timezone_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public static function now()
     {
@@ -60,9 +60,9 @@ namespace Components;
      *
      * @param string $date_
      * @param string $expectedFormat_
-     * @param \Components\TimeZone $timezone_
+     * @param Components\TimeZone $timezone_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public static function parse($date_, TimeZone $timezone_=null, $expectedFormat_=null)
     {
@@ -93,9 +93,9 @@ namespace Components;
      * timezone than the current system's one.
      *
      * @param integer $timestamp_
-     * @param \Components\TimeZone $timezone_
+     * @param Components\TimeZone $timezone_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public static function fromUnixTimestamp($timestamp_, TimeZone $timezone_=null)
     {
@@ -111,7 +111,7 @@ namespace Components;
     /**
      * @param string $date_ ISO-8601 formatted date/time string in UTC.
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public static function fromISO8601($date_)
     {
@@ -128,7 +128,7 @@ namespace Components;
     // ACCESSORS
     /**
      * @param string $format_
-     * @param \Components\TimeZone $timezone_
+     * @param Components\TimeZone $timezone_
      *
      * @return string
      */
@@ -146,7 +146,7 @@ namespace Components;
 
     /**
      * @param string $format_
-     * @param \Components\TimeZone $timezone_
+     * @param Components\TimeZone $timezone_
      *
      * @return string
      */
@@ -319,7 +319,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function nextDay()
     {
@@ -327,7 +327,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function prevDay()
     {
@@ -335,7 +335,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function nextMonth()
     {
@@ -343,7 +343,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function prevMonth()
     {
@@ -351,7 +351,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function nextYear()
     {
@@ -359,7 +359,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function prevYear()
     {
@@ -367,9 +367,9 @@ namespace Components;
     }
 
     /**
-     * @param \Components\Time $time_
+     * @param Components\Time $time_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function after(Time $time_)
     {
@@ -377,9 +377,9 @@ namespace Components;
     }
 
     /**
-     * @param \Components\Time $time_
+     * @param Components\Time $time_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function before(Time $time_)
     {
@@ -389,9 +389,9 @@ namespace Components;
     /**
      * Returns time between this and any given date.
      *
-     * @param \Components\Date $date_
+     * @param Components\Date $date_
      *
-     * @return \Components\Time
+     * @return Components\Time
      */
     public function during(Date $date_)
     {
@@ -409,7 +409,7 @@ namespace Components;
     /**
      * @param integer $days_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function afterDays($days_)
     {
@@ -419,7 +419,7 @@ namespace Components;
     /**
      * @param integer $days_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function beforeDays($days_)
     {
@@ -429,7 +429,7 @@ namespace Components;
     /**
      * @param integer $months_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function afterMonths($months_)
     {
@@ -439,7 +439,7 @@ namespace Components;
     /**
      * @param integer $months_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function beforeMonths($months_)
     {
@@ -449,7 +449,7 @@ namespace Components;
     /**
      * @param integer $years_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function afterYears($years_)
     {
@@ -459,7 +459,7 @@ namespace Components;
     /**
      * @param integer $years_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function beforeYears($years_)
     {
@@ -467,7 +467,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function beginningOfDay()
     {
@@ -480,7 +480,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function endOfDay()
     {
@@ -490,7 +490,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function beginningOfMonth()
     {
@@ -503,7 +503,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function beginningOfYear()
     {
@@ -516,7 +516,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function endOfMonth()
     {
@@ -524,7 +524,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function endOfYear()
     {
@@ -589,7 +589,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Serializable_Php::unserialize()
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function unserialize($data_)
     {
@@ -612,7 +612,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Serializable_Json::unserializeJson()
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function unserializeJson($json_)
     {
@@ -644,7 +644,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Cloneable::__clone()
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     public function __clone()
     {
@@ -685,7 +685,7 @@ namespace Components;
      *
      * @param string $modification_
      *
-     * @return \Components\Date
+     * @return Components\Date
      */
     protected function modified($modification_=null)
     {

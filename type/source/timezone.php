@@ -26,7 +26,7 @@ namespace Components;
     /**
      * Returns timezone for given name.
      *
-     * @return \Components\TimeZone
+     * @return Components\TimeZone
      */
     public static function forName($name_)
     {
@@ -38,7 +38,7 @@ namespace Components;
      *
      * @param signed int $hours_
      *
-     * @return \Components\TimeZone
+     * @return Components\TimeZone
      */
     public static function forOffset($hours_)
     {
@@ -55,7 +55,7 @@ namespace Components;
     /**
      * Returns timezone for current php.ini configuration.
      *
-     * @return \Components\TimeZone
+     * @return Components\TimeZone
      */
     public static function forSystemDefault()
     {
@@ -65,7 +65,7 @@ namespace Components;
     /**
      * Returns UTC timezone.
      *
-     * @return \Components\TimeZone
+     * @return Components\TimeZone
      */
     public static function utc()
     {

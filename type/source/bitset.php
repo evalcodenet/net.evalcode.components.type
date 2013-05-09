@@ -24,9 +24,9 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
-     * @param \Components\Bitmask $bitmask_
+     * @param Components\Bitmask $bitmask_
      *
-     * @return \Components\Bitset
+     * @return Components\Bitset
      */
     public static function forBitmask(Bitmask $bitmask_)
     {

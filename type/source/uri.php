@@ -63,7 +63,7 @@ namespace Components;
      *
      * @param string $url_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public static function valueOf($uri_)
     {
@@ -80,7 +80,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public static function createEmpty()
     {
@@ -91,7 +91,7 @@ namespace Components;
 
     // ACCESSORS
     /**
-     * @return \Components\Uri_Resolver
+     * @return Components\Uri_Resolver
      */
     public function getResolver()
     {
@@ -108,7 +108,7 @@ namespace Components;
     }
 
     /**
-     * @param \Components\Uri_Resolver $resolver_
+     * @param Components\Uri_Resolver $resolver_
      */
     public function setResolver(Uri_Resolver $resolver_)
     {
@@ -123,7 +123,7 @@ namespace Components;
      *    ^^^^^^^
      * </pre>
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function getScheme()
     {
@@ -140,7 +140,7 @@ namespace Components;
      *
      * @param string $scheme_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setScheme($scheme_)
     {
@@ -207,7 +207,7 @@ namespace Components;
      *
      * @param string $host_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setHost($host_)
     {
@@ -224,7 +224,7 @@ namespace Components;
      *                                     ^^^^
      * </pre>
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function reduceToHost()
     {
@@ -259,7 +259,7 @@ namespace Components;
      *
      * @param integer $port_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setPort($port_)
     {
@@ -293,7 +293,7 @@ namespace Components;
      *
      * @param string $username_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setUsername($username_)
     {
@@ -327,7 +327,7 @@ namespace Components;
      *
      * @param string $password_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setPassword($password_)
     {
@@ -365,7 +365,7 @@ namespace Components;
      *
      * @param sting $path_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setPath($path_)
     {
@@ -392,7 +392,7 @@ namespace Components;
      *
      * @param array $pathParams_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setPathParams(array $pathParams_)
     {
@@ -465,7 +465,7 @@ namespace Components;
      * @param integer $idx_ Array-index of path parameters / Position of parameter in path.
      * @param string $pathParam_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setPathParam($idx_, $pathParam_)
     {
@@ -502,7 +502,7 @@ namespace Components;
      *
      * @param string $pathParam_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function pushPathParam($pathParam_)
     {
@@ -539,7 +539,7 @@ namespace Components;
      *
      * @param string $pathParam_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function unshiftPathParam($pathParam_)
     {
@@ -589,7 +589,7 @@ namespace Components;
      *
      * @param string $queryString_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setQueryString($queryString_)
     {
@@ -634,7 +634,7 @@ namespace Components;
      * @param string $key_
      * @param mixed $value_
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setQueryParam($key_, $value_)
     {
@@ -666,7 +666,7 @@ namespace Components;
      *                                                          ^^^^^^^^^^^^
      * </pre>
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setQueryParams(array $queryParams_)
     {
@@ -698,7 +698,7 @@ namespace Components;
      *                                                                         ^^^^^^^^
      * </pre>
      *
-     * @return \Components\Uri
+     * @return Components\Uri
      */
     public function setFragment($fragment_)
     {
@@ -753,7 +753,7 @@ namespace Components;
     /**
      * Returns bitmask of activated options for this url.
      *
-     * @return \Components\Bitmask
+     * @return Components\Bitmask
      */
     public function getOptions()
     {
@@ -914,11 +914,11 @@ namespace Components;
     // IMPLEMENTATION
     protected $m_asString;
     /**
-     * @var \Components\Uri_Resolver
+     * @var Components\Uri_Resolver
      */
     protected $m_resolver;
     /**
-     * @var \Components\Bitmask
+     * @var Components\Bitmask
      */
     protected $m_options;
     protected $m_scheme;

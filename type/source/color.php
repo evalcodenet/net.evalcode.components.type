@@ -44,7 +44,7 @@ namespace Components;
     /**
      * @param string $string_ CSS-like RGB color value / hex value
      *
-     * @return \Components\Color
+     * @return Components\Color
      */
     public static function valueOf($string_)
     {
@@ -52,7 +52,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Color
+     * @return Components\Color
      */
     public static function white()
     {
@@ -60,7 +60,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Color
+     * @return Components\Color
      */
     public static function black()
     {

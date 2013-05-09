@@ -16,17 +16,17 @@ namespace Components;
   {
     // ACCESSORS
     /**
-     * @param \Components\Uri $uri_
+     * @param Components\Uri $uri_
      */
     function resolve(Uri $uri_);
 
     /**
-     * @param \Components\Uri $uri_
+     * @param Components\Uri $uri_
      */
     function getContents(Uri $uri_);
 
     /**
-     * @return \Components\Bitmask
+     * @return Components\Bitmask
      */
     function getOptions();
     //--------------------------------------------------------------------------

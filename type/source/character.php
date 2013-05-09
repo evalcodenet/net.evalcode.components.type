@@ -91,7 +91,7 @@ namespace Components;
     /**
      * @see Components.Primitive::valueOf()
      *
-     * @return \Components\Character
+     * @return Components\Character
      */
     public static function valueOf($value_)
     {
@@ -138,7 +138,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Serializable_Php::unserialize()
      *
-     * @return \Components\Character
+     * @return Components\Character
      */
     public function unserialize($data_)
     {

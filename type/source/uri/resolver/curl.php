@@ -76,7 +76,7 @@ namespace Components;
     private static $m_isSupported;
 
     /**
-     * @var \Components\Bitmask
+     * @var Components\Bitmask
      */
     private $m_options;
     //--------------------------------------------------------------------------

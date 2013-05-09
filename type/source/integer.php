@@ -95,7 +95,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Primitive::valueOf()
      *
-     * @return \Components\Integer
+     * @return Components\Integer
      */
     public static function valueOf($value_)
     {
@@ -178,7 +178,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Serializable_Php::unserialize()
      *
-     * @return \Components\Integer
+     * @return Components\Integer
      */
     public function unserialize($data_)
     {

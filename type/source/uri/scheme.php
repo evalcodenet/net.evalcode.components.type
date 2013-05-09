@@ -103,8 +103,8 @@ namespace Components;
 
 
     // PROTOCOL IDENTIFIER IMPLEMENTATIONS
-    const IMPL_URI='\\Components\\Uri';
-    const IMPL_URN='\\Components\\Urn';
+    const IMPL_URI='Components\\Uri';
+    const IMPL_URN='Components\\Urn';
 
     const IMPL_GENERIC=self::IMPL_URI;
     //--------------------------------------------------------------------------

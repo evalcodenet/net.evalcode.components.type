@@ -49,7 +49,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Primitive::valueOf()
      *
-     * @return \Components\Float
+     * @return Components\Float
      */
     public static function valueOf($value_)
     {
@@ -132,7 +132,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Serializable_Php::unserialize()
      *
-     * @return \Components\Float
+     * @return Components\Float
      */
     public function unserialize($data_)
     {

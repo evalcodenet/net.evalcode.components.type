@@ -52,7 +52,7 @@ namespace Components;
      * @param integer $value_
      * @param integer $timeUnit_
      *
-     * @return \Components\Time
+     * @return Components\Time
      */
     public static function get($value_, $timeUnit_=self::TIMEUNIT_SECONDS)
     {
@@ -62,7 +62,7 @@ namespace Components;
     /**
      * @param integer $value_
      *
-     * @return \Components\Time
+     * @return Components\Time
      */
     public static function forSeconds($value_)
     {
@@ -72,7 +72,7 @@ namespace Components;
     /**
      * @param integer $value_
      *
-     * @return \Components\Time
+     * @return Components\Time
      */
     public static function forMinutes($value_)
     {
@@ -82,7 +82,7 @@ namespace Components;
     /**
      * @param integer $value_
      *
-     * @return \Components\Time
+     * @return Components\Time
      */
     public static function forHours($value_)
     {
@@ -92,7 +92,7 @@ namespace Components;
     /**
      * @param integer $value_
      *
-     * @return \Components\Time
+     * @return Components\Time
      */
     public static function forDays($value_)
     {
@@ -102,7 +102,7 @@ namespace Components;
     /**
      * @param integer $value_
      *
-     * @return \Components\Time
+     * @return Components\Time
      */
     public static function forWeeks($value_)
     {
@@ -249,7 +249,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Serializable_Php::unserialize()
      *
-     * @return \Components\Time
+     * @return Components\Time
      */
     public function unserialize($data_)
     {

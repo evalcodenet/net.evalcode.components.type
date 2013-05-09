@@ -18,8 +18,9 @@ namespace Components;
     const TYPE_ANNOTATION=1;
     const METHOD_ANNOTATION=2;
     const PROPERTY_ANNOTATION=4;
+    const PARAMETER_ANNOTATION=8;
 
-    const PATTERN_DEFAULT='/(?:[\040\052]*[@]({})\(*([\040-\047\053-\177]*)\)*)*[\012\040]*\052\057*[\040\012]*(?:[\040\012]*(?:(?:(?:(?:abstract|final)+\s+)*(?:class|interface|trait)\s(\w+)\s)|((?:abstract|final|static|public|protected|private|function)[\s\w]*[$A-z]+)))*/m';
+    const PATTERN='/(?:namespace[\s]+([\\a-z]+)[;]+[\s\w\\/]*)*(?:[\040\052]*[@]([a-z0-9]+)\(*([\040-\047\053-\177]*)\)*)*[\012\040]*\052\057*[\040\012]*(?:[\040\012]*(?:(?:(?:(?:abstract|final)+\s+)*(?:class|interface|trait)\s(\w+)\s)|((?:var|abstract|final|static|public|protected|private|function)*[\s\w]*[$a-z_]+)))*/mi';
     //--------------------------------------------------------------------------
 
 
@@ -37,10 +38,13 @@ namespace Components;
      *
      * @param string $type_
      *
-     * @return \Components\Annotations
+     * @return Components\Annotations
      */
     public static function get($type_)
     {
+      if(0===strpos($type_, '\\'))
+        $type_=ltrim($type_, '\\');
+
       if(false===isset(self::$m_instances[$type_]))
         self::$m_instances[$type_]=self::resolveInstance($type_);
 
@@ -56,31 +60,26 @@ namespace Components;
     public static function registerAnnotation($name_, $type_)
     {
       self::$m_registeredAnnotations[$name_]=$type_;
-
-      self::setRegisteredAnnotations(self::$m_registeredAnnotations);
     }
 
     /**
      * Registeres multiple annotation types for names at once.
      *
-     * @param string|array $annotations_
+     * @param array|string $annotations_
      */
     public static function registerAnnotations(array $annotations_)
     {
-      self::setRegisteredAnnotations(
-        array_merge(self::$m_registeredAnnotations, $annotations_)
-      );
+      self::$m_registeredAnnotations=array_merge(self::$m_registeredAnnotations, $annotations_);
     }
 
     /**
      * Defines registered named annotation types.
      *
-     * @param string|array $annotations_
+     * @param array|string $annotations_
      */
     public static function setRegisteredAnnotations(array $annotations_)
     {
       self::$m_registeredAnnotations=$annotations_;
-      self::$m_parserPattern=str_replace('{}', implode('|', array_keys($annotations_)), self::PATTERN_DEFAULT);
     }
 
     /**
@@ -100,7 +99,7 @@ namespace Components;
      * Returns all type annotations the corresponding type of this instance is
      * decorated with.
      *
-     * @return \Components\Annotation|array
+     * @return array|Components\Annotation
      */
     public function getTypeAnnotations()
     {
@@ -126,7 +125,7 @@ namespace Components;
      *
      * @param string $annotationName_
      *
-     * @return \Components\Annotation
+     * @return Components\Annotation
      */
     public function getTypeAnnotation($annotationName_)
     {
@@ -147,7 +146,7 @@ namespace Components;
      *
      * @param string $methodName_
      *
-     * @return \Components\Annotation|array
+     * @return array|Components\Annotation
      */
     public function getMethodAnnotations($methodName_=null)
     {
@@ -186,7 +185,7 @@ namespace Components;
      * @param string $methodName_
      * @param string $annotationName_
      *
-     * @return \Components\Annotation
+     * @return Components\Annotation
      */
     public function getMethodAnnotation($methodName_, $annotationName_)
     {
@@ -201,13 +200,60 @@ namespace Components;
     }
 
     /**
+     * Returns annotations of given method parameter or returns annotations
+     * of all parameters for given method if no parameter name specified.
+     *
+     * @param string $methodName_
+     * @param string $parameterName_
+     *
+     * @return array|Components\Annotation
+     */
+    public function getParameterAnnotations($methodName_, $parameterName_=null)
+    {
+      if(null===$parameterName_)
+      {
+        if(false===isset($this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_]))
+          return array();
+
+        foreach($this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_] as $parameterName=>$parameterAnnotations)
+          $this->resolveParameterAnnotations(self::PARAMETER_ANNOTATION, $methodName_, $parameterName, $parameterAnnotations);
+
+        return $this->m_annotationInstances[self::PARAMETER_ANNOTATION][$methodName_];
+      }
+
+      if(false===isset($this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_][$parameterName_]))
+        return array();
+
+      $this->resolveParameterAnnotations(self::PARAMETER_ANNOTATION, $methodName_, $parameterName_,
+        $this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_][$parameterName_]
+      );
+
+      return $this->m_annotationInstances[self::PARAMETER_ANNOTATION][$methodName_][$parameterName_];
+    }
+
+    /**
+     * Checks if parameter of given name and corresponding method is decorated
+     * with an annotation of given name.
+     *
+     * @param string $methodName_
+     * @param string $parameterName_
+     * @param string $annotationName_
+     *
+     * @return boolean
+     */
+    public function hasParameterAnnotation($methodName_, $parameterName_, $annotationName_)
+    {
+      return isset($this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_][$parameterName_][$annotationName_]);
+    }
+
+    /**
      * Returns property annotations the property of given name and corresponding
      * type is decorated with. Returns property annotations of all properties of
      * corresponding type if given property name is 'null'.
      *
      * @param string $propertyName_
      *
-     * @return \Components\Annotation|array
+     * @return array|Components\Annotation
      */
     public function getPropertyAnnotations($propertyName_=null)
     {
@@ -246,7 +292,7 @@ namespace Components;
      * @param string $propertyName_
      * @param string $annotationName_
      *
-     * @return \Components\Annotation
+     * @return Components\Annotation
      */
     public function getPropertyAnnotation($propertyName_, $annotationName_)
     {
@@ -316,13 +362,10 @@ namespace Components;
      *
      * @var array|string
      */
-    private static $m_registeredAnnotations=array();
-    /**
-     * PCRE compliant regex pattern to parse types for registered annotations.
-     *
-     * @var string
-     */
-    private static $m_parserPattern;
+    private static $m_registeredAnnotations=array(
+      Annotation_Name::NAME=>Annotation_NAME::TYPE,
+      Annotation_Type::NAME=>Annotation_Type::TYPE
+    );
 
     /**
      * Caches parsed initialized annotations
@@ -379,23 +422,53 @@ namespace Components;
      */
     private function resolveAnnotation($type_, $typeName_, $annotationName_, array $annotationProperties_)
     {
-      if(false===self::isRegisteredAnnotation($annotationName_))
-      {
-        throw new Runtime_Exception('components/annotation', sprintf(
-          'Can not resolve unknown annotation [name: %s].', $annotationName_
-        ));
-      }
-
       if(isset($this->m_annotationInstances[$type_][$typeName_][$annotationName_]))
         return $this->m_annotationInstances[$type_][$typeName_][$annotationName_];
 
-      $class=self::$m_registeredAnnotations[$annotationName_];
+      if(isset(self::$m_registeredAnnotations[$annotationName_]))
+        $class=self::$m_registeredAnnotations[$annotationName_];
+      else
+        $class=Annotation::TYPE;
+
       $this->m_annotationInstances[$type_][$typeName_][$annotationName_]=new $class();
 
       foreach($annotationProperties_ as $property=>$value)
         $this->m_annotationInstances[$type_][$typeName_][$annotationName_]->$property=$value;
 
       return $this->m_annotationInstances[$type_][$typeName_][$annotationName_];
+    }
+
+    private function resolveParameterAnnotations($type_, $methodName_, $parameterName_, array $annotations_)
+    {
+
+      if(isset($this->m_annotations[$type_][$methodName_][$parameterName_]))
+      {
+        foreach($this->m_annotations[$type_][$methodName_][$parameterName_] as $annotationName=>$annotationProperties)
+          $this->resolveParameterAnnotation($type_, $methodName_, $parameterName_, $annotationName, $annotationProperties);
+      }
+
+      if(false===isset($this->m_annotationInstances[$type_][$methodName_][$parameterName_]))
+        return array();
+
+      return $this->m_annotationInstances[$type_][$methodName_][$parameterName_];
+    }
+
+    private function resolveParameterAnnotation($type_, $methodName_, $parameterName_, $annotationName_, array $annotationProperties_)
+    {
+      if(isset($this->m_annotationInstances[$type_][$methodName_][$parameterName_][$annotationName_]))
+        return $this->m_annotationInstances[$type_][$methodName_][$parameterName_][$annotationName_];
+
+      if(isset(self::$m_registeredAnnotations[$annotationName_]))
+        $class=self::$m_registeredAnnotations[$annotationName_];
+      else
+        $class=Annotation::TYPE;
+
+      $this->m_annotationInstances[$type_][$methodName_][$parameterName_][$annotationName_]=new $class();
+
+      foreach($annotationProperties_ as $property=>$value)
+        $this->m_annotationInstances[$type_][$methodName_][$parameterName_][$annotationName_]->$property=$value;
+
+      return $this->m_annotationInstances[$type_][$methodName_][$parameterName_][$annotationName_];
     }
 
 
@@ -409,7 +482,7 @@ namespace Components;
      *
      * @param string $type_ Name of annotated type.
      *
-     * @return \Components\Annotations
+     * @return Components\Annotations
      */
     private static function resolveInstance($type_)
     {
@@ -417,40 +490,24 @@ namespace Components;
 
       if(false===($cached=Cache::get($cacheKeyType)))
       {
-        $cacheKeyTypeLocation="$cacheKeyType/file";
-        $cacheKeyTypeNamespace="$cacheKeyType/namespace";
-
-        $typeLocation=null;
-        $typeNamespace=null;
-
-        // FIXME (CSH) Extract namespaces during annotation parsing.
-        if(false===($typeLocation=Cache::get($cacheKeyTypeLocation)))
+        // Pays off if classloader cache is built sufficiently ...
+        if(!$typeLocation=Runtime_Classloader::get()->getClasspath($type_))
         {
-          $type=new \ReflectionClass($type_);
-          $typeLocation=$type->getFileName();
-          $typeNamespace=$type->getNamespaceName();
+          $cacheKeyTypeLocation="$cacheKeyType/file";
 
-          Cache::set($cacheKeyTypeLocation, $typeLocation);
-          Cache::set($cacheKeyTypeNamespace, $typeNamespace);
+          // ... yet requires fallback for out-of-control classloaders (e.g. during unit test execution).
+          if(false===($typeLocation=Cache::get($cacheKeyTypeLocation)))
+          {
+            $type=new \ReflectionClass($type_);
+            $typeLocation=$type->getFileName();
+
+            Cache::set($cacheKeyTypeLocation, $typeLocation);
+          }
         }
 
-        if(null===$typeNamespace || false===($typeNamespace=Cache::get($cacheKeyTypeNamespace)))
-        {
-          $type=new \ReflectionClass($type_);
-          $typeNamespace=$type->getNamespaceName();
-
-          Cache::set($cacheKeyTypeNamespace, $typeNamespace);
-        }
-
-        $annotations=self::parseAnnotations($typeNamespace, $typeLocation);
-        // Cache all parsed types for file of given type.
+        $annotations=self::parseAnnotations($typeLocation);
         foreach($annotations as $type=>$typeAnnotations)
-        {
           Cache::set($cacheKeyType, $typeAnnotations);
-
-          if($type!==$type_)
-            Cache::set('components/type/annotations/'.md5($type).'/file', $typeLocation);
-        }
 
         $instance=new self($type_);
         $instance->m_annotations=$annotations[$type_];
@@ -466,31 +523,35 @@ namespace Components;
 
     /**
      * Parses source code contained in file for given path and collects
-     * available information about type, method & property annotations..
+     * available information about type, property, method & parameter annotations..
      *
      * @param string $path_
      *
      * @return array|string
      */
-    private static function parseAnnotations($namespace_, $path_)
+    // TODO Proper implementation
+    private static function parseAnnotations($path_)
     {
       $annotations=array();
 
-      $source=@file_get_contents($path_);
+      $source=file_get_contents($path_);
 
       $matches=array();
-      preg_match_all(self::$m_parserPattern, $source, $matches);
+      preg_match_all(self::PATTERN, $source, $matches);
 
-      $type='';
+      $type=null;
+      $method=null;
+      $namespace=null;
+
       $buffer=array();
-      foreach($matches[1] as $idx=>$annotationName)
+      foreach($matches[2] as $idx=>$annotationName)
       {
         if($annotationName)
           $buffer[$annotationName]=array();
 
-        if($matches[2][$idx])
+        if($matches[3][$idx])
         {
-          foreach(explode(',', $matches[2][$idx]) as $arg)
+          foreach(explode(',', $matches[3][$idx]) as $arg)
           {
             if(false===($posAssign=strpos($arg, '=')))
               $buffer[$annotationName]['value']=trim($arg);
@@ -499,24 +560,39 @@ namespace Components;
           }
         }
 
-        if($matches[3][$idx])
+        if($matches[1][$idx])
+          $namespace=$matches[1][$idx];
+
+        if($matches[4][$idx])
         {
-          $type=$namespace_.'\\'.$matches[3][$idx];
+          if(null===$namespace)
+            $type=$matches[4][$idx];
+          else
+            $type=$namespace.'\\'.$matches[4][$idx];
 
           $annotations[$type][self::TYPE_ANNOTATION][$type]=$buffer;
           $buffer=array();
         }
 
-        if($matches[4][$idx])
+        if($matches[5][$idx])
         {
-          if(false!==($pos=strpos($matches[4][$idx], 'function')))
+          // parameter
+          if(0===strpos($matches[5][$idx], '$'))
           {
-            $annotations[$type][self::METHOD_ANNOTATION][trim(substr($matches[4][$idx], $pos+8))]=$buffer;
+            $annotations[$type][self::PARAMETER_ANNOTATION][$method][trim(substr($matches[5][$idx], 1))]=$buffer;
             $buffer=array();
           }
-          else if(false!==($pos=strpos($matches[4][$idx], '$')))
+          // method
+          if(false!==($pos=strpos($matches[5][$idx], 'function')))
           {
-            $annotations[$type][self::PROPERTY_ANNOTATION][trim(substr($matches[4][$idx], $pos+1))]=$buffer;
+            $method=trim(substr($matches[5][$idx], $pos+8));
+            $annotations[$type][self::METHOD_ANNOTATION][$method]=$buffer;
+            $buffer=array();
+          }
+          // property
+          else if(false!==($pos=strpos($matches[5][$idx], '$')))
+          {
+            $annotations[$type][self::PROPERTY_ANNOTATION][trim(substr($matches[5][$idx], $pos+1))]=$buffer;
             $buffer=array();
           }
         }

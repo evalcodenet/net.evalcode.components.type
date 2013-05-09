@@ -52,7 +52,7 @@ namespace Components;
     /**
      * @param mixed $value_
      *
-     * @return \Components\HashMap
+     * @return Components\HashMap
      */
     public static function valueOf($value_)
     {
@@ -60,7 +60,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\HashMap
+     * @return Components\HashMap
      */
     public static function createEmpty()
     {

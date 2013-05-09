@@ -54,7 +54,7 @@ namespace Components;
 
     // IMPLEMENTATION
     /**
-     * @var \Components\Bitmask
+     * @var Components\Bitmask
      */
     private $m_options;
     //--------------------------------------------------------------------------

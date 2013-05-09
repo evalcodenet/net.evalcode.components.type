@@ -5,22 +5,22 @@ namespace Components;
 
 
   /**
-   * Annotation_Type
+   * Annotation_Name
    *
    * @package net.evalcode.components
    * @subpackage annotation
    *
    * @author evalcode.net
    */
-  class Annotation_Type extends Annotation
+  class Annotation_Name extends Annotation
   {
     // PREDEFINED PROPERTIES
     /**
-     * var
+     * name
      *
      * @var string
      */
-    const NAME='var';
+    const NAME='name';
     /**
      * Annotation_Type
      *

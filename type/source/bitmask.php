@@ -28,7 +28,7 @@ namespace Components;
      *
      * @param integer $bitmask_
      *
-     * @return \Components\Bitmask
+     * @return Components\Bitmask
      */
     public static function forBitmask($bitmask_)
     {
@@ -40,7 +40,7 @@ namespace Components;
      *
      * @param array $bits_
      *
-     * @return \Components\Bitmask
+     * @return Components\Bitmask
      */
     public static function forBits(array $bits_)
     {
@@ -50,9 +50,9 @@ namespace Components;
     /**
      * Returns instance for given bitset.
      *
-     * @param \Components\Bitset $bitset_
+     * @param Components\Bitset $bitset_
      *
-     * @return \Components\Bitmask
+     * @return Components\Bitmask
      */
     public static function forBitset(Bitset $bitset_)
     {
@@ -60,7 +60,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Bitmask
+     * @return Components\Bitmask
      */
     public static function createEmpty()
     {
@@ -168,7 +168,7 @@ namespace Components;
      *
      * @param integer $bit_
      *
-     * @return \Components\Bitmask
+     * @return Components\Bitmask
      */
     public function add($bit_)
     {
@@ -182,7 +182,7 @@ namespace Components;
      *
      * @param integer $bit_
      *
-     * @return \Components\Bitmask
+     * @return Components\Bitmask
      */
     public function remove($bit_)
     {
@@ -208,7 +208,7 @@ namespace Components;
     }
 
     /**
-     * @return \Components\Bitset
+     * @return Components\Bitset
      */
     public function toBitset()
     {
@@ -291,7 +291,7 @@ namespace Components;
      * (non-PHPdoc)
      * @see Components.Serializable_Php::unserialize()
      *
-     * @return \Components\Bitmask
+     * @return Components\Bitmask
      */
     public function unserialize($data_)
     {

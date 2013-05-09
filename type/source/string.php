@@ -39,7 +39,7 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
-     * @return \Components\String
+     * @return Components\String
      */
     public static function valueOf($value_)
     {
@@ -57,7 +57,7 @@ namespace Components;
     /**
      * @param mixed $value_
      *
-     * @return \Components\String
+     * @return Components\String
      */
     public static function cast($value_)
     {
