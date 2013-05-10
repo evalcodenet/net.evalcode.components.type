@@ -5,10 +5,10 @@ namespace Components;
 
 
   /**
-   * Float
+   * Double
    *
    * <p>
-   *   Boxed implementation for native PHP float.
+   *   Boxed implementation for native PHP double.
    * </p>
    *
    * @package net.evalcode.components
@@ -16,11 +16,11 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Float extends Primitive implements Number, Serializable_Php, Value_Float
+  class Double extends Primitive implements Number, Serializable_Php, Value_Double
   {
     // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;
-    const TYPE_NATIVE='float';
+    const TYPE_NATIVE='double';
     //--------------------------------------------------------------------------
 
 
@@ -42,7 +42,7 @@ namespace Components;
      */
     public static function cast($value_)
     {
-      return (float)$value_;
+      return (double)$value_;
     }
 
     /**
@@ -114,7 +114,7 @@ namespace Components;
         return -1;
       }
 
-      throw new Exception_IllegalCast('components/type/float', sprintf(
+      throw new Exception_IllegalCast('components/type/double', sprintf(
         'Can not compare to given parameter [%s].', $object_
       ));
     }

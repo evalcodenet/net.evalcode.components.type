@@ -12,7 +12,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  interface Number extends Object, Cloneable, Comparable, Serializable_Php
+  interface Number extends Comparable, Cloneable
   {
     // ACCESSORS
     /**

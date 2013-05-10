@@ -308,7 +308,7 @@ namespace Components;
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return $this->hashCode()===$object_->hashCode();
 
       return false;
@@ -321,6 +321,15 @@ namespace Components;
     public function __toString()
     {
       return Arrays::toString($this->m_value);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable::serialVersionUid()
+     */
+    public function serialVersionUid()
+    {
+      return 1;
     }
     //--------------------------------------------------------------------------
   }

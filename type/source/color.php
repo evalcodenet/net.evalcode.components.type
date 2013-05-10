@@ -12,7 +12,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Color implements Object, Cloneable
+  class Color implements Object, Cloneable, Value_String
   {
     // PROPERTIES
     /**
@@ -49,6 +49,7 @@ namespace Components;
     public static function valueOf($string_)
     {
       // TODO Parse rgb(255, 255, 255) / #ffffff
+      return new static();
     }
 
     /**
@@ -126,6 +127,11 @@ namespace Components;
         $this->g,
         $this->b
       );
+    }
+
+    public function value()
+    {
+      return (string)$this;
     }
     //--------------------------------------------------------------------------
   }

@@ -12,7 +12,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Point implements Object, Cloneable, Comparable
+  class Point implements Object, Cloneable, Comparable, Value_String
   {
     // PROPERTIES
     /**
@@ -35,6 +35,21 @@ namespace Components;
     {
       $this->x=$x_;
       $this->y=$y_;
+    }
+    //--------------------------------------------------------------------------
+
+
+    // OVERRIDES
+    /**
+     * @param string $value_
+     *
+     * @return \Components\Point
+     */
+    public static function valueOf($value_)
+    {
+      $points=explode(',', $value_);
+
+      return new static((int)$points[0], (int)$points[1]);
     }
     //--------------------------------------------------------------------------
 
@@ -96,12 +111,21 @@ namespace Components;
      */
     public function __toString()
     {
-      return sprintf('%1$s@%2$s{x: %3$d, y: %4$d}',
+      return sprintf('%s@%s{x: %d, y: %d}',
         __CLASS__,
         $this->hashCode(),
         $this->x,
         $this->y
       );
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Value_String::value()
+     */
+    public function value()
+    {
+      return sprintf('%s,%s', $this->x, $this->y);
     }
     //--------------------------------------------------------------------------
   }

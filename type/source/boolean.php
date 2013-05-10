@@ -16,7 +16,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Boolean extends Primitive implements Comparable, Cloneable
+  class Boolean extends Primitive implements Comparable, Cloneable, Value_Boolean
   {
     // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;
@@ -226,6 +226,15 @@ namespace Components;
     public function __clone()
     {
       return new self($this->m_value);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable::serialVersionUid()
+     */
+    public function serialVersionUid()
+    {
+      return 1;
     }
     //--------------------------------------------------------------------------
   }

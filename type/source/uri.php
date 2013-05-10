@@ -24,7 +24,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Uri implements Object, Cloneable, Serializable_Php, Serializable_Json
+  class Uri implements Object, Cloneable, Serializable_Php, Serializable_Json, Value_String
   {
     // PREDEFINED PROPERTIES
     /**
@@ -907,6 +907,15 @@ namespace Components;
       $uri=self::arrayForString($this->m_asString);
 
       $this->parseImpl($uri);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Value_String::value()
+     */
+    public function value()
+    {
+      return (string)$this;
     }
     //--------------------------------------------------------------------------
 

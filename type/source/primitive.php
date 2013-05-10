@@ -23,10 +23,10 @@ namespace Components;
    * @see Integer
    * @see String
    */
-  abstract class Primitive extends Type
+  abstract class Primitive extends Type implements Serializable
   {
     // CONSTRUCTION
-    public function __construct($value_)
+    public function __construct($value_=null)
     {
       parent::__construct(get_class($this));
 
@@ -211,6 +211,7 @@ namespace Components;
      */
     private static $m_nativeToBoxed=array(
       Boolean::TYPE_NATIVE=>Boolean::TYPE,
+      Double::TYPE_NATIVE=>Double::TYPE,
       Float::TYPE_NATIVE=>Float::TYPE,
       HashMap::TYPE_NATIVE=>HashMap::TYPE,
       Integer::TYPE_NATIVE=>Integer::TYPE,
@@ -224,6 +225,7 @@ namespace Components;
      */
     private static $m_boxedToNative=array(
       Boolean::TYPE=>Boolean::TYPE_NATIVE,
+      Double::TYPE=>Double::TYPE_NATIVE,
       Character::TYPE=>Character::TYPE_NATIVE,
       Float::TYPE=>Float::TYPE_NATIVE,
       HashMap::TYPE=>HashMap::TYPE_NATIVE,

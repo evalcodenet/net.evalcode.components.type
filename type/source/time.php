@@ -108,6 +108,16 @@ namespace Components;
     {
       return new static($value_, self::TIMEUNIT_WEEKS);
     }
+
+    /**
+     * @param integer $value_
+     *
+     * @return Components\Time
+     */
+    public static function valueOf($value_)
+    {
+      return new static($value_, self::TIMEUNIT_SECONDS);
+    }
     //--------------------------------------------------------------------------
 
 
@@ -284,6 +294,15 @@ namespace Components;
     public function __clone()
     {
       return new static($this->m_value, $this->m_timeUnit);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Value_Integer::value()
+     */
+    public function value()
+    {
+      return $this->to(self::TIMEUNIT_SECONDS);
     }
     //--------------------------------------------------------------------------
 

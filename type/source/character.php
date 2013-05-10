@@ -16,7 +16,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Character extends Primitive implements Number
+  class Character extends Primitive implements Number, Value_Integer
   {
     // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;

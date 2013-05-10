@@ -16,7 +16,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Integer extends Primitive implements Number
+  class Integer extends Primitive implements Number, Serializable_Php, Value_Integer
   {
     // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;

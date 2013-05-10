@@ -12,7 +12,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class String extends Primitive implements Object, Cloneable, Comparable
+  class String extends Primitive implements Object, Cloneable, Comparable, Value_String
   {
     // PREDEFINED PROPERTIES
     /**
@@ -969,6 +969,15 @@ namespace Components;
     public function __toString()
     {
       return $this->m_value;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Serializable::serialVersionUid()
+     */
+    public function serialVersionUid()
+    {
+      return 1;
     }
     //--------------------------------------------------------------------------
   }

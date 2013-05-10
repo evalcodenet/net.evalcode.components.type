@@ -5,14 +5,14 @@ namespace Components;
 
 
   /**
-   * TimeZone
+   * Timezone
    *
    * @package net.evalcode.components
    * @subpackage type
    *
    * @author evalcode.net
    */
-  class TimeZone implements Object, Cloneable, Serializable_Php
+  class Timezone implements Object, Cloneable, Serializable_Php, Value_String
   {
     // CONSTRUCTION
     public function __construct(\DateTimeZone $timezone_=null)
@@ -24,9 +24,19 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
+     * @param string $name_
+     *
+     * @return Components\Timezone
+     */
+    public static function valueOf($name_)
+    {
+      return new static(timezone_open($name_));
+    }
+
+    /**
      * Returns timezone for given name.
      *
-     * @return Components\TimeZone
+     * @return Components\Timezone
      */
     public static function forName($name_)
     {
@@ -38,7 +48,7 @@ namespace Components;
      *
      * @param signed int $hours_
      *
-     * @return Components\TimeZone
+     * @return Components\Timezone
      */
     public static function forOffset($hours_)
     {
@@ -55,7 +65,7 @@ namespace Components;
     /**
      * Returns timezone for current php.ini configuration.
      *
-     * @return Components\TimeZone
+     * @return Components\Timezone
      */
     public static function forSystemDefault()
     {
@@ -65,7 +75,7 @@ namespace Components;
     /**
      * Returns UTC timezone.
      *
-     * @return Components\TimeZone
+     * @return Components\Timezone
      */
     public static function utc()
     {
@@ -173,6 +183,15 @@ namespace Components;
     public function __wakeup()
     {
       $this->m_timezone=timezone_open($this->m_asString);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components.Value_String::value()
+     */
+    public function value()
+    {
+      return $this->m_timezone->getName();
     }
     //--------------------------------------------------------------------------
 
