@@ -135,7 +135,7 @@ namespace Components;
      *   String::native();
      * </code>
      *
-     * @see Components.Primitive::native()
+     * @see Components\Primitive::native()
      *
      * @param string $type_
      *

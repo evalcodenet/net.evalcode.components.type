@@ -12,8 +12,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Date implements Object, Cloneable, Comparable,
-    Serializable_Php, Serializable_Json, Value_String
+  class Date implements Object, Cloneable, Comparable, Value_String, Serializable_Php
   {
     // PREDEFINED PROPERTIES
     const ANTE_MERIDIEM='am';
@@ -42,14 +41,14 @@ namespace Components;
     /**
      * Returns current time for UTC.
      *
-     * @param Components\Timezone $timezone_
+     * @param \Components\Timezone $timezone_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public static function now()
     {
       $date=new \DateTime();
-      $date->setTimezone(Timezone::utc()->get());
+      $date->setTimezone(Timezone::utc()->internal());
 
       return new self($date);
     }
@@ -60,9 +59,9 @@ namespace Components;
      *
      * @param string $date_
      * @param string $expectedFormat_
-     * @param Components\Timezone $timezone_
+     * @param \Components\Timezone $timezone_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public static function parse($date_, Timezone $timezone_=null, $expectedFormat_=null)
     {
@@ -78,10 +77,10 @@ namespace Components;
 
       $date=new \DateTime(
         sprintf('%1$d-%2$d-%3$d %4$d:%5$d:%6$d', $year, $month, $day, $hour, $minute, $second),
-        $timezone_->get()
+        $timezone_->internal()
       );
 
-      $date->setTimezone(Timezone::utc()->get());
+      $date->setTimezone(Timezone::utc()->internal());
 
       return new self($date);
     }
@@ -93,17 +92,17 @@ namespace Components;
      * timezone than the current system's one.
      *
      * @param integer $timestamp_
-     * @param Components\Timezone $timezone_
+     * @param \Components\Timezone $timezone_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public static function fromUnixTimestamp($timestamp_, Timezone $timezone_=null)
     {
       if(null===$timezone_)
         $timezone_=Timezone::forSystemDefault();
 
-      $date=new \DateTime('@'.$timestamp_, $timezone_->get());
-      $date->setTimezone(Timezone::utc()->get());
+      $date=new \DateTime('@'.$timestamp_, $timezone_->internal());
+      $date->setTimezone(Timezone::utc()->internal());
 
       return new self($date);
     }
@@ -111,11 +110,11 @@ namespace Components;
     /**
      * @param string $date_ ISO-8601 formatted date/time string in UTC.
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public static function fromISO8601($date_)
     {
-      $utc=Timezone::utc()->get();
+      $utc=Timezone::utc()->internal();
 
       $date=new \DateTime($date_, $utc);
       $date->setTimezone($utc);
@@ -126,7 +125,7 @@ namespace Components;
     /**
      * @param string $value_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public static function valueOf($value_)
     {
@@ -138,7 +137,7 @@ namespace Components;
     // ACCESSORS
     /**
      * @param string $format_
-     * @param Components\Timezone $timezone_
+     * @param \Components\Timezone $timezone_
      *
      * @return string
      */
@@ -149,14 +148,14 @@ namespace Components;
       if(null===$timezone_)
         $timezone_=Timezone::forSystemDefault();
 
-      $date->setTimezone($timezone_->get());
+      $date->setTimezone($timezone_->internal());
 
       return $date->format($format_);
     }
 
     /**
      * @param string $format_
-     * @param Components\Timezone $timezone_
+     * @param \Components\Timezone $timezone_
      *
      * @return string
      */
@@ -329,7 +328,7 @@ namespace Components;
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function nextDay()
     {
@@ -337,7 +336,7 @@ namespace Components;
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function prevDay()
     {
@@ -345,7 +344,7 @@ namespace Components;
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function nextMonth()
     {
@@ -353,7 +352,7 @@ namespace Components;
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function prevMonth()
     {
@@ -361,7 +360,7 @@ namespace Components;
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function nextYear()
     {
@@ -369,7 +368,7 @@ namespace Components;
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function prevYear()
     {
@@ -377,9 +376,9 @@ namespace Components;
     }
 
     /**
-     * @param Components\Time $time_
+     * @param \Components\Time $time_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function after(Time $time_)
     {
@@ -387,9 +386,9 @@ namespace Components;
     }
 
     /**
-     * @param Components\Time $time_
+     * @param \Components\Time $time_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function before(Time $time_)
     {
@@ -399,9 +398,9 @@ namespace Components;
     /**
      * Returns time between this and any given date.
      *
-     * @param Components\Date $date_
+     * @param \Components\Date $date_
      *
-     * @return Components\Time
+     * @return \Components\Time
      */
     public function during(Date $date_)
     {
@@ -419,7 +418,7 @@ namespace Components;
     /**
      * @param integer $days_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function afterDays($days_)
     {
@@ -429,7 +428,7 @@ namespace Components;
     /**
      * @param integer $days_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function beforeDays($days_)
     {
@@ -439,7 +438,7 @@ namespace Components;
     /**
      * @param integer $months_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function afterMonths($months_)
     {
@@ -449,7 +448,7 @@ namespace Components;
     /**
      * @param integer $months_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function beforeMonths($months_)
     {
@@ -459,7 +458,7 @@ namespace Components;
     /**
      * @param integer $years_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function afterYears($years_)
     {
@@ -469,7 +468,7 @@ namespace Components;
     /**
      * @param integer $years_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function beforeYears($years_)
     {
@@ -477,20 +476,20 @@ namespace Components;
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function beginningOfDay()
     {
       $utc=Timezone::utc();
 
-      $date=new \DateTime($this->format('Y-m-dT00:00:00+0000', $utc), $utc->get());
-      $date->setTimezone($utc->get());
+      $date=new \DateTime($this->format('Y-m-dT00:00:00+0000', $utc), $utc->internal());
+      $date->setTimezone($utc->internal());
 
       return new self($date);
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function endOfDay()
     {
@@ -500,33 +499,33 @@ namespace Components;
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function beginningOfMonth()
     {
       $utc=Timezone::utc();
 
-      $date=new \DateTime($this->format('Y-m-01T00:00:00+0000', $utc), $utc->get());
-      $date->setTimezone($utc->get());
+      $date=new \DateTime($this->format('Y-m-01T00:00:00+0000', $utc), $utc->internal());
+      $date->setTimezone($utc->internal());
 
       return new self($date);
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function beginningOfYear()
     {
       $utc=Timezone::utc();
 
-      $date=new \DateTime($this->format('Y-01-01T00:00:00+0000', $utc), $utc->get());
-      $date->setTimezone($utc->get());
+      $date=new \DateTime($this->format('Y-01-01T00:00:00+0000', $utc), $utc->internal());
+      $date->setTimezone($utc->internal());
 
       return new self($date);
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function endOfMonth()
     {
@@ -534,7 +533,7 @@ namespace Components;
     }
 
     /**
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function endOfYear()
     {
@@ -546,11 +545,11 @@ namespace Components;
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components.Comparable::compareTo()
+     * @see Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
       {
         $timestampSelf=$this->toUnixTimestamp();
         $timestampObject=$object_->toUnixTimestamp();
@@ -567,11 +566,11 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return $this->toUnixTimestamp()===$object_->toUnixTimestamp();
 
       return false;
@@ -579,7 +578,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::hashCode()
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -588,53 +587,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable_Php::serialize()
-     */
-    public function serialize()
-    {
-      return serialize($this->toISO8601());
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Php::unserialize()
-     *
-     * @return Components\Date
-     */
-    public function unserialize($data_)
-    {
-      $this->m_asString=unserialize($data_);
-      $this->__wakeup();
-
-      return $this;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Json::serializeJson()
-     */
-    public function serializeJson()
-    {
-      return json_encode($this->toISO8601());
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Json::unserializeJson()
-     *
-     * @return Components\Date
-     */
-    public function unserializeJson($json_)
-    {
-      $this->m_asString=json_decode($json_);
-      $this->__wakeup();
-
-      return $this;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable::serialVersionUid()
+     * @see Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
@@ -643,7 +596,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {
@@ -652,9 +605,9 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Cloneable::__clone()
+     * @see Components\Cloneable::__clone()
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     public function __clone()
     {
@@ -670,7 +623,7 @@ namespace Components;
 
     public function __wakeup()
     {
-      $utc=Timezone::utc()->get();
+      $utc=Timezone::utc()->internal();
 
       $this->m_date=new \DateTime($this->m_asString, $utc);
       $this->m_date->setTimezone($utc);
@@ -678,7 +631,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Value_String::value()
+     * @see Components\Value_String::value()
      */
     public function value()
     {
@@ -704,7 +657,7 @@ namespace Components;
      *
      * @param string $modification_
      *
-     * @return Components\Date
+     * @return \Components\Date
      */
     protected function modified($modification_=null)
     {

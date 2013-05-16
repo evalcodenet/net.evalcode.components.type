@@ -12,16 +12,9 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  interface Map extends \ArrayAccess, Countable
+  interface Map extends \ArrayAccess, Collection
   {
     // ACCESSORS
-    /**
-     * Determines whether this map is empty.
-     *
-     * @return boolean
-     */
-    function isEmpty();
-
     /**
      * Determines whether a value is linked to
      * given key in this map.

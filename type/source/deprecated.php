@@ -24,10 +24,10 @@ namespace Components;
      * invoked - respectively the location of the deprecated code.
      *
      * @param string $namespace_
-     * @param Components\Version $version_
+     * @param \Components\Version $version_
      * @param string $message_
      *
-     * @throws Components\Deprecated
+     * @throws \Components\Deprecated
      */
     public static function since($namespace_, Version $version_, $message_=null)
     {
@@ -53,10 +53,10 @@ namespace Components;
      * invoked - respectively the location of the deprecated code.
      *
      * @param string $namespace_
-     * @param Components\Date $date_
+     * @param \Components\Date $date_
      * @param string $message_
      *
-     * @throws Components\Deprecated
+     * @throws \Components\Deprecated
      */
     public static function sinceDate($namespace_, Date $date_, $message_=null)
     {
@@ -84,7 +84,7 @@ namespace Components;
      * @param string $clazz_
      * @param string $message_
      *
-     * @throws Components\Deprecated
+     * @throws \Components\Deprecated
      */
     public static function ifClassExists($namespace_, $clazz_, $message_=null)
     {
@@ -111,7 +111,7 @@ namespace Components;
      *
      * @param string $namespace_
      *
-     * @return Components\Deprecated
+     * @return \Components\Deprecated
      */
     private static function createDefaultException($namespace_)
     {

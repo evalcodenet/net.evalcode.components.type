@@ -24,7 +24,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Uri implements Object, Cloneable, Serializable_Php, Serializable_Json, Value_String
+  class Uri implements Object, Cloneable, Value_String, Serializable_Php
   {
     // PREDEFINED PROPERTIES
     /**
@@ -63,7 +63,7 @@ namespace Components;
      *
      * @param string $url_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public static function valueOf($uri_)
     {
@@ -80,7 +80,7 @@ namespace Components;
     }
 
     /**
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public static function createEmpty()
     {
@@ -91,7 +91,7 @@ namespace Components;
 
     // ACCESSORS
     /**
-     * @return Components\Uri_Resolver
+     * @return \Components\Uri_Resolver
      */
     public function getResolver()
     {
@@ -108,7 +108,7 @@ namespace Components;
     }
 
     /**
-     * @param Components\Uri_Resolver $resolver_
+     * @param \Components\Uri_Resolver $resolver_
      */
     public function setResolver(Uri_Resolver $resolver_)
     {
@@ -123,7 +123,7 @@ namespace Components;
      *    ^^^^^^^
      * </pre>
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function getScheme()
     {
@@ -140,7 +140,7 @@ namespace Components;
      *
      * @param string $scheme_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setScheme($scheme_)
     {
@@ -207,7 +207,7 @@ namespace Components;
      *
      * @param string $host_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setHost($host_)
     {
@@ -224,7 +224,7 @@ namespace Components;
      *                                     ^^^^
      * </pre>
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function reduceToHost()
     {
@@ -259,7 +259,7 @@ namespace Components;
      *
      * @param integer $port_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setPort($port_)
     {
@@ -293,7 +293,7 @@ namespace Components;
      *
      * @param string $username_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setUsername($username_)
     {
@@ -327,7 +327,7 @@ namespace Components;
      *
      * @param string $password_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setPassword($password_)
     {
@@ -365,7 +365,7 @@ namespace Components;
      *
      * @param sting $path_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setPath($path_)
     {
@@ -392,7 +392,7 @@ namespace Components;
      *
      * @param array $pathParams_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setPathParams(array $pathParams_)
     {
@@ -465,7 +465,7 @@ namespace Components;
      * @param integer $idx_ Array-index of path parameters / Position of parameter in path.
      * @param string $pathParam_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setPathParam($idx_, $pathParam_)
     {
@@ -502,7 +502,7 @@ namespace Components;
      *
      * @param string $pathParam_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function pushPathParam($pathParam_)
     {
@@ -539,7 +539,7 @@ namespace Components;
      *
      * @param string $pathParam_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function unshiftPathParam($pathParam_)
     {
@@ -589,7 +589,7 @@ namespace Components;
      *
      * @param string $queryString_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setQueryString($queryString_)
     {
@@ -634,7 +634,7 @@ namespace Components;
      * @param string $key_
      * @param mixed $value_
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setQueryParam($key_, $value_)
     {
@@ -666,7 +666,7 @@ namespace Components;
      *                                                          ^^^^^^^^^^^^
      * </pre>
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setQueryParams(array $queryParams_)
     {
@@ -698,7 +698,7 @@ namespace Components;
      *                                                                         ^^^^^^^^
      * </pre>
      *
-     * @return Components\Uri
+     * @return \Components\Uri
      */
     public function setFragment($fragment_)
     {
@@ -753,7 +753,7 @@ namespace Components;
     /**
      * Returns bitmask of activated options for this url.
      *
-     * @return Components\Bitmask
+     * @return \Components\Bitmask
      */
     public function getOptions()
     {
@@ -772,7 +772,7 @@ namespace Components;
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -784,7 +784,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::hashCode()
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -793,7 +793,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {
@@ -816,7 +816,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Cloneable::__clone()
+     * @see Components\Cloneable::__clone()
      */
     public function __clone()
     {
@@ -833,6 +833,7 @@ namespace Components;
 
       if(null!==$this->m_resolver)
       {
+        // TODO Clone?
         $resolver=get_class($this->m_resolver);
         $url->setResolver(new $resolver());
       }
@@ -845,49 +846,8 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable_Php::serialize()
+     * @see Components\Serializable_Php::__sleep()
      */
-    public function serialize()
-    {
-      return (string)$this;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Php::serialize()
-     */
-    public function unserialize($string_)
-    {
-      return self::valueOf($string_);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Json::serialize()
-     */
-    public function serializeJson()
-    {
-      return json_encode((string)$this);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Json::serialize()
-     */
-    public function unserializeJson($json_)
-    {
-      return self::valueOf(json_decode($json_));
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable::serialVersionUid()
-     */
-    public function serialVersionUid()
-    {
-      return 1;
-    }
-
     public function __sleep()
     {
       $this->m_asString=(string)$this;
@@ -902,16 +862,29 @@ namespace Components;
       return $serialize;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Components\Serializable_Php::__wakeup()
+     */
     public function __wakeup()
     {
-      $uri=self::arrayForString($this->m_asString);
+      $uri=static::arrayForString($this->m_asString);
 
       $this->parseImpl($uri);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Value_String::value()
+     * @see Components\Serializable::serialVersionUid()
+     */
+    public function serialVersionUid()
+    {
+      return 1;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components\Value_String::value()
      */
     public function value()
     {

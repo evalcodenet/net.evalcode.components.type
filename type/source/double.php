@@ -16,7 +16,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Double extends Primitive implements Number, Serializable_Php, Value_Double
+  class Double extends Primitive implements Number, Value_Double, Serializable_Php
   {
     // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;
@@ -27,7 +27,7 @@ namespace Components;
     // STATIC ACCESSORS
       /**
      * (non-PHPdoc)
-     * @see Components.Primitive::native()
+     * @see Components\Primitive::native()
      */
     public static function native()
     {
@@ -36,7 +36,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Primitive::cast()
+     * @see Components\Primitive::cast()
      *
      * @return float
      */
@@ -47,13 +47,13 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Primitive::valueOf()
+     * @see Components\Primitive::valueOf()
      *
-     * @return Components\Float
+     * @return \Components\Float
      */
     public static function valueOf($value_)
     {
-      return new static(static::cast($value_));
+      return new static((double)$value_);
     }
     //--------------------------------------------------------------------------
 
@@ -61,7 +61,18 @@ namespace Components;
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components.Number::intValue()
+     * @see Components\Primitive::value()
+     *
+     * @return double
+     */
+    public function value()
+    {
+      return $this->m_value;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components\Number::intValue()
      */
     public function intValue()
     {
@@ -70,7 +81,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Number::doubleValue()
+     * @see Components\Number::doubleValue()
      */
     public function doubleValue()
     {
@@ -79,7 +90,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Number::floatValue()
+     * @see Components\Number::floatValue()
      */
     public function floatValue()
     {
@@ -88,7 +99,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Comparable::compareTo()
+     * @see Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -121,29 +132,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable_Php::serialize()
-     */
-    public function serialize()
-    {
-      return serialize($this->m_value);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Php::unserialize()
-     *
-     * @return Components\Float
-     */
-    public function unserialize($data_)
-    {
-      $this->m_value=unserialize($data_);
-
-      return $this;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable::serialVersionUid()
+     * @see Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
@@ -162,16 +151,16 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Cloneable::__clone()
+     * @see Components\Cloneable::__clone()
      */
     public function __clone()
     {
-      return new static($this->m_value);
+      return new self($this->m_value);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::hashCode()
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -180,11 +169,11 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return $this->m_value===$object_->m_value;
 
       return false;
@@ -192,7 +181,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {

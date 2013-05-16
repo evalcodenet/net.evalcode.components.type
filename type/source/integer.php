@@ -16,7 +16,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Integer extends Primitive implements Number, Serializable_Php, Value_Integer
+  class Integer extends Primitive implements Number, Value_Integer, Serializable_Php
   {
     // PREDEFINED PROPERTIES
     const TYPE=__CLASS__;
@@ -71,7 +71,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Primitive::cast()
+     * @see Components\Primitive::cast()
      *
      * @return string
      */
@@ -82,7 +82,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Primitive::cast()
+     * @see Components\Primitive::cast()
      *
      * @return integer
      */
@@ -93,13 +93,13 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Primitive::valueOf()
+     * @see Components\Primitive::valueOf()
      *
-     * @return Components\Integer
+     * @return \Components\Integer
      */
     public static function valueOf($value_)
     {
-      return new static(static::cast($value_));
+      return new static((int)$value_);
     }
     //--------------------------------------------------------------------------
 
@@ -107,7 +107,7 @@ namespace Components;
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components.Number::intValue()
+     * @see Components\Number::intValue()
      */
     public function intValue()
     {
@@ -116,7 +116,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Number::doubleValue()
+     * @see Components\Number::doubleValue()
      */
     public function doubleValue()
     {
@@ -125,7 +125,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Number::floatValue()
+     * @see Components\Number::floatValue()
      */
     public function floatValue()
     {
@@ -134,11 +134,11 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Comparable::compareTo()
+     * @see Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
       {
         if($this->m_value==$object_->m_value)
           return 0;
@@ -167,47 +167,33 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable_Php::serialize()
+     * @see Components\Serializable_Php::__wakeup()
      */
-    public function serialize()
-    {
-      return serialize($this->m_value);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Php::unserialize()
-     *
-     * @return Components\Integer
-     */
-    public function unserialize($data_)
-    {
-      $this->m_value=unserialize($data_);
-
-      return $this;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable::serialVersionUid()
-     */
-    public function serialVersionUid()
-    {
-      return 1;
-    }
-
-    public function __sleep()
-    {
-      return array('m_value');
-    }
-
     public function __wakeup()
     {
 
     }
 
     /**
-     * @see Components.Cloneable::__clone()
+     * (non-PHPdoc)
+     * @see Components\Serializable_Php::__sleep()
+     */
+    public function __sleep()
+    {
+      return array('m_value');
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components\Serializable::serialVersionUid()
+     */
+    public function serialVersionUid()
+    {
+      return 1;
+    }
+
+    /**
+     * @see Components\Cloneable::__clone()
      */
     public function __clone()
     {
@@ -215,7 +201,7 @@ namespace Components;
     }
 
     /**
-     * @see Components.Object::hashCode()
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -223,18 +209,18 @@ namespace Components;
     }
 
     /**
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return $this->m_value===$object_->m_value;
 
       return false;
     }
 
     /**
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {

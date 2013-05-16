@@ -39,7 +39,7 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
-     * @return Components\String
+     * @return \Components\String
      */
     public static function valueOf($value_)
     {
@@ -57,7 +57,7 @@ namespace Components;
     /**
      * @param mixed $value_
      *
-     * @return Components\String
+     * @return \Components\String
      */
     public static function cast($value_)
     {
@@ -917,7 +917,7 @@ namespace Components;
     // OVERRIDES
     /**
     * (non-PHPdoc)
-    * @see Components.Cloneable::__clone()
+    * @see Components\Cloneable::__clone()
     */
     public function __clone()
     {
@@ -926,7 +926,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Comparable::compareTo()
+     * @see Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -943,7 +943,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::hashCode()
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -952,7 +952,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -964,7 +964,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {
@@ -973,7 +973,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable::serialVersionUid()
+     * @see Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {

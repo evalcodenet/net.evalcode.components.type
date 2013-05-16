@@ -42,30 +42,111 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
+     * @param string $string_
+     *
+     * @return \Components\Color
+     *
+     * @throws \Components\Exception_IllegalArgument
+     */
+    public static function forHexString($string_)
+    {
+      // TODO Optimize ...
+      $matches=array();
+      if(0===preg_match('/^[#]*(?:([a-f0-9]{6})|([a-f0-9]{3}))+$/i', $string_, $matches))
+      {
+        throw new Exception_IllegalArgument('components/type/color', sprintf(
+          'Argument does not match expected format [expected value between: #000000 - #ffffff, given: %s].',
+            $string_
+        ));
+      }
+
+      $values=array();
+      if(isset($matches[2]))
+      {
+        for($i=0; $i<3; $i++)
+          $values[]=hexdec($matches[2][$i].$matches[2][$i]);
+      }
+      else
+      {
+        foreach(str_split($matches[1], 2) as $chunk)
+          $values[]=hexdec($chunk);
+      }
+
+      list($r, $g, $b)=$values;
+
+      return new static($r, $g, $b);
+    }
+
+    /**
+     * @param string $string_
+     *
+     * @return \Components\Color
+     *
+     * @throws \Components\Exception_IllegalArgument
+     */
+    public static function forRgbString($string_)
+    {
+      // TODO Optimize (currently twice as fast as forHexString, but looks slow as well).
+      $matches=array();
+      if(0===preg_match('/^[rgb \(]*([\d, ]+)*[\)]*$/i', $string_, $matches))
+      {
+        throw new Exception_IllegalArgument('components/type/color', sprintf(
+          'Argument does not match expected format [given: %s, expected: rgb(255, 255, 255)].',
+            $string_
+        ));
+      }
+
+      $values=array();
+      foreach(explode(' ', strtr($matches[1], ',', ' ')) as $value)
+      {
+        if(is_numeric($value))
+          $values[]=min((int)$value, 255);
+      }
+
+      list($r, $g, $b)=$values;
+
+      return new static($r, $g, $b);
+    }
+
+    /**
+     * @param integer $r_
+     * @param integer $g_
+     * @param integer $b_
+     *
+     * @return \Components\Color
+     */
+    public static function forRgb($r_, $g_, $b_)
+    {
+      return new static($r_, $g_, $b_);
+    }
+
+    /**
+     * @param string $name_
+     *
+     * @return \Components\Color
+     */
+    public static function forName($name_)
+    {
+      if(false===isset(self::$m_named[$name_]))
+      {
+        throw new Exception_IllegalArgument('components/type/color',
+          'Given argument is not a valid color value.'
+        );
+      }
+
+      list($r, $g, $b)=self::$m_named[$name_];
+
+      return new static($r, $g, $b);
+    }
+
+    /**
      * @param string $string_ CSS-like RGB color value / hex value
      *
-     * @return Components\Color
+     * @return \Components\Color
      */
-    public static function valueOf($string_)
+    public static function valueOf($value_)
     {
-      // TODO Parse rgb(255, 255, 255) / #ffffff
-      return new static();
-    }
-
-    /**
-     * @return Components\Color
-     */
-    public static function white()
-    {
-      return new static(255, 255, 255);
-    }
-
-    /**
-     * @return Components\Color
-     */
-    public static function black()
-    {
-      return new static(0, 0, 0);
+      return static::forRgbString($value_);
     }
     //--------------------------------------------------------------------------
 
@@ -78,22 +159,43 @@ namespace Components;
     {
       return dechex($this->r).dechex($this->g).dechex($this->b);
     }
+
+    /**
+     * @return string
+     */
+    public function toRgbString()
+    {
+      return sprintf('rgb(%d, %d, %d)',
+        $this->r,
+        $this->g,
+        $this->b
+      );
+    }
     //--------------------------------------------------------------------------
 
 
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components.Cloneable::__clone()
+     * @see Components\Enumeration::value()
      */
-    public function __clone()
+    public function value()
     {
-      return new static($this->r, $this->g, $this->b);
+      return $this->toRgbString();
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::hashCode()
+     * @see Components\Cloneable::__clone()
+     */
+    public function __clone()
+    {
+      return new self($this->r, $this->g, $this->b);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -102,36 +204,23 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
-      {
-        return (int)$this->r===(int)$object_->r
-          && (int)$this->g===(int)$object_->g
-          && (int)$this->b===(int)$object_->b;
-      }
+      if($object_ instanceof self)
+        return $this->r===$object_->r && $this->g===$object_->g && $this->b===$object_->b;
 
       return false;
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {
-      return sprintf('rgb(%d, %d, %d)',
-        $this->r,
-        $this->g,
-        $this->b
-      );
-    }
-
-    public function value()
-    {
-      return (string)$this;
+      return $this->toRgbString();
     }
     //--------------------------------------------------------------------------
   }

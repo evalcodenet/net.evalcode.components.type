@@ -63,7 +63,7 @@ namespace Components;
     }
 
     /**
-     * @see Components.Primitive::native()
+     * @see Components\Primitive::native()
      */
     public static function native()
     {
@@ -71,7 +71,7 @@ namespace Components;
     }
 
     /**
-     * @see Components.Primitive::cast()
+     * @see Components\Primitive::cast()
      *
      * @return integer
      */
@@ -89,9 +89,9 @@ namespace Components;
     }
 
     /**
-     * @see Components.Primitive::valueOf()
+     * @see Components\Primitive::valueOf()
      *
-     * @return Components\Character
+     * @return \Components\Character
      */
     public static function valueOf($value_)
     {
@@ -127,7 +127,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable_Php::serialize()
+     * @see Components\Serializable_Php::serialize()
      */
     public function serialize()
     {
@@ -136,9 +136,9 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable_Php::unserialize()
+     * @see Components\Serializable_Php::unserialize()
      *
-     * @return Components\Character
+     * @return \Components\Character
      */
     public function unserialize($data_)
     {
@@ -149,7 +149,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable::serialVersionUid()
+     * @see Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
@@ -168,7 +168,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Cloneable::__clone()
+     * @see Components\Cloneable::__clone()
      */
     public function __clone()
     {
@@ -177,7 +177,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Comparable::compareTo()
+     * @see Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -189,7 +189,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::hashCode()
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -198,7 +198,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -210,7 +210,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {

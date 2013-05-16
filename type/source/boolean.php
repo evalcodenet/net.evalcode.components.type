@@ -36,10 +36,10 @@ namespace Components;
      * when comparing instances of {@code Boolean} and use
      * this static accessor for native booleans exclusively.
      *
-     * @param Components\Boolean|boolean $boolean0_
-     * @param Components\Boolean|boolean $boolean1_
+     * @param \Components\Boolean|boolean $boolean0_
+     * @param \Components\Boolean|boolean $boolean1_
      *
-     * @throws Components\Exception_IllegalCast
+     * @throws \Components\Exception_IllegalCast
      */
     public static function compare($boolean0_, $boolean1_)
     {
@@ -78,7 +78,7 @@ namespace Components;
     }
 
     /**
-     * @see Components.Primitive::native()
+     * @see Components\Primitive::native()
      */
     public static function native()
     {
@@ -86,7 +86,7 @@ namespace Components;
     }
 
     /**
-     * @see Components.Primitive::cast()
+     * @see Components\Primitive::cast()
      *
      * @return boolean
      */
@@ -103,9 +103,9 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Primitive::valueOf()
+     * @see Components\Primitive::valueOf()
      *
-     * @return Components\Boolean
+     * @return \Components\Boolean
      */
     public static function valueOf($value_)
     {
@@ -144,7 +144,7 @@ namespace Components;
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components.Comparable::compareTo()
+     * @see Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -188,7 +188,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::hashCode()
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -197,7 +197,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -209,7 +209,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {
@@ -221,7 +221,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Cloneable::__clone()
+     * @see Components\Cloneable::__clone()
      */
     public function __clone()
     {
@@ -230,7 +230,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable::serialVersionUid()
+     * @see Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {

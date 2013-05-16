@@ -28,11 +28,11 @@ namespace Components;
      *
      * @param integer $bitmask_
      *
-     * @return Components\Bitmask
+     * @return \Components\Bitmask
      */
     public static function forBitmask($bitmask_)
     {
-      return new self($bitmask_);
+      return new static($bitmask_);
     }
 
     /**
@@ -40,19 +40,19 @@ namespace Components;
      *
      * @param array $bits_
      *
-     * @return Components\Bitmask
+     * @return \Components\Bitmask
      */
     public static function forBits(array $bits_)
     {
-      return new self(self::getBitmaskForBits($bits_));
+      return new static(self::getBitmaskForBits($bits_));
     }
 
     /**
      * Returns instance for given bitset.
      *
-     * @param Components\Bitset $bitset_
+     * @param \Components\Bitset $bitset_
      *
-     * @return Components\Bitmask
+     * @return \Components\Bitmask
      */
     public static function forBitset(Bitset $bitset_)
     {
@@ -60,11 +60,11 @@ namespace Components;
     }
 
     /**
-     * @return Components\Bitmask
+     * @return \Components\Bitmask
      */
     public static function createEmpty()
     {
-      return new self(0);
+      return new static(0);
     }
 
     /**
@@ -168,7 +168,7 @@ namespace Components;
      *
      * @param integer $bit_
      *
-     * @return Components\Bitmask
+     * @return \Components\Bitmask
      */
     public function add($bit_)
     {
@@ -182,7 +182,7 @@ namespace Components;
      *
      * @param integer $bit_
      *
-     * @return Components\Bitmask
+     * @return \Components\Bitmask
      */
     public function remove($bit_)
     {
@@ -208,7 +208,7 @@ namespace Components;
     }
 
     /**
-     * @return Components\Bitset
+     * @return \Components\Bitset
      */
     public function toBitset()
     {
@@ -220,7 +220,7 @@ namespace Components;
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components.Number::intValue()
+     * @see Components\Number::intValue()
      */
     public function intValue()
     {
@@ -229,7 +229,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Number::doubleValue()
+     * @see Components\Number::doubleValue()
      */
     public function doubleValue()
     {
@@ -238,7 +238,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Number::floatValue()
+     * @see Components\Number::floatValue()
      */
     public function floatValue()
     {
@@ -247,7 +247,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Comparable::compareTo()
+     * @see Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -280,70 +280,38 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable_Php::serialize()
-     */
-    public function serialize()
-    {
-      return serialize($this->m_value);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Php::unserialize()
-     *
-     * @return Components\Bitmask
-     */
-    public function unserialize($data_)
-    {
-      $this->m_value=unserialize($data_);
-
-      return $this;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable::serialVersionUid()
+     * @see Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
       return 1;
     }
 
-    public function __sleep()
-    {
-      return array('m_value');
-    }
-
-    public function __wakeup()
-    {
-
-    }
-
     /**
      * (non-PHPdoc)
-     * @see Components.Cloneable::__clone()
+     * @see Components\Cloneable::__clone()
      */
     public function __clone()
     {
-      return new static($this->m_value);
+      return new self($this->m_value);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::hashCode()
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
-      return String::hash($this->m_value);
+      return string_hash($this->m_value);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
+      if($object_ instanceof self)
         return $this->m_value===$object_->m_value;
 
       return false;
@@ -351,7 +319,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {

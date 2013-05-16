@@ -25,7 +25,7 @@ namespace Components;
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components.Uri_Resolver::resolve()
+     * @see Components\Uri_Resolver::resolve()
      */
     public function resolve(Uri $uri_)
     {
@@ -34,7 +34,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Uri_Resolver::getContents()
+     * @see Components\Uri_Resolver::getContents()
      */
     public function getContents(Uri $uri_)
     {
@@ -43,7 +43,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components.Uri_Resolver::getOptions()
+     * @see Components\Uri_Resolver::getOptions()
      */
     public function getOptions()
     {

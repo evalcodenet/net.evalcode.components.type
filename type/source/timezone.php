@@ -12,12 +12,13 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Timezone implements Object, Cloneable, Serializable_Php, Value_String
+  class Timezone implements Object, Cloneable, Value_String, Serializable_Php
   {
     // CONSTRUCTION
     public function __construct(\DateTimeZone $timezone_=null)
     {
       $this->m_timezone=$timezone_;
+      $this->m_name=$timezone_->getName();
     }
     //--------------------------------------------------------------------------
 
@@ -26,7 +27,7 @@ namespace Components;
     /**
      * @param string $name_
      *
-     * @return Components\Timezone
+     * @return \Components\Timezone
      */
     public static function valueOf($name_)
     {
@@ -36,7 +37,7 @@ namespace Components;
     /**
      * Returns timezone for given name.
      *
-     * @return Components\Timezone
+     * @return \Components\Timezone
      */
     public static function forName($name_)
     {
@@ -48,7 +49,7 @@ namespace Components;
      *
      * @param signed int $hours_
      *
-     * @return Components\Timezone
+     * @return \Components\Timezone
      */
     public static function forOffset($hours_)
     {
@@ -65,7 +66,7 @@ namespace Components;
     /**
      * Returns timezone for current php.ini configuration.
      *
-     * @return Components\Timezone
+     * @return \Components\Timezone
      */
     public static function forSystemDefault()
     {
@@ -75,7 +76,7 @@ namespace Components;
     /**
      * Returns UTC timezone.
      *
-     * @return Components\Timezone
+     * @return \Components\Timezone
      */
     public static function utc()
     {
@@ -86,19 +87,21 @@ namespace Components;
 
     // ACCESSORS
     /**
-     * @return \DateTimeZone
+     * @return string
      */
-    public function get()
+    public function name()
     {
-      return $this->m_timezone;
+      return $this->m_name;
     }
 
     /**
-     * @return string
+     * @internal
+     *
+     * @return \DateTimeZone
      */
-    public function getName()
+    function internal()
     {
-      return $this->m_timezone->getName();
+      return $this->m_timezone;
     }
     //--------------------------------------------------------------------------
 
@@ -106,67 +109,46 @@ namespace Components;
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components.Object::equals()
+     * @see Components\Object::equals()
      */
     public function equals($object_)
     {
-      if($object_ instanceof static)
-        return String::equal($this->getName(), $this->getName());
+      if($object_ instanceof self)
+        return String::equal($this->m_name, $object_->m_name);
 
       return false;
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::hashCode()
+     * @see Components\Object::hashCode()
      */
     public function hashCode()
     {
-      return String::hash($this->getName());
+      return string_hash($this->m_name);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Object::__toString()
+     * @see Components\Object::__toString()
      */
     public function __toString()
     {
-      return $this->getName();
+      return $this->m_name;
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Cloneable::__clone()
+     * @see Components\Cloneable::__clone()
      */
     public function __clone()
     {
-      return static::forName($this->getName());
+      return new static(timezone_open($this->m_name));
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Serializable_Php::serialize()
-     */
-    public function serialize()
-    {
-      return (string)$this;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable_Php::unserialize()
-     */
-    public function unserialize($data_)
-    {
-      $this->m_asString=$data_;
-      $this->__wakeup();
-
-      return $this;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Components.Serializable::serialVersionUid()
+     * @see Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
@@ -175,23 +157,21 @@ namespace Components;
 
     public function __sleep()
     {
-      $this->m_asString=(string)$this;
-
-      return array('m_asString');
+      return array('m_name');
     }
 
     public function __wakeup()
     {
-      $this->m_timezone=timezone_open($this->m_asString);
+      $this->m_timezone=timezone_open($this->m_name);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components.Value_String::value()
+     * @see Components\Value_String::value()
      */
     public function value()
     {
-      return $this->m_timezone->getName();
+      return $this->m_name;
     }
     //--------------------------------------------------------------------------
 
@@ -200,7 +180,7 @@ namespace Components;
     /**
      * @var string
      */
-    private $m_asString;
+    private $m_name;
     /**
      * @var \DateTimeZone
      */
