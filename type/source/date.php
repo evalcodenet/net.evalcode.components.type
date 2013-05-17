@@ -12,20 +12,21 @@ namespace Components;
    *
    * @author evalcode.net
    */
+  // TODO (CSH) Too many unnecessary to/from UTC conversions... Use given timezone and only convert if request.
   class Date implements Object, Cloneable, Comparable, Value_String, Serializable_Php
   {
     // PREDEFINED PROPERTIES
     const ANTE_MERIDIEM='am';
     const POST_MERIDIEM='pm';
 
-    const FORMAT_ISO8601='Y-m-d H:i:s';
-    const FORMAT_ATOM=self::FORMAT_ISO8601;
+    const FORMAT_ATOM='c';
     const FORMAT_COOKIE='l, d-M-y H:i:s T';
+    const FORMAT_ISO8601='c';
     const FORMAT_RSS='D, d M Y H:i:s O';
-    const FORMAT_UTC='Y-m-d H:i:s \U\T\C';
-    const FORMAT_W3C=self::FORMAT_ISO8601;
+    const FORMAT_UTC='Y-m-d H:i:s';
+    const FORMAT_W3C='c';
 
-    const FORMAT_DEFAULT=self::FORMAT_ISO8601;
+    const FORMAT_DEFAULT='c';
     //--------------------------------------------------------------------------
 
 
@@ -50,7 +51,7 @@ namespace Components;
       $date=new \DateTime();
       $date->setTimezone(Timezone::utc()->internal());
 
-      return new self($date);
+      return new static($date);
     }
 
     /**
@@ -58,12 +59,11 @@ namespace Components;
      * If no timezone is given, a UTC date is expected.
      *
      * @param string $date_
-     * @param string $expectedFormat_
      * @param \Components\Timezone $timezone_
      *
      * @return \Components\Date
      */
-    public static function parse($date_, Timezone $timezone_=null, $expectedFormat_=null)
+    public static function parse($date_, Timezone $timezone_=null)
     {
       extract(date_parse($date_));
 
@@ -74,7 +74,6 @@ namespace Components;
         $timezone_=Timezone::utc();
 
       // TODO Validate input against expected format.
-
       $date=new \DateTime(
         sprintf('%1$d-%2$d-%3$d %4$d:%5$d:%6$d', $year, $month, $day, $hour, $minute, $second),
         $timezone_->internal()
@@ -82,7 +81,7 @@ namespace Components;
 
       $date->setTimezone(Timezone::utc()->internal());
 
-      return new self($date);
+      return new static($date);
     }
 
     /**
@@ -96,30 +95,43 @@ namespace Components;
      *
      * @return \Components\Date
      */
-    public static function fromUnixTimestamp($timestamp_, Timezone $timezone_=null)
+    public static function forUnixTimestamp($timestamp_, Timezone $timezone_=null)
     {
       if(null===$timezone_)
-        $timezone_=Timezone::forSystemDefault();
+        $timezone_=Timezone::systemDefault();
 
       $date=new \DateTime('@'.$timestamp_, $timezone_->internal());
       $date->setTimezone(Timezone::utc()->internal());
 
-      return new self($date);
+      return new static($date);
     }
 
     /**
-     * @param string $date_ ISO-8601 formatted date/time string in UTC.
+     * @param string $date_ ISO-8601 formatted date/time string.
      *
      * @return \Components\Date
      */
-    public static function fromISO8601($date_)
+    public static function forISO8601($date_)
+    {
+      $date=new \DateTime($date_);
+      $date->setTimezone(Timezone::utc()->internal());
+
+      return new static($date);
+    }
+
+    /**
+     * @param string $date_ Date/time string in UTC.
+     *
+     * @return \Components\Date
+     */
+    public static function forUtc($date_)
     {
       $utc=Timezone::utc()->internal();
 
       $date=new \DateTime($date_, $utc);
       $date->setTimezone($utc);
 
-      return new self($date);
+      return new static($date);
     }
 
     /**
@@ -129,7 +141,7 @@ namespace Components;
      */
     public static function valueOf($value_)
     {
-      return static::fromISO8601($value_);
+      return static::forISO8601($value_);
     }
     //--------------------------------------------------------------------------
 
@@ -146,7 +158,7 @@ namespace Components;
       $date=clone $this->m_date;
 
       if(null===$timezone_)
-        $timezone_=Timezone::forSystemDefault();
+        $timezone_=Timezone::systemDefault();
 
       $date->setTimezone($timezone_->internal());
 
@@ -161,7 +173,14 @@ namespace Components;
      */
     public function formatLocalized($format_='common/date/pattern/full', Timezone $timezone_=null)
     {
-      return $this->format(I18n::translate($format_), $timezone_);
+      $date=clone $this->m_date;
+
+      if(null===$timezone_)
+        $timezone_=Timezone::systemDefault();
+
+      $date->setTimezone($timezone_->internal());
+
+      return strftime(I18n::translate($format_), $date->getTimestamp());
     }
 
     /**
@@ -177,10 +196,23 @@ namespace Components;
      */
     public function toISO8601(Timezone $timezone_=null)
     {
-      if(null===$timezone_)
-        $timezone_=Timezone::utc();
-
       return $this->format(self::FORMAT_ISO8601, $timezone_);
+    }
+
+    /**
+     * @return string
+     */
+    public function toUtc()
+    {
+      return $this->m_date->format(self::FORMAT_UTC);
+    }
+
+    /**
+     * @return string
+     */
+    public function toUtcLocalized()
+    {
+      return gmstrftime('%c', $this->m_date->getTimestamp());
     }
 
     /**
@@ -188,7 +220,7 @@ namespace Components;
      */
     public function isBefore(Date $date_)
     {
-      return $this->toUnixTimestamp()<$date_->toUnixTimestamp();
+      return $this->m_date->getTimestamp()<$date_->m_date->getTimestamp();
     }
 
     /**
@@ -196,7 +228,7 @@ namespace Components;
      */
     public function isAfter(Date $date_)
     {
-      return $this->toUnixTimestamp()>$date_->toUnixTimestamp();
+      return $this->m_date->getTimestamp()>$date_->m_date->getTimestamp();
     }
 
     /**
@@ -308,7 +340,7 @@ namespace Components;
      */
     public function isMorning(Timezone $timezone_=null)
     {
-      return self::ANTE_MERIDIEM==$this->format('a', $timezone_);
+      return self::ANTE_MERIDIEM===$this->format('a', $timezone_);
     }
 
     /**
@@ -316,7 +348,7 @@ namespace Components;
      */
     public function isAfternoon(Timezone $timezone_=null)
     {
-      return self::POST_MERIDIEM==$this->format('a', $timezone_);
+      return self::POST_MERIDIEM===$this->format('a', $timezone_);
     }
 
     /**
@@ -524,6 +556,7 @@ namespace Components;
       return new self($date);
     }
 
+    // FIXME (CSH) BS.
     /**
      * @return \Components\Date
      */
@@ -551,10 +584,10 @@ namespace Components;
     {
       if($object_ instanceof self)
       {
-        $timestampSelf=$this->toUnixTimestamp();
-        $timestampObject=$object_->toUnixTimestamp();
+        $timestampSelf=$this->m_date->getTimestamp();
+        $timestampObject=$object_->m_date->getTimestamp();
 
-        if($timestampSelf==$timestampObject)
+        if($timestampSelf===$timestampObject)
           return 0;
 
         if($timestampSelf>$timestampObject)
@@ -571,7 +604,7 @@ namespace Components;
     public function equals($object_)
     {
       if($object_ instanceof self)
-        return $this->toUnixTimestamp()===$object_->toUnixTimestamp();
+        return $this->m_date->getTimestamp()===$object_->m_date->getTimestamp();
 
       return false;
     }
@@ -582,7 +615,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return integer_hash($this->toUnixTimestamp());
+      return integer_hash($this->m_date->getTimestamp());
     }
 
     /**
@@ -600,7 +633,7 @@ namespace Components;
      */
     public function __toString()
     {
-      return $this->format(self::FORMAT_UTC, Timezone::utc());
+      return $this->toISO8601();
     }
 
     /**
@@ -611,21 +644,21 @@ namespace Components;
      */
     public function __clone()
     {
-      return static::fromISO8601($this->toISO8601());
+      return static::forISO8601($this->toISO8601());
     }
 
     public function __sleep()
     {
-      $this->m_asString=$this->toISO8601();
+      $this->m_iso8601=$this->toISO8601();
 
-      return array('m_asString');
+      return array('m_iso8601');
     }
 
     public function __wakeup()
     {
       $utc=Timezone::utc()->internal();
 
-      $this->m_date=new \DateTime($this->m_asString, $utc);
+      $this->m_date=new \DateTime($this->m_iso8601, $utc);
       $this->m_date->setTimezone($utc);
     }
 
@@ -644,7 +677,7 @@ namespace Components;
     /**
      * @var string
      */
-    private $m_asString;
+    private $m_iso8601;
     /**
      * @var \DateTime
      */
@@ -662,7 +695,7 @@ namespace Components;
     protected function modified($modification_=null)
     {
       // FIXME clone does not seem to work...
-      $instance=static::fromISO8601($this->toISO8601());
+      $instance=new static(new \DateTime('@'.$this->m_date->getTimestamp(), timezone_open('UTC')));
 
       if(null!==$modification_)
         $instance->m_date->modify($modification_);

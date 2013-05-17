@@ -12,8 +12,15 @@ namespace Components;
    *
    * @author evalcode.net
    */
+  // TODO (CSH) Add alpha ...
   class Color implements Object, Cloneable, Value_String
   {
+    // PREDEFINED PROPERTIES
+    const BLACK='black';
+    const WHITE='white';
+    //--------------------------------------------------------------------------
+
+
     // PROPERTIES
     /**
      * @var integer
@@ -140,6 +147,22 @@ namespace Components;
     }
 
     /**
+     * @return \Components\Color
+     */
+    public static function black()
+    {
+      return static::forName(self::BLACK);
+    }
+
+    /**
+     * @return \Components\Color
+     */
+    public static function white()
+    {
+      return static::forName(self::WHITE);
+    }
+
+    /**
      * @param string $string_ CSS-like RGB color value / hex value
      *
      * @return \Components\Color
@@ -222,6 +245,14 @@ namespace Components;
     {
       return $this->toRgbString();
     }
+    //--------------------------------------------------------------------------
+
+
+    // IMPLEMENTATION
+    private static $m_named=array(
+      self::BLACK=>array(0, 0, 0),
+      self::WHITE=>array(255, 255, 255)
+    );
     //--------------------------------------------------------------------------
   }
 ?>

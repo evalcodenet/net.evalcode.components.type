@@ -111,6 +111,22 @@ namespace Components;
     {
       return new static(static::cast($value_));
     }
+
+    /**
+     * @return \Components\Boolean
+     */
+    public static function TRUE()
+    {
+      return new static(true);
+    }
+
+    /**
+     * @return \Components\Boolean
+     */
+    public static function FALSE()
+    {
+      return new static(false);
+    }
     //--------------------------------------------------------------------------
 
 

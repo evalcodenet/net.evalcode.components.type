@@ -68,7 +68,7 @@ namespace Components;
      *
      * @return \Components\Timezone
      */
-    public static function forSystemDefault()
+    public static function systemDefault()
     {
       return new static(timezone_open(date_default_timezone_get()));
     }

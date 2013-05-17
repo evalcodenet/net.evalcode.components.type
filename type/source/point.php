@@ -41,6 +41,17 @@ namespace Components;
 
     // OVERRIDES
     /**
+     * @param integer $x_
+     * @param integer $y_
+     *
+     * @return \Components\Point
+     */
+    public static function of($x_, $y_)
+    {
+      return new static($x_, $y_);
+    }
+
+    /**
      * @param string $value_
      *
      * @return \Components\Point

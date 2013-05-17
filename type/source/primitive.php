@@ -97,6 +97,7 @@ namespace Components;
      */
     public static function isNative($type_)
     {
+      // TODO (CSH) is_scalar || is_array might be faster ...
       if(isset(self::$m_nativeToBoxed[$type_]))
         return true;
 

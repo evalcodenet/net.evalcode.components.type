@@ -20,7 +20,7 @@ namespace Components;
     const PROPERTY_ANNOTATION=4;
     const PARAMETER_ANNOTATION=8;
 
-    const PATTERN='/(?:namespace[\s]+([\\a-z]+)[;]+[\s\w\\/]*)*(?:[\040\052]*[@]([a-z0-9]+)\(*([\040-\047\053-\177]*)\)*)*[\012\040]*\052\057*[\040\012]*(?:[\040\012]*(?:(?:(?:(?:abstract|final)+\s+)*(?:class|interface|trait)\s(\w+)\s)|((?:var|abstract|final|static|public|protected|private|function)*[\s\w]*[$a-z_]+)))*/mi';
+    const PATTERN='/(?:namespace[\s]+([\\a-z]+)[;]+[\s\w\\/]*)*(?:[\040\052]*[@]([a-z0-9]+)\(*([\040-\047\053-\177]*)\)*)*[\012\040]*\052\057*[\040\012]*(?:[\040\012]*(?:(?:(?:(?:abstract|final)+\s+)*(?:class|interface|trait)\s(\w+)\s)|((?:var|final|static|public|function)*[\s\w]*[$a-z_]+)))*/mi';
     //--------------------------------------------------------------------------
 
 

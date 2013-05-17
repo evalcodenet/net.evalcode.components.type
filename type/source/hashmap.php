@@ -21,9 +21,9 @@ namespace Components;
 
 
     // CONSTRUCTION
-    public function __construct(array $value_)
+    public function __construct(array $value_=array())
     {
-      $this->m_value=$value_;
+      parent::__construct($value_);
     }
     //--------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ namespace Components;
      */
     public static function createEmpty()
     {
-      return new static(array());
+      return new static();
     }
     //--------------------------------------------------------------------------
 
@@ -131,6 +131,8 @@ namespace Components;
     public function put($key_, $value_)
     {
       $this->m_value[$key_]=$value_;
+
+      return $this;
     }
 
     /**
@@ -141,6 +143,8 @@ namespace Components;
     {
       foreach($map_->m_value as $key=>$value)
         $this->m_value[$key]=$value;
+
+      return $this;
     }
 
     /**
@@ -151,6 +155,8 @@ namespace Components;
     {
       foreach($array_ as $key=>$value)
         $this->m_value[$key_]=$value;
+
+      return $this;
     }
 
     /**
@@ -173,6 +179,8 @@ namespace Components;
     public function clear()
     {
       $this->m_value=array();
+
+      return $this;
     }
 
     /**

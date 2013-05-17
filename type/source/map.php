@@ -20,6 +20,8 @@ namespace Components;
      * given key in this map.
      *
      * @param mixed $key_
+     *
+     * @return boolean
      */
     function containsKey($key_);
 
@@ -27,6 +29,8 @@ namespace Components;
      * Determines whether given value exists in this map.
      *
      * @param mixed $value_
+     *
+     * @return boolean
      */
     function containsValue($value_);
 
@@ -34,6 +38,8 @@ namespace Components;
      * Returns value linked to given key in this map.
      *
      * @param mixed $key_
+     *
+     * @return mixed
      */
     function get($key_);
 
@@ -42,6 +48,8 @@ namespace Components;
      *
      * @param mixed $key_
      * @param mixed $value_
+     *
+     * @return \Components\HashMap
      */
     function put($key_, $value_);
 
@@ -49,6 +57,8 @@ namespace Components;
      * Adds key/value pairs of given map to this one.
      *
      * @param Map $map_
+     *
+     * @return \Components\HashMap
      */
     function putMap(Map $map_);
 
@@ -56,46 +66,52 @@ namespace Components;
      * Adds key/value pairs of given array to this one.
      *
      * @param mixed|array $array_
+     *
+     * @return \Components\HashMap
      */
     function putArray(array $array_);
 
     /**
-     * Removes value linked to given key in this map.
+     * Removes and returns value linked to given key in this map.
      *
      * @param mixed $key_
+     *
+     * @return mixed
      */
     function remove($key_);
 
     /**
      * Removes all key/value pairs of this map.
+     *
+     * @return \Components\HashMap
      */
     function clear();
 
     /**
      * Returns all keys of this map.
      *
-     * @return mixed|array
+     * @return array|mixed
      */
     function keys();
 
     /**
      * Returns collection of keys of this map.
      *
-     * @return Collection
+     * @return \Components\Collection_Set
      */
     function keySet();
 
     /**
      * Returns all values of this map.
      *
-     * @return mixed|array
+     * @return array|mixed
      */
     function values();
 
     /**
      * Returns collection of values of this map.
      *
-     * @return Collection
+     * @return \Components\Collection_Set
      */
     function valueSet();
 
@@ -103,6 +119,8 @@ namespace Components;
      * Determines whether a value is linked to given key in this map.
      *
      * @param mixed $key_
+     *
+     * @return boolean
      */
     function __isset($key_);
 
@@ -117,6 +135,8 @@ namespace Components;
      * Returns value linked to given key in this map.
      *
      * @param mixed $key_
+     *
+     * @return mixed
      */
     function __get($key_);
 
@@ -131,14 +151,16 @@ namespace Components;
     /**
      * Returns array used as internal storage.
      *
-     * @return mixed|array
+     * @see \Components\Collection::arrayValue()
+     *
+     * @return array|mixed
      */
     function arrayValue();
 
     /**
      * Determines whether an element is linked to given offset in this map.
      *
-     * @see ArrayAccess::offsetExists()
+     * @see \ArrayAccess::offsetExists()
      *
      * @param mixed $offset_
      *
@@ -149,7 +171,7 @@ namespace Components;
     /**
      * Returns the element linked to given offset in this map.
      *
-     * @see ArrayAccess::offsetExists()
+     * @see \ArrayAccess::offsetExists()
      *
      * @param mixed $offset_
      *
@@ -160,7 +182,7 @@ namespace Components;
     /**
      * Links given element to given offset in this map.
      *
-     * @see ArrayAccess::offsetExists()
+     * @see \ArrayAccess::offsetExists()
      *
      * @param mixed $offset_
      * @param mixed $value_
@@ -170,7 +192,7 @@ namespace Components;
     /**
      * Unlinks element corresponding to given offset in this map.
      *
-     * @see ArrayAccess::offsetUnset()
+     * @see \ArrayAccess::offsetUnset()
      *
      * @param mixed $offset_
      */

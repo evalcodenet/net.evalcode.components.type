@@ -26,6 +26,39 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
+     * (non-PHPdoc)
+     * @see \Components\Primitive::cast()
+     *
+     * @return string
+     */
+    public static function native()
+    {
+      return self::TYPE_NATIVE;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see \Components\Primitive::cast()
+     *
+     * @return integer
+     */
+    public static function cast($value_)
+    {
+      return (int)$value_;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Components\Primitive::valueOf()
+     *
+     * @return \Components\Integer
+     */
+    public static function valueOf($value_)
+    {
+      return new static((int)$value_);
+    }
+
+    /**
      * Returns passed integer as string in base 2.
      *
      * @param integer $integer_
@@ -70,36 +103,30 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Primitive::cast()
-     *
-     * @return string
+     * @return \Components\Integer
      */
-    public static function native()
+    public static function max()
     {
-      return self::TYPE_NATIVE;
+      return new static(PHP_INT_MAX);
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Primitive::cast()
-     *
-     * @return integer
+     * @return \Components\Integer
      */
-    public static function cast($value_)
+    public static function zero()
     {
-      return (int)$value_;
+      return new static(0);
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Primitive::valueOf()
+     * @param integer $min_
+     * @param integer $max_
      *
      * @return \Components\Integer
      */
-    public static function valueOf($value_)
+    public static function random($min_=0, $max_=PHP_INT_MAX)
     {
-      return new static((int)$value_);
+      return new static(rand($min_, $max_));
     }
     //--------------------------------------------------------------------------
 
