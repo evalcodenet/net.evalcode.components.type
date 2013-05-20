@@ -56,13 +56,6 @@ namespace Components;
      * Removes all elements from this collection.
      */
     function clear();
-
-    /**
-     * Returns array used as internal storage for this collection.
-     *
-     * @returns mixed|array
-     */
-    function arrayValue();
     //--------------------------------------------------------------------------
   }
 ?>

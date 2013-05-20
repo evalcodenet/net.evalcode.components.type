@@ -95,7 +95,29 @@ namespace Components;
       if(true===$value_ || false===$value_)
         return $value_;
 
-      if(1===(int)$value_ || 'true'===(string)$value_ || 'true'===trim(strtolower((string)$value_)))
+      if(1===(int)$value_ || false!==stripos($value_, 'true'))
+        return true;
+
+      return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    public static function valueIsFalse($value_)
+    {
+      if(false===$value_ || 1!==(int)$value_ || false===stripos($value_, 'true'))
+        return true;
+
+      return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    public static function valueIsTrue($value_)
+    {
+      if(true===$value_ || 1===(int)$value_ || false!==stripos($value_, 'true'))
         return true;
 
       return false;
@@ -109,13 +131,16 @@ namespace Components;
      */
     public static function valueOf($value_)
     {
-      return new static(static::cast($value_));
+      if(true===$value_ || 1===(int)$value_ || false!==stripos($value_, 'true'))
+        return new static(true);
+
+      return new static(false);
     }
 
     /**
      * @return \Components\Boolean
      */
-    public static function TRUE()
+    public static function true()
     {
       return new static(true);
     }
@@ -123,7 +148,7 @@ namespace Components;
     /**
      * @return \Components\Boolean
      */
-    public static function FALSE()
+    public static function false()
     {
       return new static(false);
     }
@@ -191,7 +216,7 @@ namespace Components;
         return 1;
       }
 
-      $objectAsBoolean=static::cast($object_);
+      $objectAsBoolean=true===$value_ || 1===(int)$value_ || false!==stripos($value_, 'true');
 
       if($this->m_value===$objectAsBoolean)
         return 0;
@@ -230,9 +255,9 @@ namespace Components;
     public function __toString()
     {
       if(true===$this->m_value)
-        return self::TRUE_AS_STRING;
+        return 'true';
 
-      return self::FALSE_AS_STRING;
+      return 'false';
     }
 
     /**

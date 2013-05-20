@@ -42,9 +42,6 @@ namespace Components;
      */
     public static function get($type_)
     {
-      if(0===strpos($type_, '\\'))
-        $type_=ltrim($type_, '\\');
-
       if(false===isset(self::$m_instances[$type_]))
         self::$m_instances[$type_]=self::resolveInstance($type_);
 
@@ -486,6 +483,9 @@ namespace Components;
      */
     private static function resolveInstance($type_)
     {
+      if(0===strpos($type_, '\\'))
+        $type_=ltrim($type_, '\\');
+
       $cacheKeyType='components/type/annotations/'.md5($type_);
 
       if(false===($cached=Cache::get($cacheKeyType)))

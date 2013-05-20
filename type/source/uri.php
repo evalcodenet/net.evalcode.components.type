@@ -69,7 +69,7 @@ namespace Components;
     {
       $uri=self::arrayForString($uri_);
 
-      if(isset($uri['scheme']) && ($impl=Uri_Scheme::getImplTypeForScheme($uri['scheme'])))
+      if(isset($uri['scheme']) && ($impl=Resource_Type::getResourceIdentifierTypeForScheme($uri['scheme'])))
         $instance=new $impl();
       else
         $instance=new static();
@@ -91,28 +91,19 @@ namespace Components;
 
     // ACCESSORS
     /**
-     * @return \Components\Uri_Resolver
+     * @return \Components\Resource
      */
-    public function getResolver()
+    public function getResource()
     {
-      // TODO Should be definable.
-      if(null===$this->m_resolver)
+      if(null===$this->m_resource)
       {
-        if(Uri_Resolver_Curl::isSupported())
-          $this->m_resolver=new Uri_Resolver_Curl();
+        if($type=Resource_Type::getResourceTypeForScheme($this->m_scheme))
+          $this->m_resource=new $type($this);
         else
-          $this->m_resolver=new Uri_Resolver_Default();
+          $this->m_resource=Resource_Url_Factory::create($this);
       }
 
-      return $this->m_resolver;
-    }
-
-    /**
-     * @param \Components\Uri_Resolver $resolver_
-     */
-    public function setResolver(Uri_Resolver $resolver_)
-    {
-      $this->m_resolver=$resolver_;
+      return $this->m_resource;
     }
 
     /**
@@ -831,10 +822,10 @@ namespace Components;
       $url->setQueryParams($this->getQueryParams());
       $url->setFragment($this->getFragment());
 
-      if(null!==$this->m_resolver)
+      if(null!==$this->m_resource)
       {
         // TODO Clone?
-        $resolver=get_class($this->m_resolver);
+        $resolver=get_class($this->m_resource);
         $url->setResolver(new $resolver());
       }
 
@@ -856,8 +847,8 @@ namespace Components;
 
       if(null!==$this->m_options)
         $serialize[]='m_options';
-      if(null!==$this->m_resolver)
-        $serialize[]='m_resolver';
+      if(null!==$this->m_resource)
+        $serialize[]='m_resource';
 
       return $serialize;
     }
@@ -896,9 +887,9 @@ namespace Components;
     // IMPLEMENTATION
     protected $m_asString;
     /**
-     * @var Components\Uri_Resolver
+     * @var Components\Resource_Url
      */
-    protected $m_resolver;
+    protected $m_resource;
     /**
      * @var Components\Bitmask
      */
