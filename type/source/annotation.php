@@ -68,8 +68,8 @@ namespace Components;
      */
     public function __toString()
     {
-      return sprintf('%s@%s{properties: %s}',
-        __CLASS__,
+      return sprintf('%s@%s{%s}',
+        get_class($this),
         $this->hashCode(),
         Arrays::toString($this->toArray())
       );
