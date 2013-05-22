@@ -635,6 +635,20 @@ namespace Components;
     }
 
     /**
+     * Removes given query parameter.
+     *
+     * @param string $key_
+     *
+     * @return \Components\Uri
+     */
+    public function removeQueryParam($key_)
+    {
+      unset($this->m_queryParams[$key_]);
+
+      return $this;
+    }
+
+    /**
      * Returns query parameters.
      *
      * <pre>
@@ -821,13 +835,6 @@ namespace Components;
       $url->setPathParams($this->getPathParams());
       $url->setQueryParams($this->getQueryParams());
       $url->setFragment($this->getFragment());
-
-      if(null!==$this->m_resource)
-      {
-        // TODO Clone?
-        $resolver=get_class($this->m_resource);
-        $url->setResolver(new $resolver());
-      }
 
       if(null!==$this->m_options)
         $url->getOptions()->set($this->getOptions()->toBitmask());
