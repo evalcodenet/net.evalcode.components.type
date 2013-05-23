@@ -162,12 +162,10 @@ namespace Components;
 
       if($user=$this->getUsername())
       {
-        $user=String::urlEncode($user);
-
         if($password=$this->getPassword())
-          $user.=':'.String::urlEncode($password);
+          $user.=":$password";
 
-        return $user.'@'.$host;
+        return "$user@$host";
       }
 
       return $host;
@@ -340,7 +338,7 @@ namespace Components;
     public function getPath()
     {
       $pathParams=array();
-      foreach($this->getPathParams() as $pathParam)
+      foreach($this->m_pathParams as $pathParam)
         array_push($pathParams, String::urlEncode($pathParam));
 
       return '/'.implode('/', $pathParams);
@@ -362,13 +360,14 @@ namespace Components;
     {
       $this->m_pathParams=array();
 
-      if(0===mb_strpos($path_, '/'))
-        $pathParams=explode('/', mb_substr($path_, 1));
-      else
-        $pathParams=explode('/', $path_);
+      $path_=ltrim($path_, '/');
+      $pathParams=explode('/', $path_);
 
       foreach($pathParams as $pathParam)
-        $this->pushPathParam(String::urlDecode($pathParam));
+      {
+        if(null!==$pathParam && 0<strlen($pathParam))
+          array_push($this->m_pathParams, String::urlDecode($pathParam));
+      }
 
       return $this;
     }
@@ -390,7 +389,10 @@ namespace Components;
       $this->m_pathParams=array();
 
       foreach($pathParams_ as $pathParam)
-        $this->pushPathParam($pathParam);
+      {
+        if(null!==$pathParam && 0<strlen($pathParam))
+          array_push($this->m_pathParams, String::urlDecode($pathParam));
+      }
 
       return $this;
     }
@@ -460,9 +462,6 @@ namespace Components;
      */
     public function setPathParam($idx_, $pathParam_)
     {
-      if(null===$pathParam_ || 1>String::length($pathParam_))
-        return $this;
-
       $this->m_pathParams[$idx_]=$pathParam_;
 
       return $this;
@@ -497,10 +496,8 @@ namespace Components;
      */
     public function pushPathParam($pathParam_)
     {
-      if(null===$pathParam_ || 1>String::length($pathParam_))
-        return $this;
-
-      array_push($this->m_pathParams, $pathParam_);
+      if(null!==$pathParam_ && 0<strlen($pathParam_))
+        array_push($this->m_pathParams, $pathParam_);
 
       return $this;
     }
@@ -782,7 +779,7 @@ namespace Components;
     public function equals($object_)
     {
       if($object_ instanceof self)
-        return String::equals((string)$this, (string)$this);
+        return String::equal((string)$this, (string)$this);
 
       return false;
     }
@@ -803,18 +800,30 @@ namespace Components;
     public function __toString()
     {
       $string='';
+      if($this->m_scheme)
+        $string="{$this->m_scheme}://";
 
-      if($scheme=$this->getScheme())
-        $string=$scheme.'://'.$this->getAuthority();
+      if($this->m_username && $this->m_host)
+      {
+        $authority=String::urlEncode($this->m_username);
 
-      if($path=$this->getPath())
+        if($this->m_password)
+          $authority.=':'.String::urlEncode($this->m_password);
+
+        $string.="$authority@";
+      }
+
+      if($this->m_host)
+        $string.=$this->m_host;
+
+      if(0<strlen($path=$this->getPath()))
         $string.=$path;
 
       if($queryString=$this->getQueryString())
         $string.='?'.$queryString;
 
-      if($fragment=$this->getFragment())
-        $string.='#'.String::urlEncode($fragment);
+      if($this->m_fragment)
+        $string.='#'.String::urlEncode($this->m_fragment);
 
       return $string;
     }
@@ -827,17 +836,18 @@ namespace Components;
     {
       $url=new self();
 
-      $url->setScheme($this->getScheme());
-      $url->setHost($this->getHost());
-      $url->setPort($this->getPort());
-      $url->setUsername($this->getUsername());
-      $url->setPassword($this->getPassword());
+      $url->m_scheme=$this->m_scheme;
+      $url->m_host=$this->m_host;
+      $url->m_port=$this->m_port;
+      $url->m_username=$this->m_username;
+      $url->m_password=$this->m_password;
+      // clone arrays?
       $url->setPathParams($this->getPathParams());
       $url->setQueryParams($this->getQueryParams());
-      $url->setFragment($this->getFragment());
+      $url->m_fragment=$this->m_fragment;
 
       if(null!==$this->m_options)
-        $url->getOptions()->set($this->getOptions()->toBitmask());
+        $url->m_options=Bitmask::forBitmask($this->m_options->toBitmask());
 
       return $url;
     }
@@ -851,11 +861,8 @@ namespace Components;
       $this->m_asString=(string)$this;
 
       $serialize=array('m_asString');
-
       if(null!==$this->m_options)
         $serialize[]='m_options';
-      if(null!==$this->m_resource)
-        $serialize[]='m_resource';
 
       return $serialize;
     }
@@ -894,11 +901,11 @@ namespace Components;
     // IMPLEMENTATION
     protected $m_asString;
     /**
-     * @var Components\Resource_Url
+     * @var \Components\Resource
      */
     protected $m_resource;
     /**
-     * @var Components\Bitmask
+     * @var \Components\Bitmask
      */
     protected $m_options;
     protected $m_scheme;
