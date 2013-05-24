@@ -72,7 +72,12 @@ namespace Components;
           }
           else
           {
-            $values[]=$key.$separatorKeyValue_.(string)$value;
+            if(is_null($value))
+              $values[]=$key.$separatorKeyValue_.'null';
+            else if(is_bool($value))
+              $values[]=$key.$separatorKeyValue_.Boolean::valueAsString($value);
+            else
+              $values[]=$key.$separatorKeyValue_.(string)$value;
           }
         }
       }

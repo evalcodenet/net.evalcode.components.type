@@ -143,7 +143,7 @@ namespace Components;
 
 
     // IMPLEMENTATION
-    protected function previous()
+    public function previous()
     {
       while(0<$this->m_position)
       {

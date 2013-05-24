@@ -481,16 +481,17 @@ namespace Components;
         'Ú'=>'U', 'Û'=>'U', 'Ç'=>'C', 'Š'=>'S'
       );
 
-      return strtr($string_, $s_table);
-    }
+      $string_=strtr($string_, $s_table);
 
+      return preg_replace('/[^\x00-\x7F]/', '', $string_);
+    }
 
     /**
      * Checks for LATIN-1 string.
      *
      * @param string $string_
      *
-     * @return bool
+     * @return boolean
      */
     public static function isLatin1($string_)
     {
@@ -525,7 +526,7 @@ namespace Components;
      *
      * @param string $string_
      *
-     * @return bool
+     * @return boolean
      */
     public static function isCamelCase($string_)
     {
@@ -533,9 +534,9 @@ namespace Components;
     }
 
     /**
-     * @param string $string_
+     * @param string $string_ mul ti ply
      *
-     * @return string
+     * @return string mulTiPly
      */
     public static function toCamelCase($string_)
     {
@@ -558,75 +559,38 @@ namespace Components;
     }
 
     /**
-     * @param string $string_
+     * @param string $string_ propErTy
      *
-     * @return string
+     * @return string PROP ER TY
      */
     public static function camelCaseToUppercase($string_)
     {
-      if(false===is_string($string_))
-        $string_=(string)$string_;
-
-      $string='';
-
-      $len=mb_strlen($string_);
-      for($i=0; $i<$len; $i++)
-      {
-        $dec=ord($string_[$i]);
-        if(64<$dec && 91>$dec)
-        {
-          if(0<$i)
-            $string.=' ';
-
-          $string.=$string_[$i];
-        }
-        else
-        {
-          $string.=chr($dec-32);
-        }
-      }
-
-      return $string;
+      return strtoupper(static::camelCaseToLowercase($string_));
     }
 
     /**
-     * @param string $string_
+     * @param string $string_ propErTy
      *
-     * @return string
+     * @return string prop er ty
      */
     public static function camelCaseToLowercase($string_)
     {
-      if(false===is_string($string_))
-        $string_=(string)$string_;
+      static $stringTable=array(
+        'A'=>' a', 'B'=>' b', 'C'=>' c', 'D'=>' d', 'E'=>' e', 'F'=>' f', 'G'=>' g', 'H'=>' h',
+        'I'=>' i', 'J'=>' j', 'K'=>' k', 'L'=>' l', 'M'=>' m', 'N'=>' n', 'O'=>' o', 'P'=>' p',
+        'Q'=>' q', 'R'=>' r', 'S'=>' s', 'T'=>' t', 'U'=>' u', 'V'=>' v', 'W'=>' w', 'X'=>' x',
+        'Y'=>' y', 'Z'=>' z'
+      );
 
-      $string='';
-
-      $len=mb_strlen($string_);
-      for($i=0; $i<$len; $i++)
-      {
-        $dec=ord($string_[$i]);
-        if(64<$dec && 91>$dec)
-        {
-          if(0<$i)
-            $string.=' ';
-
-          $string.=chr($dec+32);
-        }
-        else
-        {
-          $string.=$string_[$i];
-        }
-      }
-
-      return $string;
+      return strtr(trim($string_), $stringTable);
     }
 
     /**
      * Converts camelcase names to underscore.
      *
-     * @param string $string_
+     * @param string $string_ propErTy
      *
-     * @return string
+     * @return string prop_er_ty
      */
     public static function camelCaseToUnderscore($string_)
     {
@@ -637,30 +601,30 @@ namespace Components;
         'Y'=>'_y', 'Z'=>'_z'
       );
 
-      return strtr(self::trim($string_), $stringTable);
+      return strtr(trim($string_), $stringTable);
     }
 
     /**
      * Converts underscore names to camelcase.
      *
-     * @param string $string_
+     * @param string $string_ prop_er_ty
      *
-     * @return string
+     * @return string propErTy
      */
     public static function underscoreToCamelCase($string_)
     {
       $camelcase=ucwords(strtr(trim($string_), '_', ' '));
       $camelcase[0]=self::lowercase($camelcase[0]);
 
-      return self::replace($camelcase, ' ', '');
+      return mb_ereg_replace(' ', '', $camelcase);
     }
 
     /**
      * Converts underscore names to namespaces.
      *
-     * @param string $string_
+     * @param string $string_ Name_Space_Type_Name
      *
-     * @return string
+     * @return string name/space/type/name
      */
     public static function underscoreToNamespace($string_)
     {
@@ -670,13 +634,48 @@ namespace Components;
     /**
      * Converts PHP type names to namespaces.
      *
-     * @param string $string_
+     * @param string $string_ Name\\Space\\Type_Name
      *
-     * @return string
+     * @return string name/space/type/name
+     *
+     * For actual type <> name conversion look at runtime/classloader#lookupName
+     * @see \Components\Runtime_Classloader::lookupName()
      */
     public static function typeToNamespace($string_)
     {
       return strtolower(strtr($string_, '\\_', '//'));
+    }
+
+    /**
+     * Converts namespace notation to PHP type names.
+     *
+     * @param string $string_ name/space/type/name
+     *
+     * @return string Name_Space_Type_Name
+     *
+     * For actual name <> type resolution look at runtime/classloader#lookup
+     * @see \Components\Runtime_Classloader::lookup()
+     */
+    public static function namespaceToType($string_)
+    {
+      $string_=strtr($string_, '/', ' ');
+      $string_=ucwords($string_);
+
+      return strtr($string_, ' ', '_');
+    }
+
+    /**
+     * Converts namespace notation to database table names.
+     *
+     * @param string $string_ entity/foo/bar
+     *
+     * @return string entity_foo_bar
+     */
+    public static function namespaceToTableName($string_)
+    {
+      $string_=preg_replace('/[^a-z0-9]/i', '_', $string_);
+
+      return preg_replace('/_+/', '_', strtolower($string_));
     }
 
     /**
@@ -688,7 +687,7 @@ namespace Components;
      */
     public static function isLowercaseUrlIdentifier($string_)
     {
-      return 1==preg_match('/^[a-z][a-z0-9_]*$/', $string_);
+      return 1===preg_match('/^[a-z][a-z0-9_\-]*$/', $string_);
     }
 
     /**
@@ -700,13 +699,12 @@ namespace Components;
      */
     public static function toLowercaseUrlIdentifier($string_, $preserveUnicode_=false)
     {
-      $string_=strtolower(static::toASCII($string_));
       if($preserveUnicode_)
         $string_=mb_convert_encoding($string_, 'HTML-ENTITIES', 'UTF-8');
 
-      $string_=preg_replace('/[^a-z0-9]/', '-', $string_);
+      $string_=preg_replace('/[^a-z0-9]/i', '-', $string_);
 
-      return preg_replace('/-+/', '-', $string_);
+      return preg_replace('/-+/', '-', strtolower($string_));
     }
 
     /**

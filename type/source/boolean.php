@@ -124,6 +124,20 @@ namespace Components;
     }
 
     /**
+     * @param mixed $value_
+     *
+     * @return string
+     */
+    public static function valueAsString($value_)
+    {
+      if(true===$value_ || 1===(int)$value_ || false!==stripos($value_, 'true'))
+        return self::TRUE_AS_STRING;
+
+      return self::FALSE_AS_STRING;
+    }
+
+
+    /**
      * (non-PHPdoc)
      * @see Components\Primitive::valueOf()
      *
