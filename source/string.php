@@ -23,6 +23,14 @@ namespace Components;
      * @var string Name of native representation of this type.
      */
     const TYPE_NATIVE='string';
+
+    const ASCII_TABLE_NUMBERS           =00000001;
+    const ASCII_TABLE_LETTERS           =00000010;
+    const ASCII_TABLE_LOWERCASE         =00000100;
+    const ASCII_TABLE_UPPERCASE         =00001000;
+    const ASCII_TABLE_SPECIAL_CHARACTERS=00010000;
+    const ASCII_TABLE_CONTROL_CHARACTERS=00100000;
+    const ASCII_TABLE_FULL              =00111111;
     //--------------------------------------------------------------------------
 
 
@@ -511,7 +519,7 @@ namespace Components;
           $ord=($ord-192)*64+ord($string_[++$i])-128;
 
           // LATIN-1?
-          if($ord<=0xFF)
+          if($ord<=0xff)
             continue;
         }
 
@@ -909,6 +917,73 @@ namespace Components;
 
       return $password;
     }
+
+    /**
+     * The actual length of returned serial gets increasingly inacurate
+     * with increasingly expected length since we do not respect that
+     * further separators than naivly estimated are required as soon as
+     * their amount exceeds the expected segment length.
+     *
+     * @param integer $length_
+     * @param integer $lengthChunks_
+     * @param string $separatorChunks_
+     * @param integer $asciiTable_
+     *
+     * @return string
+     */
+    public static function generateSerialNumber($length_=29, $lengthSegments_=5, $separatorSegments_='-', $asciiTable_=null)
+    {
+      if(null===$asciiTable_)
+        $asciiTable_=self::ASCII_TABLE_NUMBERS|self::ASCII_TABLE_LETTERS|self::ASCII_TABLE_UPPERCASE;
+
+      $chars=static::asciiTable($asciiTable_);
+      $limit=count($chars)-1;
+
+      $countSegments=$length_/$lengthSegments_;
+
+      if(null!==$separatorSegments_)
+        $length_-=($countSegments-1)*strlen($separatorSegments_);
+
+      $serial='';
+      for($i=0; $i<$length_; $i++)
+        $serial.=chr($chars[rand(0, $limit)]);
+
+      $segments=str_split($serial, $lengthSegments_);
+
+      return implode($separatorSegments_, array_slice($segments, 0, $countSegments));
+    }
+
+    /**
+     * @param integer $type_
+     *
+     * @return array|integer
+     */
+    public static function asciiTable($type_=self::ASCII_TABLE_FULL)
+    {
+      if(isset(self::$m_asciiTable[$type_]))
+        return self::$m_asciiTable[$type_];
+
+      $table=array();
+      if(0<(self::ASCII_TABLE_CONTROL_CHARACTERS&$type_))
+        $table=array_merge($table, range(0, 31, 1));
+      if(0<(self::ASCII_TABLE_SPECIAL_CHARACTERS&$type_))
+        $table=array_merge($table, range(32, 47, 1), range(58, 64, 1), range(91, 96, 1), range(123, 127, 1));
+      if(0<(self::ASCII_TABLE_NUMBERS&$type_))
+        $table=array_merge($table, range(48, 57, 1));
+
+      if(0<(self::ASCII_TABLE_LETTERS&$type_))
+      {
+        if((0===(self::ASCII_TABLE_UPPERCASE&$type_) && 0===(self::ASCII_TABLE_LOWERCASE&$type_))
+          || (0<(self::ASCII_TABLE_UPPERCASE&$type_) && 0<(self::ASCII_TABLE_LOWERCASE&$type_)))
+          $table=array_merge($table, range(65, 90, 1), range(97, 122, 1));
+        else if(0<(self::ASCII_TABLE_LOWERCASE&$type_))
+          $table=array_merge($table, range(97, 122, 1));
+        else if(0<(self::ASCII_TABLE_UPPERCASE&$type_))
+          $table=array_merge($table, range(65, 90, 1));
+      }
+
+      return self::$m_asciiTable[$type_]=$table;
+    }
     //--------------------------------------------------------------------------
 
 
@@ -977,6 +1052,11 @@ namespace Components;
     {
       return 1;
     }
+    //--------------------------------------------------------------------------
+
+
+    //IMPLEMENTATION
+    private static $m_asciiTable=array();
     //--------------------------------------------------------------------------
   }
 ?>
