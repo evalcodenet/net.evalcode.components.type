@@ -63,21 +63,38 @@ namespace Components;
      *
      * @return \Components\Date
      */
-    public static function parse($date_, Timezone $timezone_=null)
+    public static function parse($date_, Timezone $timezone_=null, $pattern_=null)
     {
-      extract(date_parse($date_));
+      $parsed=@date_parse($date_);
 
-      if(null===$timezone_ && isset($zone))
-        $timezone_=Timezone::forOffset($zone/60);
+      if(null===$timezone_)
+      {
+        if(isset($parsed['zone']))
+          $timezone_=Timezone::forOffset($parsed['zone']/60);
+      }
 
       if(null===$timezone_)
         $timezone_=Timezone::utc();
 
-      // TODO Validate input against expected format.
-      $date=new \DateTime(
-        sprintf('%1$d-%2$d-%3$d %4$d:%5$d:%6$d', $year, $month, $day, $hour, $minute, $second),
-        $timezone_->internal()
-      );
+      if(null===$pattern_)
+        $pattern_=I18n::translate('common/datetime/pattern/parse');
+
+      if(isset($parsed['errors_count']) && 0<(int)$parsed['errors_count'])
+      {
+        $date=\DateTime::createFromFormat($pattern_, $date_, $timezone_->internal());
+      }
+      else
+      {
+        extract($parsed);
+
+        $date=new \DateTime(
+          sprintf('%1$d-%2$d-%3$d %4$d:%5$d:%6$d', $year, $month, $day, $hour, $minute, $second),
+          $timezone_->internal()
+        );
+      }
+
+      if(!$date)
+        throw new Exception_IllegalArgument('type/date', 'Unable to parse given date. Try specifying a matching pattern.');
 
       $date->setTimezone(Timezone::utc()->internal());
 
@@ -171,7 +188,7 @@ namespace Components;
      *
      * @return string
      */
-    public function formatLocalized($format_='common/date/pattern/full', Timezone $timezone_=null)
+    public function formatLocalized($pattern_='common/datetime/pattern/full', Timezone $timezone_=null)
     {
       $date=clone $this->m_date;
 
@@ -180,7 +197,7 @@ namespace Components;
 
       $date->setTimezone($timezone_->internal());
 
-      return strftime(I18n::translate($format_), $date->getTimestamp());
+      return strftime(I18n::translate($pattern_), $date->getTimestamp());
     }
 
     /**

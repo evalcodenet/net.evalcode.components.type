@@ -654,6 +654,26 @@ namespace Components;
       return strtolower(strtr($string_, '\\_', '//'));
     }
 
+    public static function typeToPath($string_)
+    {
+      return strtolower(strtr(str_replace('\\', '//', $string_), '_', '/'));
+    }
+
+    public static function pathToType($string_)
+    {
+      $chunks=explode('//', $string_);
+
+      $type=array_pop($chunks);
+      $type=strtr(ucwords(strtr($type, '/', ' ')), ' ', '_');
+
+      if(1>count($chunks))
+        return $type;
+
+      $namespace=strtr(ucwords(implode(' ', $chunks)), ' ', '\\');
+
+      return "$namespace\\$type";
+    }
+
     /**
      * Converts namespace notation to PHP type names.
      *
