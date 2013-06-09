@@ -427,9 +427,16 @@ namespace Components;
      *
      * @return string
      */
+    // FIXME (CSH) Has been broken recently ...
     public static function replaceAll($string_, $match_, $replace_)
     {
-      return mb_ereg_replace($match_, $replace_, $string_);
+      if(is_string($match_) && is_string($replace_))
+        return mb_ereg_replace($match_, $replace_, $string_);
+
+      foreach($match_ as $idx=>$match)
+        $string_=mb_ereg_replace($match, $replace_[$idx], $string_);
+
+      return $string_;
     }
 
     /**
