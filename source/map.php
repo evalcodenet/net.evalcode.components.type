@@ -11,6 +11,12 @@ namespace Components;
    * @subpackage type
    *
    * @author evalcode.net
+   *
+   * @method array arrayValue
+   * @method boolean offsetExists
+   * @method mixed offsetGet
+   * @method void offsetSet
+   * @method void offsetUnset
    */
   interface Map extends \ArrayAccess, Collection
   {
@@ -147,56 +153,6 @@ namespace Components;
      * @param mixed $value_
      */
     function __set($key_, $value_);
-
-    /**
-     * Returns array used as internal storage.
-     *
-     * @see \Components\Collection::arrayValue()
-     *
-     * @return array|mixed
-     */
-    function arrayValue();
-
-    /**
-     * Determines whether an element is linked to given offset in this map.
-     *
-     * @see \ArrayAccess::offsetExists()
-     *
-     * @param mixed $offset_
-     *
-     * @return boolean
-     */
-    function offsetExists($offset_);
-
-    /**
-     * Returns the element linked to given offset in this map.
-     *
-     * @see \ArrayAccess::offsetExists()
-     *
-     * @param mixed $offset_
-     *
-     * @return mixed
-     */
-    function offsetGet($offset_);
-
-    /**
-     * Links given element to given offset in this map.
-     *
-     * @see \ArrayAccess::offsetExists()
-     *
-     * @param mixed $offset_
-     * @param mixed $value_
-     */
-    function offsetSet($offset_, $value_);
-
-    /**
-     * Unlinks element corresponding to given offset in this map.
-     *
-     * @see \ArrayAccess::offsetUnset()
-     *
-     * @param mixed $offset_
-     */
-    function offsetUnset($offset_);
     //--------------------------------------------------------------------------
   }
 ?>
