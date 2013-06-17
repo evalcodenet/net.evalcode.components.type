@@ -266,6 +266,31 @@ namespace Components;
     }
 
     /**
+     * Split given string into chunks of given length.
+     *
+     * @param string $string_
+     * @param integer $lengthChunks_
+     *
+     * @return array|string
+     */
+    public static function split($string_, $lengthChunks_=1)
+    {
+      $string_=iconv('UTF-8', 'UTF-16', $string_);
+      $string_=substr($string_, 2);
+
+      $m=2*$lengthChunks_;
+
+      $chars=array();
+      for($i=0; $i<strlen($string_); $i+=$m)
+      {
+        // TODO (CSH) Optimize?
+        $chars[]=iconv('UTF-16', 'UTF-8', substr($string_, $i, $m));
+      }
+
+      return $chars;
+    }
+
+    /**
      * Compares two strings to each other case-sensitive and returns
      * an numeric indicator of which one is the greater one.
      *
@@ -281,7 +306,6 @@ namespace Components;
      */
     public static function compare($string0_, $string1_)
     {
-      // FIXME Multi-byte support?
       return strnatcmp($string0_, $string1_);
     }
 
@@ -301,7 +325,6 @@ namespace Components;
      */
     public static function compareIgnoreCase($string0_, $string1_)
     {
-      // FIXME Multi-byte support?
       return strnatcasecmp($string0_, $string1_);
     }
 
@@ -468,7 +491,7 @@ namespace Components;
      *
      * @return bool
      */
-    public static function isASCII($string_)
+    public static function isAscii($string_)
     {
       return 1!==preg_match('/[^\x00-\x7F]/', $string_);
     }
@@ -482,23 +505,9 @@ namespace Components;
      *
      * FIXME Internationalize
      */
-    public static function toASCII($string_)
+    public static function toAscii($string_)
     {
-      // FIXME Multi-byte support (drop characters that are not translatable and not ascii?).
-      static $s_table=array(
-        'ä'=>'ae', 'ö'=>'oe', 'ü'=>'ue', 'Ä'=>'Ae', 'Ö'=>'Oe', 'Ü'=>'Ue',
-        'ß'=>'ss', 'æ'=>'ae', 'œ'=>'oe', 'Æ'=>'Ae', 'Œ'=>'Oe', 'à'=>'a',
-        'á'=>'a', 'â'=>'a', 'å'=>'a', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e',
-        'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ò'=>'o','ó'=>'o', 'ô'=>'o',
-        'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ÿ'=>'y', 'ç'=>'c', 'š'=>'s', 'À'=>'A',
-        'Á'=>'A', 'Â'=>'A', 'Å'=>'A', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'ë'=>'E',
-        'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ò'=>'O','Ó'=>'O', 'Ô'=>'O', 'Ù'=>'U',
-        'Ú'=>'U', 'Û'=>'U', 'Ç'=>'C', 'Š'=>'S'
-      );
-
-      $string_=strtr($string_, $s_table);
-
-      return preg_replace('/[^\x00-\x7F]/', '', $string_);
+      return iconv('UTF-8', 'ASCII//TRANSLIT', $string_);
     }
 
     /**
@@ -736,10 +745,16 @@ namespace Components;
     {
       if($preserveUnicode_)
         $string_=mb_convert_encoding($string_, 'HTML-ENTITIES', 'UTF-8');
+      else
+        $string_=static::toAscii($string_);
 
       $string_=preg_replace('/[^a-z0-9]/i', '-', $string_);
+      $string_=preg_replace('/-+/', '-', strtolower($string_));
 
-      return preg_replace('/-+/', '-', strtolower($string_));
+      if('-'===$string_)
+        return null;
+
+      return $string_;
     }
 
     /**
@@ -828,7 +843,7 @@ namespace Components;
      */
     public static function toQuotedPrintable($string_)
     {
-      return preg_replace_callback('/[^\x21-\x3C\x3E-\x7E\x09]/', array('Text', 'toQuotedPrintableImpl'), $string_);
+      return quoted_printable_encode($string_);
     }
 
     /**
