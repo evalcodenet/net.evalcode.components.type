@@ -186,7 +186,7 @@ namespace Components;
      */
     public static function lowercase($string_)
     {
-      return mb_strtolower($string_);
+      return mb_convert_case($string_, MB_CASE_LOWER, 'UTF-8');
     }
 
     /**
@@ -196,7 +196,12 @@ namespace Components;
      */
     public static function uppercase($string_)
     {
-      return mb_strtoupper($string_);
+      return mb_convert_case($string_, MB_CASE_UPPER, 'UTF-8');
+    }
+
+    public static function uppercaseWords($string_)
+    {
+      return mb_convert_case($string_, MB_CASE_TITLE, 'UTF-8');
     }
 
     /**
@@ -279,9 +284,10 @@ namespace Components;
       $string_=substr($string_, 2);
 
       $m=2*$lengthChunks_;
+      $length=strlen($string_);
 
       $chars=array();
-      for($i=0; $i<strlen($string_); $i+=$m)
+      for($i=0; $i<$length; $i+=$m)
       {
         // TODO (CSH) Optimize?
         $chars[]=iconv('UTF-16', 'UTF-8', substr($string_, $i, $m));
@@ -437,6 +443,9 @@ namespace Components;
      */
     public static function replace($string_, $match_, $replace_, $offset_=0)
     {
+      if(0===$offset_)
+        return mb_ereg_replace($match_, $replace_, $string_);
+
       if(-1<($idx=mb_strpos($string_, $match_, $offset_)))
         return mb_substr($string_, 0, $idx).$replace_.mb_substr($string_, $idx+mb_strlen($match_));
 
