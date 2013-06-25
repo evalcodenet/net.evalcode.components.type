@@ -97,6 +97,50 @@ namespace Components;
     {
       return new static(static::cast($value_));
     }
+
+    public static function unicodeDecimal($char_)
+    {
+      $dec=ord($char_{0});
+
+      if($dec&128)
+      {
+        $length=0;
+
+        while($dec&128)
+        {
+          $length++;
+
+          $dec<<=1;
+
+        }
+      }
+      else
+      {
+        $length=1;
+      }
+
+      if(1===$length)
+        return ord($char_);
+
+      if($length!==strlen($char_))
+        return false;
+
+      $dec&=0xff;
+      $dec>>=$length;
+
+      for($i=1; $i<$length; $i++)
+      {
+        $dec<<=6;
+        $dec|=ord($char_{$i})&0x3f;
+      }
+
+      return $dec;
+    }
+
+    public static function unicodeHex($char_)
+    {
+      return dechex(static::unicodeDecimal($char_));
+    }
     //--------------------------------------------------------------------------
 
 

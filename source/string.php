@@ -280,7 +280,8 @@ namespace Components;
      */
     public static function split($string_, $lengthChunks_=1)
     {
-      $string_=iconv('UTF-8', 'UTF-16', $string_);
+      // FIXME Throws errors in certain versions if input is not recognizable..
+      $string_=@iconv('UTF-8', 'UTF-16', $string_);
       $string_=substr($string_, 2);
 
       $m=2*$lengthChunks_;
@@ -289,8 +290,9 @@ namespace Components;
       $chars=array();
       for($i=0; $i<$length; $i+=$m)
       {
-        // TODO (CSH) Optimize?
-        $chars[]=iconv('UTF-16', 'UTF-8', substr($string_, $i, $m));
+        // TODO Optimize?
+        // FIXME Throws errors in certain versions if input is not recognizable..
+        $chars[]=@iconv('UTF-16', 'UTF-8', substr($string_, $i, $m));
       }
 
       return $chars;
@@ -516,7 +518,8 @@ namespace Components;
      */
     public static function toAscii($string_)
     {
-      return iconv('UTF-8', 'ASCII//TRANSLIT', $string_);
+      // FIXME Throws errors in certain versions if input is not recognizable..
+      return @iconv('UTF-8', 'ASCII//TRANSLIT', $string_);
     }
 
     /**
