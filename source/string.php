@@ -443,8 +443,11 @@ namespace Components;
      *
      * @return string
      */
-    public static function replace($string_, $match_, $replace_, $offset_=0)
+    public static function replace($string_, $match_, $replace_=null, $offset_=0)
     {
+      if(null===$replace_)
+        $replace_='';
+
       if(0===$offset_)
         return mb_ereg_replace($match_, $replace_, $string_);
 
