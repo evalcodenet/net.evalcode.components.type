@@ -816,8 +816,8 @@ namespace Components;
       if($this->m_host)
         $string.=$this->m_host;
 
-      if(0<strlen($path=$this->getPath()))
-        $string.=$path;
+      if(count($this->m_pathParams))
+        $string.=$this->getPath();
 
       if($queryString=$this->getQueryString())
         $string.='?'.$queryString;
@@ -921,7 +921,7 @@ namespace Components;
 
     protected function parseImpl(array $uri_)
     {
-      $this->m_scheme=isset($uri_['scheme'])?$uri_['scheme']:null;
+      $this->m_scheme=isset($uri_['scheme']) && 'null'!==$uri_['scheme']?$uri_['scheme']:null;
       $this->m_host=isset($uri_['host'])?$uri_['host']:null;
       $this->m_port=isset($uri_['port'])?(int)$uri_['port']:null;
       $this->m_username=isset($uri_['user'])?String::urlDecode($uri_['user']):null;
@@ -963,6 +963,9 @@ namespace Components;
           sprintf('Unable to parse URI for string [%1$s].', $uri_)
         );
       }
+
+      if(false===isset($uri['scheme']) && false===strpos($uri_, '/'))
+        return static::arrayForString("null://$uri_");
 
       return $uri;
     }
