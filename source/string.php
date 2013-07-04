@@ -1041,6 +1041,21 @@ namespace Components;
 
       return self::$m_asciiTable[$type_]=$table;
     }
+
+    public static function toPhoneNumber($string_, $convertMobileCountryCodeIdentifier_=false)
+    {
+      $string_=preg_replace('/[^+0-9]/', '', $string_);
+
+      if($convertMobileCountryCodeIdentifier_)
+        $string_=str_replace('+', '00', $string_);
+
+      return $string_;
+    }
+
+    public static function toNumber($string_)
+    {
+      return preg_replace('/[^0-9]/', '', $string_);
+    }
     //--------------------------------------------------------------------------
 
 
