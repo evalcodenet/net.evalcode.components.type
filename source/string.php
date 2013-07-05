@@ -598,6 +598,19 @@ namespace Components;
     }
 
     /**
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function toTypeName($string_)
+    {
+      $string_=preg_replace('/[^a-z0-9]/i', ' ', $string_);
+      $string_=ucwords(strtolower($string_));
+
+      return preg_replace('/[ ]+/', '_', $string_);
+    }
+
+    /**
      * @param string $string_ propErTy
      *
      * @return string PROP ER TY

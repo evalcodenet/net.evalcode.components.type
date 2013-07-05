@@ -16,11 +16,11 @@ namespace Components;
   {
     // PROPERTIES
     /**
-     * @var integer
+     * @var float
      */
     public $x;
     /**
-     * @var integer
+     * @var float
      */
     public $y;
     //--------------------------------------------------------------------------
@@ -28,8 +28,8 @@ namespace Components;
 
     // CONSTRUCTION
     /**
-     * @param integer $x_
-     * @param integer $y_
+     * @param float $x_
+     * @param float $y_
      */
     public function __construct($x_, $y_)
     {
@@ -39,10 +39,10 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES
+    // STATIC ACCESSORS
     /**
-     * @param integer $x_
-     * @param integer $y_
+     * @param float $x_
+     * @param float $y_
      *
      * @return \Components\Point
      */
@@ -58,14 +58,22 @@ namespace Components;
      */
     public static function valueOf($value_)
     {
-      $points=explode(',', $value_);
+      $points=json_decode($value_);
 
-      return new static((int)$points[0], (int)$points[1]);
+      return new static((float)$points[0], (float)$points[1]);
     }
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES
+    // ACCESSORS/MUTATORS
+    public function distanceTo(Point $point_)
+    {
+
+    }
+    //--------------------------------------------------------------------------
+
+
+    // OVERRIDES/IMPLEMENTS
     /**
      * (non-PHPdoc)
      * @see Components\Cloneable::__clone()
@@ -101,7 +109,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return integer_hash($this->x, $this->y);
+      return float_hash($this->x, $this->y);
     }
 
     /**
@@ -122,7 +130,7 @@ namespace Components;
      */
     public function __toString()
     {
-      return sprintf('%s@%s{x: %d, y: %d}',
+      return sprintf('%s@%s{x: %f, y: %f}',
         __CLASS__,
         $this->hashCode(),
         $this->x,
@@ -136,7 +144,7 @@ namespace Components;
      */
     public function value()
     {
-      return sprintf('%s,%s', $this->x, $this->y);
+      return json_encode(array($this->x, $this->y));
     }
     //--------------------------------------------------------------------------
   }
