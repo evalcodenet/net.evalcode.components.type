@@ -111,7 +111,6 @@ namespace Components;
           $length++;
 
           $dec<<=1;
-
         }
       }
       else
