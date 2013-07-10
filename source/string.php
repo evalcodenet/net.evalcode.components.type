@@ -31,6 +31,10 @@ namespace Components;
     const ASCII_TABLE_SPECIAL_CHARACTERS=00010000;
     const ASCII_TABLE_CONTROL_CHARACTERS=00100000;
     const ASCII_TABLE_FULL              =00111111;
+
+    const TRUNCATE_END=1;
+    const TRUNCATE_MIDDLE=2;
+    const TRUNCATE_REVERSE=4;
     //--------------------------------------------------------------------------
 
 
@@ -484,10 +488,23 @@ namespace Components;
      *
      * @return string
      */
-    public static function truncate($string_, $length_, $append_=null, $truncateAtCharacter_=null)
+    public static function truncate($string_, $length_, $append_=null, $truncateAtCharacter_=null, $style_=self::TRUNCATE_END)
     {
       if($length_>mb_strlen($string_))
         return $string_;
+
+      if(0<($style_&self::TRUNCATE_REVERSE))
+      {
+        $string_=static::reverse($string_);
+        $string=mb_substr($string_, 0, $length_);
+
+        if(null===$truncateAtCharacter_)
+          return $append_.static::reverse($string);
+
+        $truncatePos=mb_strpos($string_, $truncateAtCharacter_, $length_);
+
+        return $append_.static::reverse($string.mb_substr($string_, $length_, $truncatePos-$length_));
+      }
 
       $string=mb_substr($string_, 0, $length_);
       if(null===$truncateAtCharacter_)
@@ -496,6 +513,21 @@ namespace Components;
       $truncatePos=mb_strpos($string_, $truncateAtCharacter_, $length_);
 
       return $string.mb_substr($string_, $length_, $truncatePos-$length_).$append_;
+    }
+
+    /**
+     * Reverse given string.
+     *
+     * @param string $string_
+     *
+     * @return string
+     */
+    public static function reverse($string_)
+    {
+      $characters=static::split($string_, 1);
+      $characters=array_reverse($characters);
+
+      return implode('', $characters);
     }
 
     /**
