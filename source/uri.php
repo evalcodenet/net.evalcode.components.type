@@ -82,6 +82,28 @@ namespace Components;
     /**
      * @return \Components\Uri
      */
+    public static function currentHttpRequestUri()
+    {
+      $uri='/';
+      if(isset($_SERVER['REQUEST_URI']))
+        $uri=$_SERVER['REQUEST_URI'];
+
+      $uri=static::valueOf($uri);
+
+      if(isset($_SERVER['HTTP_HOST']))
+        $uri->m_host=$_SERVER['HTTP_HOST'];
+
+      if(isset($_SERVER['SERVER_PROTOCOL']) && false!==strpos($_SERVER['SERVER_PROTOCOL'], 'HTTPS'))
+        $uri->m_scheme=\Components\Resource_Type::SCHEME_HTTPS;
+      else
+        $uri->m_scheme=\Components\Resource_Type::SCHEME_HTTP;
+
+      return $uri;
+    }
+
+    /**
+     * @return \Components\Uri
+     */
     public static function createEmpty()
     {
       return new static();
