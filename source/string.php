@@ -490,7 +490,7 @@ namespace Components;
      */
     public static function truncate($string_, $length_, $append_=null, $truncateAtCharacter_=null, $style_=self::TRUNCATE_END)
     {
-      if($length_>mb_strlen($string_))
+      if($length_>=mb_strlen($string_))
         return $string_;
 
       if(0<($style_&self::TRUNCATE_REVERSE))
