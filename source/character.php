@@ -73,29 +73,36 @@ namespace Components;
     /**
      * @see Components\Primitive::cast()
      *
+     * @param string|character $value_
+     *
      * @return integer
      */
     public static function cast($value_)
     {
-      if(false===String::isTypeCompatible($value_))
-      {
-        throw new Exception_IllegalCast('components/type/character', sprintf(
-          'Can not cast given parameter to %s [%s].', __CLASS__, $value_
-        ));
-      }
-
-      // FIXME (CSH) Handle character arrays or only respect first character (if multiple given)?
       return ord((string)$value_);
     }
 
     /**
      * @see Components\Primitive::valueOf()
      *
+     * @param integer $value_
+     *
      * @return \Components\Character
      */
     public static function valueOf($value_)
     {
-      return new static(static::cast($value_));
+      return new static($value_);
+    }
+
+    /**
+     * @param string $string_
+     * @param integer $index_
+     *
+     * @return \Components\Character
+     */
+    public static function at($string_, $index_=0)
+    {
+      return new static(ord(mb_substr($string_, $index_, 1)));
     }
 
     public static function unicodeDecimal($char_)

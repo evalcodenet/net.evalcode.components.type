@@ -73,7 +73,7 @@ namespace Components;
      */
     public static function cast($value_)
     {
-      return new static((string)$value_);
+      return (string)$value_;
     }
 
     /**
@@ -1137,7 +1137,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return static::hash($this->m_value);
+      return string_hash($this->m_value);
     }
 
     /**

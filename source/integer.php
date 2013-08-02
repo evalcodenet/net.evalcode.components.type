@@ -99,7 +99,7 @@ namespace Components;
      */
     public static function hash($integer0_/*, $integer1_, $integer2_, ...*/)
     {
-      return integer_hash(func_get_args());
+      return integer_hash_a(func_get_args());
     }
 
     /**
