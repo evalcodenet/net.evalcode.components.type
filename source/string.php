@@ -818,6 +818,25 @@ namespace Components;
     }
 
     /**
+     * Removes HTML and PHP tags from given string.
+     *
+     * @param string $string_
+     * @param string $ignoreTags_
+     * @param boolean $escapeHtml_
+     * @param Io_Charset $charset_
+     *
+     * @return string
+     */
+    public static function stripTags($string_, $ignoreTags_=null,
+      $escapeHtml_=true, Io_Charset $charset_=null)
+    {
+      if(false===$escapeHtml_)
+        return strip_tags($string_, $ignoreTags_);
+
+      return static::escapeHtml(strip_tags($string_, $ignoreTags_), $charset_);
+    }
+
+    /**
      * @param string $string_
      * @param Io_Charset $charset_
      *
