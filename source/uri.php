@@ -838,6 +838,7 @@ namespace Components;
       if($this->m_host)
         $string.=$this->m_host;
 
+      // FIXME Append root ('/') if no params (test against current integrations using file://, http:// etc.)
       if(count($this->m_pathParams))
         $string.=$this->getPath();
 

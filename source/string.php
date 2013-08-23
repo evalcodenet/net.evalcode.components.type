@@ -453,7 +453,7 @@ namespace Components;
         $replace_='';
 
       if(0===$offset_)
-        return mb_ereg_replace($match_, $replace_, $string_);
+        return str_replace($match_, $replace_, $string_);
 
       if(-1<($idx=mb_strpos($string_, $match_, $offset_)))
         return mb_substr($string_, 0, $idx).$replace_.mb_substr($string_, $idx+mb_strlen($match_));
@@ -468,16 +468,10 @@ namespace Components;
      *
      * @return string
      */
-    // FIXME (CSH) Has been broken recently ...
+    // TODO Implement $offset_.
     public static function replaceAll($string_, $match_, $replace_)
     {
-      if(is_string($match_) && is_string($replace_))
-        return mb_ereg_replace($match_, $replace_, $string_);
-
-      foreach($match_ as $idx=>$match)
-        $string_=mb_ereg_replace($match, $replace_[$idx], $string_);
-
-      return $string_;
+      return str_replace($match_, $replace_, $string_);
     }
 
     /**
