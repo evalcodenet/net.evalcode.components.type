@@ -35,6 +35,9 @@ namespace Components;
     const TRUNCATE_END=1;
     const TRUNCATE_MIDDLE=2;
     const TRUNCATE_REVERSE=4;
+
+    const PAD_LEFT=1;
+    const PAD_RIGHT=2;
     //--------------------------------------------------------------------------
 
 
@@ -507,6 +510,27 @@ namespace Components;
       $truncatePos=mb_strpos($string_, $truncateAtCharacter_, $length_);
 
       return $string.mb_substr($string_, $length_, $truncatePos-$length_).$append_;
+    }
+
+    /**
+     * @param string $string_
+     * @param integer $padLength_
+     * @param string $padString_
+     * @param integer $padType_
+     *
+     * @return string
+     */
+    public static function pad($string_, $padLength_, $padString_, $padType_=null)
+    {
+      if(null===$padType_)
+        $padType_=self::PAD_LEFT|self::PAD_RIGHT;
+
+      if(0<($padType_&self::PAD_LEFT))
+        $string_=str_pad($string_, $padLength_, $padString_, STR_PAD_LEFT);
+      if(0<($padType_&self::PAD_RIGHT))
+        $string_=str_pad($string_, $padLength_, $padString_, STR_PAD_RIGHT);
+
+      return $string_;
     }
 
     /**
