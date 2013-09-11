@@ -17,11 +17,11 @@ namespace Components;
    *
    * @author evalcode.net
    *
-   * @see Boolean
-   * @see Float
-   * @see HashMap
-   * @see Integer
-   * @see String
+   * @see Boolean Boolean
+   * @see Float Float
+   * @see HashMap HashMap
+   * @see Integer Integer
+   * @see String String
    */
   abstract class Primitive extends Type implements Serializable
   {
@@ -113,7 +113,7 @@ namespace Components;
      *   directly whenever possible. For example:
      * </p>
      *
-     * <code>
+     * <pre>
      *   /**
      *    * @return boolean
      *    {@*}
@@ -134,9 +134,9 @@ namespace Components;
      *    * @return string
      *    {@*}
      *   String::native();
-     * </code>
+     * </pre>
      *
-     * @see Components\Primitive::native()
+     * @see Components\Primitive::native() Components\Primitive::native()
      *
      * @param string $type_
      *

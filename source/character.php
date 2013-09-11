@@ -63,7 +63,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Primitive::native()
+     * @see Components\Primitive::native() Components\Primitive::native()
      */
     public static function native()
     {
@@ -71,7 +71,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Primitive::cast()
+     * @see Components\Primitive::cast() Components\Primitive::cast()
      *
      * @param string|character $value_
      *
@@ -83,7 +83,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Primitive::valueOf()
+     * @see Components\Primitive::valueOf() Components\Primitive::valueOf()
      *
      * @param integer $value_
      *
@@ -177,7 +177,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components\Serializable_Php::serialize()
+     * @see Components\Serializable_Php::serialize() Components\Serializable_Php::serialize()
      */
     public function serialize()
     {
@@ -186,7 +186,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components\Serializable_Php::unserialize()
+     * @see Components\Serializable_Php::unserialize() Components\Serializable_Php::unserialize()
      *
      * @return \Components\Character
      */
@@ -199,7 +199,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components\Serializable::serialVersionUid()
+     * @see Components\Serializable::serialVersionUid() Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
@@ -216,18 +216,14 @@ namespace Components;
 
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Cloneable::__clone()
+    /**     * @see Components\Cloneable::__clone() Components\Cloneable::__clone()
      */
     public function __clone()
     {
       return new static($this->m_value);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Comparable::compareTo()
+    /**     * @see Components\Comparable::compareTo() Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -237,18 +233,14 @@ namespace Components;
       return $this->m_value-static::cast($object_);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Object::hashCode()
+    /**     * @see Components\Object::hashCode() Components\Object::hashCode()
      */
     public function hashCode()
     {
       return Integer::hash($this->m_value);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Object::equals()
+    /**     * @see Components\Object::equals() Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -258,9 +250,7 @@ namespace Components;
       return false;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Object::__toString()
+    /**     * @see Components\Object::__toString() Components\Object::__toString()
      */
     public function __toString()
     {

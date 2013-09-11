@@ -159,9 +159,7 @@ namespace Components;
 
 
     // OVERRIDES
-    /**
-     * (non-PHPdoc)
-     * @see Components\Cloneable::__clone()
+    /**     * @see Components\Cloneable::__clone() Components\Cloneable::__clone()
      */
     public function __clone()
     {

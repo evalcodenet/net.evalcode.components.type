@@ -16,7 +16,7 @@ namespace Components;
   {
     // OVERRIDES
     /**
-     * @see Collection_Mutable::arrayValue()
+     * @see Collection_Mutable::arrayValue() Collection_Mutable::arrayValue()
      */
     public function arrayValue()
     {
@@ -24,7 +24,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Object::__toString()
+     * @see Components\Object::__toString() Components\Object::__toString()
      */
     public function __toString()
     {
@@ -40,7 +40,7 @@ namespace Components;
 
     // OVERRIDES
     /**
-     * @see Collection_Mutable::add()
+     * @see Collection_Mutable::add() Collection_Mutable::add()
      */
     public function add($element_)
     {
@@ -48,7 +48,7 @@ namespace Components;
     }
 
     /**
-     * @see Collection_Mutable::addAll()
+     * @see Collection_Mutable::addAll() Collection_Mutable::addAll()
      */
     public function addAll(Collection $elements_)
     {
@@ -57,7 +57,7 @@ namespace Components;
     }
 
     /**
-     * @see Collection_Mutable::remove()
+     * @see Collection_Mutable::remove() Collection_Mutable::remove()
      */
     public function remove($element_=null)
     {
@@ -93,7 +93,7 @@ namespace Components;
     }
 
     /**
-     * @see Collection_Mutable::removeAll()
+     * @see Collection_Mutable::removeAll() Collection_Mutable::removeAll()
      */
     public function removeAll(Collection $elements_)
     {
@@ -112,7 +112,7 @@ namespace Components;
     }
 
     /**
-     * @see Collection_Mutable::retainAll()
+     * @see Collection_Mutable::retainAll() Collection_Mutable::retainAll()
      */
     public function retainAll(Collection $elements_)
     {
@@ -131,7 +131,7 @@ namespace Components;
     }
 
     /**
-     * @see Collection_Mutable::clear()
+     * @see Collection_Mutable::clear() Collection_Mutable::clear()
      */
     public function clear()
     {

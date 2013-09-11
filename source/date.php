@@ -593,9 +593,7 @@ namespace Components;
 
 
     // OVERRIDES
-    /**
-     * (non-PHPdoc)
-     * @see Components\Comparable::compareTo()
+    /**     * @see Components\Comparable::compareTo() Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -614,9 +612,7 @@ namespace Components;
       return -1;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Object::equals()
+    /**     * @see Components\Object::equals() Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -626,36 +622,28 @@ namespace Components;
       return false;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Object::hashCode()
+    /**     * @see Components\Object::hashCode() Components\Object::hashCode()
      */
     public function hashCode()
     {
       return integer_hash($this->m_date->getTimestamp());
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Serializable::serialVersionUid()
+    /**     * @see Components\Serializable::serialVersionUid() Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
       return 1;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Object::__toString()
+    /**     * @see Components\Object::__toString() Components\Object::__toString()
      */
     public function __toString()
     {
       return $this->toISO8601();
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Cloneable::__clone()
+    /**     * @see Components\Cloneable::__clone() Components\Cloneable::__clone()
      *
      * @return \Components\Date
      */
@@ -679,9 +667,7 @@ namespace Components;
       $this->m_date->setTimezone($utc);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Value_String::value()
+    /**     * @see Components\Value_String::value() Components\Value_String::value()
      */
     public function value()
     {

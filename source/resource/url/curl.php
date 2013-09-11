@@ -43,18 +43,14 @@ namespace Components;
 
 
     // OVERRIDES
-    /**
-     * (non-PHPdoc)
-     * @see \Components\Resource_Url::resolve()
+    /**     * @see \Components\Resource_Url::resolve() \Components\Resource_Url::resolve()
      */
     public function resolve()
     {
       // TODO Implement
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Components\Resource_Url::getContents()
+    /**     * @see \Components\Resource_Url::getContents() \Components\Resource_Url::getContents()
      */
     public function getContents()
     {
@@ -62,27 +58,21 @@ namespace Components;
       return file_get_contents((string)$this->m_uri);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Components\Resource_Url::getOptions()
+    /**     * @see \Components\Resource_Url::getOptions() \Components\Resource_Url::getOptions()
      */
     public function getOptions()
     {
       return $this->m_options;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Components\Object::hashCode()
+    /**     * @see \Components\Object::hashCode() \Components\Object::hashCode()
      */
     public function hashCode()
     {
       return object_hash($this);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Components\Object::equals()
+    /**     * @see \Components\Object::equals() \Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -92,9 +82,7 @@ namespace Components;
       return false;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Components\Object::__toString()
+    /**     * @see \Components\Object::__toString() \Components\Object::__toString()
      */
     public function __toString()
     {

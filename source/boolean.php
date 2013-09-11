@@ -78,7 +78,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Primitive::native()
+     * @see Components\Primitive::native() Components\Primitive::native()
      */
     public static function native()
     {
@@ -86,7 +86,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Primitive::cast()
+     * @see Components\Primitive::cast() Components\Primitive::cast()
      *
      * @return boolean
      */
@@ -137,9 +137,7 @@ namespace Components;
     }
 
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Primitive::valueOf()
+    /**     * @see Components\Primitive::valueOf() Components\Primitive::valueOf()
      *
      * @return \Components\Boolean
      */
@@ -197,9 +195,7 @@ namespace Components;
 
 
     // OVERRIDES
-    /**
-     * (non-PHPdoc)
-     * @see Components\Comparable::compareTo()
+    /**     * @see Components\Comparable::compareTo() Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -241,18 +237,14 @@ namespace Components;
       return -1;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Object::hashCode()
+    /**     * @see Components\Object::hashCode() Components\Object::hashCode()
      */
     public function hashCode()
     {
       return $this->m_value?1231:1237;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Object::equals()
+    /**     * @see Components\Object::equals() Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -262,9 +254,7 @@ namespace Components;
       return false;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Object::__toString()
+    /**     * @see Components\Object::__toString() Components\Object::__toString()
      */
     public function __toString()
     {
@@ -274,18 +264,14 @@ namespace Components;
       return 'false';
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Cloneable::__clone()
+    /**     * @see Components\Cloneable::__clone() Components\Cloneable::__clone()
      */
     public function __clone()
     {
       return new self($this->m_value);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Serializable::serialVersionUid()
+    /**     * @see Components\Serializable::serialVersionUid() Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {

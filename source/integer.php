@@ -25,9 +25,7 @@ namespace Components;
 
 
     // STATIC ACCESSORS
-    /**
-     * (non-PHPdoc)
-     * @see \Components\Primitive::cast()
+    /**     * @see \Components\Primitive::cast() \Components\Primitive::cast()
      *
      * @return string
      */
@@ -36,9 +34,7 @@ namespace Components;
       return self::TYPE_NATIVE;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Components\Primitive::cast()
+    /**     * @see \Components\Primitive::cast() \Components\Primitive::cast()
      *
      * @return integer
      */
@@ -47,9 +43,7 @@ namespace Components;
       return (int)$value_;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Primitive::valueOf()
+    /**     * @see Components\Primitive::valueOf() Components\Primitive::valueOf()
      *
      * @return \Components\Integer
      */
@@ -132,36 +126,28 @@ namespace Components;
 
 
     // OVERRIDES
-    /**
-     * (non-PHPdoc)
-     * @see Components\Number::intValue()
+    /**     * @see Components\Number::intValue() Components\Number::intValue()
      */
     public function intValue()
     {
       return $this->m_value;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Number::doubleValue()
+    /**     * @see Components\Number::doubleValue() Components\Number::doubleValue()
      */
     public function doubleValue()
     {
       return (double)$this->m_value;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Number::floatValue()
+    /**     * @see Components\Number::floatValue() Components\Number::floatValue()
      */
     public function floatValue()
     {
       return (float)$this->m_value;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Comparable::compareTo()
+    /**     * @see Components\Comparable::compareTo() Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -192,18 +178,14 @@ namespace Components;
       ));
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Serializable_Php::__wakeup()
+    /**     * @see Components\Serializable_Php::__wakeup() Components\Serializable_Php::__wakeup()
      */
     public function __wakeup()
     {
 
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Components\Serializable_Php::__sleep()
+    /**     * @see Components\Serializable_Php::__sleep() Components\Serializable_Php::__sleep()
      */
     public function __sleep()
     {
@@ -212,7 +194,7 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components\Serializable::serialVersionUid()
+     * @see Components\Serializable::serialVersionUid() Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
@@ -220,7 +202,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Cloneable::__clone()
+     * @see Components\Cloneable::__clone() Components\Cloneable::__clone()
      */
     public function __clone()
     {
@@ -228,7 +210,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Object::hashCode()
+     * @see Components\Object::hashCode() Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -236,7 +218,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Object::equals()
+     * @see Components\Object::equals() Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -247,7 +229,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Object::__toString()
+     * @see Components\Object::__toString() Components\Object::__toString()
      */
     public function __toString()
     {
