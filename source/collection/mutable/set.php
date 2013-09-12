@@ -7,8 +7,9 @@ namespace Components;
   /**
    * Collection_Mutable_Set
    *
-   * @package net.evalcode.components
-   * @subpackage type.collection.mutable
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage collection.mutable
    *
    * @author evalcode.net
    */

@@ -11,8 +11,8 @@ namespace Components;
    *   Boxed implementation for native PHP double.
    * </p>
    *
-   * @package net.evalcode.components
-   * @subpackage type
+   * @api
+   * @package net.evalcode.components.type
    *
    * @author evalcode.net
    */
@@ -25,14 +25,16 @@ namespace Components;
 
 
     // STATIC ACCESSORS
-      /**     * @see Components\Primitive::native() Components\Primitive::native()
+      /**
+     * @see \Components\Primitive::native() \Components\Primitive::native()
      */
     public static function native()
     {
       return self::TYPE_NATIVE;
     }
 
-    /**     * @see Components\Primitive::cast() Components\Primitive::cast()
+    /**
+     * @see \Components\Primitive::cast() \Components\Primitive::cast()
      *
      * @return float
      */
@@ -41,7 +43,8 @@ namespace Components;
       return (double)$value_;
     }
 
-    /**     * @see Components\Primitive::valueOf() Components\Primitive::valueOf()
+    /**
+     * @see \Components\Primitive::valueOf() \Components\Primitive::valueOf()
      *
      * @return \Components\Float
      */
@@ -53,7 +56,8 @@ namespace Components;
 
 
     // OVERRIDES
-    /**     * @see Components\Primitive::value() Components\Primitive::value()
+    /**
+     * @see \Components\Primitive::value() \Components\Primitive::value()
      *
      * @return double
      */
@@ -62,28 +66,32 @@ namespace Components;
       return $this->m_value;
     }
 
-    /**     * @see Components\Number::intValue() Components\Number::intValue()
+    /**
+     * @see \Components\Number::intValue() \Components\Number::intValue()
      */
     public function intValue()
     {
       return (int)$this->m_value;
     }
 
-    /**     * @see Components\Number::doubleValue() Components\Number::doubleValue()
+    /**
+     * @see \Components\Number::doubleValue() \Components\Number::doubleValue()
      */
     public function doubleValue()
     {
       return $this->m_value;
     }
 
-    /**     * @see Components\Number::floatValue() Components\Number::floatValue()
+    /**
+     * @see \Components\Number::floatValue() \Components\Number::floatValue()
      */
     public function floatValue()
     {
       return $this->m_value;
     }
 
-    /**     * @see Components\Comparable::compareTo() Components\Comparable::compareTo()
+    /**
+     * @see \Components\Comparable::compareTo() \Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -114,7 +122,8 @@ namespace Components;
       ));
     }
 
-    /**     * @see Components\Serializable::serialVersionUid() Components\Serializable::serialVersionUid()
+    /**
+     * @see \Components\Serializable::serialVersionUid() \Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
@@ -131,21 +140,24 @@ namespace Components;
 
     }
 
-    /**     * @see Components\Cloneable::__clone() Components\Cloneable::__clone()
+    /**
+     * @see \Components\Cloneable::__clone() \Components\Cloneable::__clone()
      */
     public function __clone()
     {
       return new self($this->m_value);
     }
 
-    /**     * @see Components\Object::hashCode() Components\Object::hashCode()
+    /**
+     * @see \Components\Object::hashCode() \Components\Object::hashCode()
      */
     public function hashCode()
     {
       return $this->m_value;
     }
 
-    /**     * @see Components\Object::equals() Components\Object::equals()
+    /**
+     * @see \Components\Object::equals() \Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -155,7 +167,8 @@ namespace Components;
       return false;
     }
 
-    /**     * @see Components\Object::__toString() Components\Object::__toString()
+    /**
+     * @see \Components\Object::__toString() \Components\Object::__toString()
      */
     public function __toString()
     {

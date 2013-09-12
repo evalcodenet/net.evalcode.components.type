@@ -7,8 +7,9 @@ namespace Components;
   /**
    * Collection_Set
    *
-   * @package net.evalcode.components
-   * @subpackage type.collection
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage collection
    *
    * @author evalcode.net
    */

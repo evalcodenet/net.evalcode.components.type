@@ -7,8 +7,9 @@ namespace Components;
   /**
    * Exception_Abstract
    *
-   * @package net.evalcode.components
-   * @subpackage type.exception
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage exception
    *
    * @author evalcode.net
    */
@@ -21,8 +22,9 @@ namespace Components;
   /**
    * Exception_Abstract_Method
    *
-   * @package net.evalcode.components
-   * @subpackage type.exception
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage exception
    *
    * @author evalcode.net
    */
@@ -35,8 +37,9 @@ namespace Components;
   /**
    * Exception_Abstract_Type
    *
-   * @package net.evalcode.components
-   * @subpackage type.exception
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage exception
    *
    * @author evalcode.net
    */

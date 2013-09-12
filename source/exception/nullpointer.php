@@ -7,8 +7,9 @@ namespace Components;
   /**
    * Exception_NullPointer
    *
-   * @package net.evalcode.components
-   * @subpackage type.exception
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage exception
    *
    * @author evalcode.net
    */

@@ -7,8 +7,8 @@ namespace Components;
   /**
    * Bitmask
    *
-   * @package net.evalcode.components
-   * @subpackage type
+   * @api
+   * @package net.evalcode.components.type
    *
    * @author evalcode.net
    */
@@ -218,28 +218,32 @@ namespace Components;
 
 
     // OVERRIDES
-    /**     * @see Components\Number::intValue() Components\Number::intValue()
+    /**
+     * @see Components\Number::intValue() Components\Number::intValue()
      */
     public function intValue()
     {
       return (int)$this->m_value;
     }
 
-    /**     * @see Components\Number::doubleValue() Components\Number::doubleValue()
+    /**
+     * @see Components\Number::doubleValue() Components\Number::doubleValue()
      */
     public function doubleValue()
     {
       return (double)$this->m_value;
     }
 
-    /**     * @see Components\Number::floatValue() Components\Number::floatValue()
+    /**
+     * @see Components\Number::floatValue() Components\Number::floatValue()
      */
     public function floatValue()
     {
       return (float)$this->m_value;
     }
 
-    /**     * @see Components\Comparable::compareTo() Components\Comparable::compareTo()
+    /**
+     * @see Components\Comparable::compareTo() Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -270,28 +274,32 @@ namespace Components;
       ));
     }
 
-    /**     * @see Components\Serializable::serialVersionUid() Components\Serializable::serialVersionUid()
+    /**
+     * @see Components\Serializable::serialVersionUid() Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
       return 1;
     }
 
-    /**     * @see Components\Cloneable::__clone() Components\Cloneable::__clone()
+    /**
+     * @see Components\Cloneable::__clone() Components\Cloneable::__clone()
      */
     public function __clone()
     {
       return new self($this->m_value);
     }
 
-    /**     * @see Components\Object::hashCode() Components\Object::hashCode()
+    /**
+     * @see Components\Object::hashCode() Components\Object::hashCode()
      */
     public function hashCode()
     {
       return string_hash($this->m_value);
     }
 
-    /**     * @see Components\Object::equals() Components\Object::equals()
+    /**
+     * @see Components\Object::equals() Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -301,7 +309,8 @@ namespace Components;
       return false;
     }
 
-    /**     * @see Components\Object::__toString() Components\Object::__toString()
+    /**
+     * @see Components\Object::__toString() Components\Object::__toString()
      */
     public function __toString()
     {

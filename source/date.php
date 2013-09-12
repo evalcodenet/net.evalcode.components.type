@@ -7,8 +7,8 @@ namespace Components;
   /**
    * Date
    *
-   * @package net.evalcode.components
-   * @subpackage type
+   * @api
+   * @package net.evalcode.components.type
    *
    * @author evalcode.net
    */
@@ -369,7 +369,7 @@ namespace Components;
     }
 
     /**
-    * @return boolean
+     * @return boolean
      */
     public function isSummerTime(Timezone $timezone_=null)
     {
@@ -593,7 +593,8 @@ namespace Components;
 
 
     // OVERRIDES
-    /**     * @see Components\Comparable::compareTo() Components\Comparable::compareTo()
+    /**
+     * @see \Components\Comparable::compareTo() \Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -612,7 +613,8 @@ namespace Components;
       return -1;
     }
 
-    /**     * @see Components\Object::equals() Components\Object::equals()
+    /**
+     * @see \Components\Object::equals() \Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -622,28 +624,32 @@ namespace Components;
       return false;
     }
 
-    /**     * @see Components\Object::hashCode() Components\Object::hashCode()
+    /**
+     * @see \Components\Object::hashCode() \Components\Object::hashCode()
      */
     public function hashCode()
     {
       return integer_hash($this->m_date->getTimestamp());
     }
 
-    /**     * @see Components\Serializable::serialVersionUid() Components\Serializable::serialVersionUid()
+    /**
+     * @see \Components\Serializable::serialVersionUid() \Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
       return 1;
     }
 
-    /**     * @see Components\Object::__toString() Components\Object::__toString()
+    /**
+     * @see \Components\Object::__toString() \Components\Object::__toString()
      */
     public function __toString()
     {
       return $this->toISO8601();
     }
 
-    /**     * @see Components\Cloneable::__clone() Components\Cloneable::__clone()
+    /**
+     * @see \Components\Cloneable::__clone() \Components\Cloneable::__clone()
      *
      * @return \Components\Date
      */
@@ -667,7 +673,8 @@ namespace Components;
       $this->m_date->setTimezone($utc);
     }
 
-    /**     * @see Components\Value_String::value() Components\Value_String::value()
+    /**
+     * @see \Components\Value_String::value() \Components\Value_String::value()
      */
     public function value()
     {
