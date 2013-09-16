@@ -93,10 +93,10 @@ namespace Components;
       $count=preg_match_all('/[\d]+/', $string_, $channels);
 
       if(4===$count)
-        return new static($channels[0], $channels[1], $channels[2], $channels[3]);
+        return new static($channels[0][0], $channels[0][1], $channels[0][2], $channels[0][3]);
 
       if(3===$count)
-        return new static($channels[0], $channels[1], $channels[2]);
+        return new static($channels[0][0], $channels[0][1], $channels[0][2]);
 
       throw new Exception_IllegalArgument('components/type/color', sprintf(
         'Unable to parse color for given string [%s].', $string_
