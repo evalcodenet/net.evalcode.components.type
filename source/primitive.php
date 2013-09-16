@@ -12,16 +12,16 @@ namespace Components;
    *   native PHP primitives.
    * </p>
    *
-   * @package net.evalcode.components
-   * @subpackage type
+   * @api
+   * @package net.evalcode.components.type
    *
    * @author evalcode.net
    *
-   * @see Boolean
-   * @see Float
-   * @see HashMap
-   * @see Integer
-   * @see String
+   * @see \Components\Boolean Boolean
+   * @see \Components\Float Float
+   * @see \Components\HashMap HashMap
+   * @see \Components\Integer Integer
+   * @see \Components\String String
    */
   abstract class Primitive extends Type implements Serializable
   {
@@ -113,30 +113,30 @@ namespace Components;
      *   directly whenever possible. For example:
      * </p>
      *
-     * <code>
+     * <pre>
      *   /**
      *    * @return boolean
-     *    {@*}
+     *    *\/
      *   Boolean::native();
      *   /**
      *    * @return float
-     *    {@*}
+     *    *\/
      *   Float::native();
      *   /**
      *    * @return array
-     *    {@*}
+     *    *\/
      *   HashMap::native();
      *   /**
      *    * @return integer
-     *    {@*}
+     *    *\/
      *   Integer::native();
      *   /**
      *    * @return string
-     *    {@*}
+     *    *\/
      *   String::native();
-     * </code>
+     * </pre>
      *
-     * @see Components\Primitive::native()
+     * @see \Components\Primitive::native() \Components\Primitive::native()
      *
      * @param string $type_
      *
@@ -208,7 +208,7 @@ namespace Components;
      * Registered boxed implementations
      * for their corresponding PHP built-in/native primitives.
      *
-     * @var string|array
+     * @var string[]
      */
     private static $m_nativeToBoxed=array(
       Boolean::TYPE_NATIVE=>Boolean::TYPE,
@@ -222,7 +222,7 @@ namespace Components;
      * PHP built-in/native primitives
      * for their corresponding boxed implementations.
      *
-     * @var string|array
+     * @var string[]
      */
     private static $m_boxedToNative=array(
       Boolean::TYPE=>Boolean::TYPE_NATIVE,

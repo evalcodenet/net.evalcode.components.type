@@ -7,8 +7,8 @@ namespace Components;
   /**
    * String
    *
-   * @package net.evalcode.components
-   * @subpackage type
+   * @api
+   * @package net.evalcode.components.type
    *
    * @author evalcode.net
    */
@@ -16,7 +16,7 @@ namespace Components;
   {
     // PREDEFINED PROPERTIES
     /**
-    * @var string Name of this type.
+     * @var string Name of this type.
     */
     const TYPE=__CLASS__;
     /**
@@ -43,7 +43,7 @@ namespace Components;
 
     // CONSTRUCTION
     /**
-    * @param string $value_
+     * @param string $value_
     */
     public function __construct($value_)
     {
@@ -283,7 +283,7 @@ namespace Components;
      * @param string $string_
      * @param integer $lengthChunks_
      *
-     * @return array|string
+     * @return string[]
      */
     public static function split($string_, $lengthChunks_=1)
     {
@@ -741,7 +741,7 @@ namespace Components;
      * @return string name/space/type/name
      *
      * For actual type <> name conversion look at runtime/classloader#lookupName
-     * @see \Components\Runtime_Classloader::lookupName()
+     * @see \Components\Runtime_Classloader::lookupName() \Components\Runtime_Classloader::lookupName()
      */
     public static function typeToNamespace($string_)
     {
@@ -776,7 +776,7 @@ namespace Components;
      * @return string Name_Space_Type_Name
      *
      * For actual name <> type resolution look at runtime/classloader#lookup
-     * @see \Components\Runtime_Classloader::lookup()
+     * @see \Components\Runtime_Classloader::lookup() \Components\Runtime_Classloader::lookup()
      */
     public static function namespaceToType($string_)
     {
@@ -1095,7 +1095,7 @@ namespace Components;
     /**
      * @param integer $type_
      *
-     * @return array|integer
+     * @return integer[]
      */
     public static function asciiTable($type_=self::ASCII_TABLE_FULL)
     {
@@ -1142,9 +1142,7 @@ namespace Components;
 
 
     // OVERRIDES
-    /**
-    * (non-PHPdoc)
-    * @see Components\Cloneable::__clone()
+    /**    * @see \Components\Cloneable::__clone() \Components\Cloneable::__clone()
     */
     public function __clone()
     {
@@ -1152,8 +1150,7 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Comparable::compareTo()
+     * @see \Components\Comparable::compareTo() \Components\Comparable::compareTo()
      */
     public function compareTo($object_)
     {
@@ -1169,8 +1166,7 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Object::hashCode()
+     * @see \Components\Object::hashCode() \Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -1178,8 +1174,7 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Object::equals()
+     * @see \Components\Object::equals() \Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -1190,8 +1185,7 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Object::__toString()
+     * @see \Components\Object::__toString() \Components\Object::__toString()
      */
     public function __toString()
     {
@@ -1199,8 +1193,7 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Serializable::serialVersionUid()
+     * @see \Components\Serializable::serialVersionUid() \Components\Serializable::serialVersionUid()
      */
     public function serialVersionUid()
     {
@@ -1209,7 +1202,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    //IMPLEMENTATION
+    // IMPLEMENTATION
     private static $m_asciiTable=array();
     //--------------------------------------------------------------------------
   }

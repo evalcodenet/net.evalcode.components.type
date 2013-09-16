@@ -7,8 +7,9 @@ namespace Components;
   /**
    * Exception_NotImplemented
    *
-   * @package net.evalcode.components
-   * @subpackage type.exception
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage exception
    *
    * @author evalcode.net
    */

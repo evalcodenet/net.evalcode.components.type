@@ -7,8 +7,8 @@ namespace Components;
   /**
    * Type_Test_Unit_Case_Annotations
    *
-   * @package net.evalcode.components
-   * @subpackage type.test.unit.case
+   * @package net.evalcode.components.type
+   * @subpackage test.unit.case
    *
    * @author evalcode.net
    */

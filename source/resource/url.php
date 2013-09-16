@@ -7,8 +7,9 @@ namespace Components;
   /**
    * Resource_Url
    *
-   * @package net.evalcode.components
-   * @subpackage type.resource
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage resource
    *
    * @author evalcode.net
    */
@@ -16,12 +17,10 @@ namespace Components;
   {
     // ACCESSORS
     function resolve();
-
     /**
      * @return string
      */
     function getContents();
-
     /**
      * @return \Components\Bitmask
      */

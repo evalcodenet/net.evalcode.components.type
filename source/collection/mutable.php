@@ -7,8 +7,9 @@ namespace Components;
   /**
    * Collection_Mutable
    *
-   * @package net.evalcode.components
-   * @subpackage type.collection
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage collection
    *
    * @author evalcode.net
    */
@@ -21,14 +22,12 @@ namespace Components;
      * @param mixed $element_
      */
     function add($element_);
-
     /**
      * Adds all elements of given collection to this one.
      *
-     * @param Collection $elements_
+     * @param \Components\Collection $elements_
      */
     function addAll(Collection $elements_);
-
     /**
      * Removes given element from this collection
      * or current element if 'null' is passed.
@@ -36,22 +35,19 @@ namespace Components;
      * @param mixed $element_
      */
     function remove($element_=null);
-
     /**
      * Removes given subset of elements from this collection.
      *
-     * @param Collection $elements_
+     * @param \Components\Collection $elements_
      */
     function removeAll(Collection $elements_);
-
     /**
      * Removes elements from this collection
      * that are not present in given subset.
      *
-     * @param Collection $elements_
+     * @param \Components\Collection $elements_
      */
     function retainAll(Collection $elements_);
-
     /**
      * Removes all elements from this collection.
      */

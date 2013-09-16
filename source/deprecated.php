@@ -7,8 +7,8 @@ namespace Components;
   /**
    * Deprecated
    *
-   * @package net.evalcode.components
-   * @subpackage runtime
+   * @api
+   * @package net.evalcode.components.type
    *
    * @author evalcode.net
    */

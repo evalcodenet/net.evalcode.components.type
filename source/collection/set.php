@@ -7,8 +7,9 @@ namespace Components;
   /**
    * Collection_Set
    *
-   * @package net.evalcode.components
-   * @subpackage type.collection
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage collection
    *
    * @author evalcode.net
    */
@@ -48,7 +49,7 @@ namespace Components;
 
     // OVERRIDES
     /**
-     * @see Collection::contains()
+     * @see Collection::contains() Collection::contains()
      */
     public function contains($element_)
     {
@@ -56,7 +57,7 @@ namespace Components;
     }
 
     /**
-     * @see Collection::containsArray()
+     * @see Collection::containsArray() Collection::containsArray()
      */
     public function containsArray(array $elements_)
     {
@@ -65,7 +66,7 @@ namespace Components;
     }
 
     /**
-     * @see Collection::containsCollection()
+     * @see Collection::containsCollection() Collection::containsCollection()
      */
     public function containsCollection(Collection $elements_)
     {
@@ -74,7 +75,7 @@ namespace Components;
     }
 
     /**
-     * @see Countable::count()
+     * @see Countable::count() Countable::count()
      */
     public function count()
     {
@@ -82,7 +83,7 @@ namespace Components;
     }
 
     /**
-     * @see Iterator::current()
+     * @see Iterator::current() Iterator::current()
      */
     public function current()
     {
@@ -90,7 +91,7 @@ namespace Components;
     }
 
     /**
-     * @see Iterator::key()
+     * @see Iterator::key() Iterator::key()
      */
     public function key()
     {
@@ -98,7 +99,7 @@ namespace Components;
     }
 
     /**
-     * @see Iterator::hasNext()
+     * @see Iterator::hasNext() Iterator::hasNext()
      */
     public function hasNext()
     {
@@ -106,7 +107,7 @@ namespace Components;
     }
 
     /**
-     * @see Iterator::hasPrevious()
+     * @see Iterator::hasPrevious() Iterator::hasPrevious()
      */
     public function hasPrevious()
     {
@@ -114,7 +115,7 @@ namespace Components;
     }
 
     /**
-     * @see Iterator::next()
+     * @see Iterator::next() Iterator::next()
      */
     public function next()
     {
@@ -125,7 +126,7 @@ namespace Components;
     }
 
     /**
-     * @see Iterator::previous()
+     * @see Iterator::previous() Iterator::previous()
      */
     public function previous()
     {
@@ -136,7 +137,7 @@ namespace Components;
     }
 
     /**
-     * @see Iterator::rewind()
+     * @see Iterator::rewind() Iterator::rewind()
      */
     public function rewind()
     {
@@ -144,7 +145,7 @@ namespace Components;
     }
 
     /**
-     * @see Iterator::valid()
+     * @see Iterator::valid() Iterator::valid()
      */
     public function valid()
     {
@@ -152,7 +153,7 @@ namespace Components;
     }
 
     /**
-     * @see Collection::isEmpty()
+     * @see Collection::isEmpty() Collection::isEmpty()
      */
     public function isEmpty()
     {
@@ -160,7 +161,7 @@ namespace Components;
     }
 
     /**
-     * @see Collection::arrayValue()
+     * @see Collection::arrayValue() Collection::arrayValue()
      */
     public function arrayValue()
     {
@@ -168,7 +169,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Object::hashCode()
+     * @see Components\Object::hashCode() Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -176,7 +177,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Object::equals()
+     * @see Components\Object::equals() Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -187,7 +188,7 @@ namespace Components;
     }
 
     /**
-     * @see Components\Object::__toString()
+     * @see Components\Object::__toString() Components\Object::__toString()
      */
     public function __toString()
     {

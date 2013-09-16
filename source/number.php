@@ -7,8 +7,8 @@ namespace Components;
   /**
    * Number
    *
-   * @package net.evalcode.components
-   * @subpackage type
+   * @api
+   * @package net.evalcode.components.type
    *
    * @author evalcode.net
    */
@@ -19,12 +19,10 @@ namespace Components;
      * @return integer
      */
     function intValue();
-
     /**
      * @return double
      */
     function doubleValue();
-
     /**
      * @return float
      */

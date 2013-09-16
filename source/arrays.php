@@ -7,8 +7,8 @@ namespace Components;
   /**
    * Arrays
    *
-   * @package net.evalcode.components
-   * @subpackage type.exception
+   * @api
+   * @package net.evalcode.components.type
    *
    * @author evalcode.net
    */

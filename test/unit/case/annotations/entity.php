@@ -7,8 +7,8 @@ namespace Components;
   /**
    * Type_Test_Unit_Case_Annotations_Entity
    *
-   * @package net.evalcode.components
-   * @subpackage type.test.unit.case.annotations
+   * @package net.evalcode.components.type
+   * @subpackage test.unit.case.annotations
    *
    * @author evalcode.net
    *
@@ -18,11 +18,11 @@ namespace Components;
   {
     // PROPERTIES
     /**
-     * @var Components\Integer
+     * @var \Components\Integer
      */
     public $id;
     /**
-     * @var Components\String
+     * @var \Components\String
      */
     public $name;
     /**
@@ -52,8 +52,7 @@ namespace Components;
 
     // OVERRIDES
     /**
-     * (non-PHPdoc)
-     * @see Components\Object::hashCode()
+     * @see \Components\Object::hashCode() \Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -61,8 +60,7 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Object::equals()
+     * @see \Components\Object::equals() \Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -73,8 +71,7 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Object::__toString()
+     * @see \Components\Object::__toString() \Components\Object::__toString()
      */
     public function __toString()
     {

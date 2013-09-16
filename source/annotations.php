@@ -7,8 +7,8 @@ namespace Components;
   /**
    * Annotations
    *
-   * @package net.evalcode.components
-   * @subpackage type
+   * @api
+   * @package net.evalcode.components.type
    *
    * @author evalcode.net
    */
@@ -62,7 +62,7 @@ namespace Components;
     /**
      * Registeres multiple annotation types for names at once.
      *
-     * @param array|string $annotations_
+     * @param string[] $annotations_
      */
     public static function registerAnnotations(array $annotations_)
     {
@@ -72,7 +72,7 @@ namespace Components;
     /**
      * Defines registered named annotation types.
      *
-     * @param array|string $annotations_
+     * @param string[] $annotations_
      */
     public static function setRegisteredAnnotations(array $annotations_)
     {
@@ -96,7 +96,7 @@ namespace Components;
      * Returns all type annotations the corresponding type of this instance is
      * decorated with.
      *
-     * @return array|Components\Annotation
+     * @return \Components\Annotation[]
      */
     public function getTypeAnnotations()
     {
@@ -143,7 +143,7 @@ namespace Components;
      *
      * @param string $methodName_
      *
-     * @return array|Components\Annotation
+     * @return \Components\Annotation[]
      */
     public function getMethodAnnotations($methodName_=null)
     {
@@ -203,7 +203,7 @@ namespace Components;
      * @param string $methodName_
      * @param string $parameterName_
      *
-     * @return array|Components\Annotation
+     * @return \Components\Annotation[]
      */
     public function getParameterAnnotations($methodName_, $parameterName_=null)
     {
@@ -250,7 +250,7 @@ namespace Components;
      *
      * @param string $propertyName_
      *
-     * @return array|Components\Annotation
+     * @return \Components\Annotation[]
      */
     public function getPropertyAnnotations($propertyName_=null)
     {
@@ -307,8 +307,7 @@ namespace Components;
 
     // OVERRIDES
     /**
-     * (non-PHPdoc)
-     * @see Components\Object::hashCode()
+     * @see Components\Object::hashCode() Components\Object::hashCode()
      */
     public function hashCode()
     {
@@ -316,8 +315,7 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Object::equals()
+     * @see Components\Object::equals() Components\Object::equals()
      */
     public function equals($object_)
     {
@@ -328,8 +326,7 @@ namespace Components;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Components\Object::__toString()
+     * @see Components\Object::__toString() Components\Object::__toString()
      */
     public function __toString()
     {
@@ -351,13 +348,13 @@ namespace Components;
     /**
      * Local instance cache.
      *
-     * @var array|Annotations
+     * @var \Components\Annotations[]
      */
     private static $m_instances=array();
     /**
      * Registered annotations.
      *
-     * @var array|string
+     * @var string[]
      */
     private static $m_registeredAnnotations=array(
       Annotation_Name::NAME=>Annotation_NAME::TYPE,
@@ -368,20 +365,20 @@ namespace Components;
      * Caches parsed initialized annotations
      * for the type this processor is responsible for.
      *
-     * @var array|Annotation
+     * @var \Components\Annotation[]
      */
     private $m_annotationInstances=array();
     /**
      * Caches parsed information required to initialize annotations
      * for the type this processor is responsible for.
      *
-     * @var array|string
+     * @var string[]
      */
     private $m_annotations=array();
     /**
      * Name of type this processor is responsible for.
      *
-     * @var array|string
+     * @var string[]
      */
     private $m_type;
     //-----
@@ -413,9 +410,9 @@ namespace Components;
      * @param integer $type_ Type/Method/Property Annotation?
      * @param string $typeName_ Name of annotated type.
      * @param string $annotationName_ Name of annotation.
-     * @param array|string $annotationProperties_ Possibly given annotation properties.
+     * @param string[] $annotationProperties_ Possibly given annotation properties.
      *
-     * @throws Runtime_Exception If illegal annotation name has been passed.
+     * @throws \Components\Runtime_Exception If illegal annotation name has been passed.
      */
     private function resolveAnnotation($type_, $typeName_, $annotationName_, array $annotationProperties_)
     {
@@ -527,7 +524,7 @@ namespace Components;
      *
      * @param string $path_
      *
-     * @return array|string
+     * @return string[]
      */
     // TODO Proper implementation
     private static function parseAnnotations($path_)

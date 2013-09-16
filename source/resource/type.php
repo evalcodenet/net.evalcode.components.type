@@ -7,8 +7,9 @@ namespace Components;
   /**
    * Resource_Type
    *
-   * @package net.evalcode.components
-   * @subpackage type.resource
+   * @api
+   * @package net.evalcode.components.type
+   * @subpackage resource
    *
    * @author evalcode.net
    */
