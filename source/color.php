@@ -12,7 +12,6 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  // TODO (CSH) Add alpha ...
   class Color implements Object, Cloneable, Value_String
   {
     // PREDEFINED PROPERTIES
@@ -34,21 +33,28 @@ namespace Components;
      * @var integer
      */
     public $b;
+    /**
+     * @var integer
+     */
+    public $a;
     //--------------------------------------------------------------------------
 
 
     // CONSTRUCTION
-    public function __construct($r_, $g_, $b_)
+    public function __construct($r_, $g_, $b_, $a_=null)
     {
       $this->r=$r_;
       $this->g=$g_;
       $this->b=$b_;
+      $this->a=$a_;
     }
     //--------------------------------------------------------------------------
 
 
     // STATIC ACCESSORS
     /**
+     * Does not support alpha channel, for CSS compatibility.
+     *
      * @param string $string_
      *
      * @return \Components\Color
@@ -57,31 +63,21 @@ namespace Components;
      */
     public static function forHexString($string_)
     {
-      // TODO Optimize ...
-      $matches=array();
-      if(0===preg_match('/^[#]*(?:([a-f0-9]{6})|([a-f0-9]{3}))+$/i', $string_, $matches))
+      $string_=trim(ltrim($string_, '#'));
+      $length=strlen($string_);
+
+      if(0!==$length%3)
       {
         throw new Exception_IllegalArgument('components/type/color', sprintf(
-          'Argument does not match expected format [expected value between: #000000 - #ffffff, given: %s].',
-            $string_
+          'Unable to parse color for given string [%s].', $string_
         ));
       }
 
-      $values=array();
-      if(isset($matches[2]))
-      {
-        for($i=0; $i<3; $i++)
-          $values[]=hexdec($matches[2][$i].$matches[2][$i]);
-      }
-      else
-      {
-        foreach(str_split($matches[1], 2) as $chunk)
-          $values[]=hexdec($chunk);
-      }
+      $channels=str_split($string_, $length/3);
+      foreach($channels as $idx=>$channel)
+        $channels[$idx]=min(hexdec($channel), 255);
 
-      list($r, $g, $b)=$values;
-
-      return new static($r, $g, $b);
+      return new static($channels[0], $channels[1], $channels[2]);
     }
 
     /**
@@ -93,38 +89,31 @@ namespace Components;
      */
     public static function forRgbString($string_)
     {
-      // TODO Optimize (currently twice as fast as forHexString, but looks slow as well).
-      $matches=array();
-      if(0===preg_match('/^[rgb \(]*([\d, ]+)*[\)]*$/i', $string_, $matches))
-      {
-        throw new Exception_IllegalArgument('components/type/color', sprintf(
-          'Argument does not match expected format [given: %s, expected: rgb(255, 255, 255)].',
-            $string_
-        ));
-      }
+      $channels=array();
+      $count=preg_match_all('/[\d]+/', $string_, $channels);
 
-      $values=array();
-      foreach(explode(' ', strtr($matches[1], ',', ' ')) as $value)
-      {
-        if(is_numeric($value))
-          $values[]=min((int)$value, 255);
-      }
+      if(4===$count)
+        return new static($channels[0], $channels[1], $channels[2], $channels[3]);
 
-      list($r, $g, $b)=$values;
+      if(3===$count)
+        return new static($channels[0], $channels[1], $channels[2]);
 
-      return new static($r, $g, $b);
+      throw new Exception_IllegalArgument('components/type/color', sprintf(
+        'Unable to parse color for given string [%s].', $string_
+      ));
     }
 
     /**
      * @param integer $r_
      * @param integer $g_
      * @param integer $b_
+     * @param integer $a_
      *
      * @return \Components\Color
      */
-    public static function forRgb($r_, $g_, $b_)
+    public static function forRgb($r_, $g_, $b_, $a_=null)
     {
-      return new static($r_, $g_, $b_);
+      return new static($r_, $g_, $b_, $a_);
     }
 
     /**
@@ -141,9 +130,19 @@ namespace Components;
         );
       }
 
-      list($r, $g, $b)=self::$m_named[$name_];
+      list($r, $g, $b, $a)=self::$m_named[$name_];
 
-      return new static($r, $g, $b);
+      return new static($r, $g, $b, $a);
+    }
+
+    /**
+     * @param string $value_ CSS-like RGB color value / hex value
+     *
+     * @return \Components\Color
+     */
+    public static function valueOf($value_)
+    {
+      return static::forRgbString($value_);
     }
 
     /**
@@ -161,26 +160,24 @@ namespace Components;
     {
       return static::forName(self::WHITE);
     }
-
-    /**
-     * @param string $string_ CSS-like RGB color value / hex value
-     *
-     * @return \Components\Color
-     */
-    public static function valueOf($value_)
-    {
-      return static::forRgbString($value_);
-    }
     //--------------------------------------------------------------------------
 
 
     // ACCESSORS
     /**
+     * Does not support alpha channel, for CSS compatibility.
+     *
      * @return string
      */
     public function toHexString()
     {
-      return dechex($this->r).dechex($this->g).dechex($this->b);
+      $r=dechex($this->r);
+      $g=dechex($this->g);
+      $b=dechex($this->b);
+
+      return str_pad($r, 2, 0, STR_PAD_LEFT)
+        .str_pad($g, 2, 0, STR_PAD_LEFT)
+        .str_pad($b, 2, 0, STR_PAD_LEFT);
     }
 
     /**
@@ -188,10 +185,20 @@ namespace Components;
      */
     public function toRgbString()
     {
-      return sprintf('rgb(%d, %d, %d)',
+      if(null===$this->a)
+      {
+        return sprintf('rgb(%d, %d, %d)',
+          $this->r,
+          $this->g,
+          $this->b
+        );
+      }
+
+      return sprintf('rgba(%d, %d, %d, %g)',
         $this->r,
         $this->g,
-        $this->b
+        $this->b,
+        1<$this->a?round(1/255*$this->a, 3, PHP_ROUND_HALF_UP):$this->a
       );
     }
     //--------------------------------------------------------------------------
@@ -200,7 +207,7 @@ namespace Components;
     // OVERRIDES
     /**
      * (non-PHPdoc)
-     * @see Components\Enumeration::value()
+     * @see \Components\Enumeration::value()
      */
     public function value()
     {
@@ -209,37 +216,37 @@ namespace Components;
 
     /**
      * (non-PHPdoc)
-     * @see Components\Cloneable::__clone()
+     * @see \Components\Cloneable::__clone()
      */
     public function __clone()
     {
-      return new self($this->r, $this->g, $this->b);
+      return new self($this->r, $this->g, $this->b, $this->a);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components\Object::hashCode()
+     * @see \Components\Object::hashCode()
      */
     public function hashCode()
     {
-      return integer_hash_m($this->r, $this->g, $this->b);
+      return integer_hash_m($this->r, $this->g, $this->b, $this->a);
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components\Object::equals()
+     * @see \Components\Object::equals()
      */
     public function equals($object_)
     {
       if($object_ instanceof self)
-        return $this->r===$object_->r && $this->g===$object_->g && $this->b===$object_->b;
+        return $this->r===$object_->r && $this->g===$object_->g && $this->b===$object_->b && $this->a===$object_->a;
 
       return false;
     }
 
     /**
      * (non-PHPdoc)
-     * @see Components\Object::__toString()
+     * @see \Components\Object::__toString()
      */
     public function __toString()
     {
@@ -250,8 +257,8 @@ namespace Components;
 
     // IMPLEMENTATION
     private static $m_named=array(
-      self::BLACK=>array(0, 0, 0),
-      self::WHITE=>array(255, 255, 255)
+      self::BLACK=>array(0, 0, 0, 255),
+      self::WHITE=>array(255, 255, 255, 255)
     );
     //--------------------------------------------------------------------------
   }
