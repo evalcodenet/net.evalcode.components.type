@@ -294,7 +294,7 @@ namespace Components;
       $m=2*$lengthChunks_;
       $length=strlen($string_);
 
-      $chars=array();
+      $chars=[];
       for($i=0; $i<$length; $i+=$m)
       {
         // TODO Optimize?
@@ -1102,7 +1102,7 @@ namespace Components;
       if(isset(self::$m_asciiTable[$type_]))
         return self::$m_asciiTable[$type_];
 
-      $table=array();
+      $table=[];
       if(0<(self::ASCII_TABLE_CONTROL_CHARACTERS&$type_))
         $table=array_merge($table, range(0, 31, 1));
       if(0<(self::ASCII_TABLE_SPECIAL_CHARACTERS&$type_))
@@ -1203,7 +1203,7 @@ namespace Components;
 
 
     // IMPLEMENTATION
-    private static $m_asciiTable=array();
+    private static $m_asciiTable=[];
     //--------------------------------------------------------------------------
   }
 ?>

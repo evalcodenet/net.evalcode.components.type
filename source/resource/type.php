@@ -157,7 +157,7 @@ namespace Components;
 
 
     // IMPLEMENTATION
-    private static $m_resourceTypes=array();
+    private static $m_resourceTypes=[];
 
     private static $m_resourceIdentifierTypes=array(
       self::SCHEME_AFP=>self::IDENTIFIER_URI,

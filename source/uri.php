@@ -359,7 +359,7 @@ namespace Components;
      */
     public function getPath()
     {
-      $pathParams=array();
+      $pathParams=[];
       foreach($this->m_pathParams as $pathParam)
         array_push($pathParams, String::urlEncode($pathParam));
 
@@ -380,7 +380,7 @@ namespace Components;
      */
     public function setPath($path_)
     {
-      $this->m_pathParams=array();
+      $this->m_pathParams=[];
 
       $path_=ltrim($path_, '/');
       $pathParams=explode('/', $path_);
@@ -408,7 +408,7 @@ namespace Components;
      */
     public function setPathParams(array $pathParams_)
     {
-      $this->m_pathParams=array();
+      $this->m_pathParams=[];
 
       foreach($pathParams_ as $pathParam)
       {
@@ -914,8 +914,8 @@ namespace Components;
 
 
     // IMPLEMENTATION
-    protected $m_pathParams=array();
-    protected $m_queryParams=array();
+    protected $m_pathParams=[];
+    protected $m_queryParams=[];
     protected $m_asString;
     /**
      * @var \Components\Resource
@@ -943,7 +943,7 @@ namespace Components;
       $this->m_password=isset($uri_['pass'])?String::urlDecode($uri_['pass']):null;
 
       $this->setPath(isset($uri_['path'])?$uri_['path']:null);
-      $this->m_queryParams=isset($uri_['query'])?self::parseQueryString($uri_['query']):array();
+      $this->m_queryParams=isset($uri_['query'])?self::parseQueryString($uri_['query']):[];
 
       $this->m_fragment=isset($uri_['fragment'])?String::urlDecode($uri_['fragment']):null;
     }
@@ -952,7 +952,7 @@ namespace Components;
     // HELPERS
     protected static function parseQueryString($queryString_)
     {
-      $queryParams=array();
+      $queryParams=[];
 
       if(!$queryString_=trim($queryString_))
         return $queryParams;

@@ -208,7 +208,7 @@ namespace Components;
      *
      * @var mixed|array
      */
-    protected $m_elements=array();
+    protected $m_elements=[];
     /**
      * Internal pointer for iterating this collection.
      *

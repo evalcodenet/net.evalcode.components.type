@@ -127,7 +127,7 @@ namespace Components;
     public function getTypeAnnotation($annotationName_)
     {
       if(false===isset($this->m_annotations[self::TYPE_ANNOTATION][$this->m_type][$annotationName_]))
-        return array();
+        return [];
 
       $this->resolveAnnotation(self::TYPE_ANNOTATION, $this->m_type, $annotationName_,
         $this->m_annotations[self::TYPE_ANNOTATION][$this->m_type][$annotationName_]
@@ -150,7 +150,7 @@ namespace Components;
       if(null===$methodName_)
       {
         if(false===isset($this->m_annotations[self::METHOD_ANNOTATION]))
-          return array();
+          return [];
 
         foreach($this->m_annotations[self::METHOD_ANNOTATION] as $methodName=>$annotations)
           $this->resolveAnnotations(self::METHOD_ANNOTATION, $methodName);
@@ -187,7 +187,7 @@ namespace Components;
     public function getMethodAnnotation($methodName_, $annotationName_)
     {
       if(false===isset($this->m_annotations[self::METHOD_ANNOTATION][$methodName_][$annotationName_]))
-        return array();
+        return [];
 
       $this->resolveAnnotation(self::METHOD_ANNOTATION, $methodName_, $annotationName_,
         $this->m_annotations[self::METHOD_ANNOTATION][$methodName_][$annotationName_]
@@ -210,7 +210,7 @@ namespace Components;
       if(null===$parameterName_)
       {
         if(false===isset($this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_]))
-          return array();
+          return [];
 
         foreach($this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_] as $parameterName=>$parameterAnnotations)
           $this->resolveParameterAnnotations(self::PARAMETER_ANNOTATION, $methodName_, $parameterName, $parameterAnnotations);
@@ -219,7 +219,7 @@ namespace Components;
       }
 
       if(false===isset($this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_][$parameterName_]))
-        return array();
+        return [];
 
       $this->resolveParameterAnnotations(self::PARAMETER_ANNOTATION, $methodName_, $parameterName_,
         $this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_][$parameterName_]
@@ -257,7 +257,7 @@ namespace Components;
       if(null===$propertyName_)
       {
         if(false===isset($this->m_annotations[self::PROPERTY_ANNOTATION]))
-          return array();
+          return [];
 
         foreach($this->m_annotations[self::PROPERTY_ANNOTATION] as $propertyName=>$annotations)
           $this->resolveAnnotations(self::PROPERTY_ANNOTATION, $propertyName);
@@ -294,7 +294,7 @@ namespace Components;
     public function getPropertyAnnotation($propertyName_, $annotationName_)
     {
       if(false===isset($this->m_annotations[self::PROPERTY_ANNOTATION][$propertyName_][$annotationName_]))
-        return array();
+        return [];
 
       $this->resolveAnnotation(self::PROPERTY_ANNOTATION, $propertyName_, $annotationName_,
         $this->m_annotations[self::PROPERTY_ANNOTATION][$propertyName_][$annotationName_]
@@ -350,7 +350,7 @@ namespace Components;
      *
      * @var \Components\Annotations[]
      */
-    private static $m_instances=array();
+    private static $m_instances=[];
     /**
      * Registered annotations.
      *
@@ -367,14 +367,14 @@ namespace Components;
      *
      * @var \Components\Annotation[]
      */
-    private $m_annotationInstances=array();
+    private $m_annotationInstances=[];
     /**
      * Caches parsed information required to initialize annotations
      * for the type this processor is responsible for.
      *
      * @var string[]
      */
-    private $m_annotations=array();
+    private $m_annotations=[];
     /**
      * Name of type this processor is responsible for.
      *
@@ -399,7 +399,7 @@ namespace Components;
       }
 
       if(false===isset($this->m_annotationInstances[$type_][$typeName_]))
-        return array();
+        return [];
 
       return $this->m_annotationInstances[$type_][$typeName_];
     }
@@ -442,7 +442,7 @@ namespace Components;
       }
 
       if(false===isset($this->m_annotationInstances[$type_][$methodName_][$parameterName_]))
-        return array();
+        return [];
 
       return $this->m_annotationInstances[$type_][$methodName_][$parameterName_];
     }
@@ -529,22 +529,22 @@ namespace Components;
     // TODO Proper implementation
     private static function parseAnnotations($path_)
     {
-      $annotations=array();
+      $annotations=[];
 
       $source=file_get_contents($path_);
 
-      $matches=array();
+      $matches=[];
       preg_match_all(self::PATTERN, $source, $matches);
 
       $type=null;
       $method=null;
       $namespace=null;
 
-      $buffer=array();
+      $buffer=[];
       foreach($matches[2] as $idx=>$annotationName)
       {
         if($annotationName)
-          $buffer[$annotationName]=array();
+          $buffer[$annotationName]=[];
 
         if($matches[3][$idx])
         {
@@ -568,7 +568,7 @@ namespace Components;
             $type=$namespace.'\\'.$matches[4][$idx];
 
           $annotations[$type][self::TYPE_ANNOTATION][$type]=$buffer;
-          $buffer=array();
+          $buffer=[];
         }
 
         if($matches[5][$idx])
@@ -577,20 +577,20 @@ namespace Components;
           if(0===strpos($matches[5][$idx], '$'))
           {
             $annotations[$type][self::PARAMETER_ANNOTATION][$method][trim(substr($matches[5][$idx], 1))]=$buffer;
-            $buffer=array();
+            $buffer=[];
           }
           // method
           if(false!==($pos=strpos($matches[5][$idx], 'function')))
           {
             $method=trim(substr($matches[5][$idx], $pos+8));
             $annotations[$type][self::METHOD_ANNOTATION][$method]=$buffer;
-            $buffer=array();
+            $buffer=[];
           }
           // property
           else if(false!==($pos=strpos($matches[5][$idx], '$')))
           {
             $annotations[$type][self::PROPERTY_ANNOTATION][trim(substr($matches[5][$idx], $pos+1))]=$buffer;
-            $buffer=array();
+            $buffer=[];
           }
         }
       }

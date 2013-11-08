@@ -30,7 +30,7 @@ namespace Components;
      */
     public static function forBitmask(Bitmask $bitmask_)
     {
-      $bitset=array(); /* TODO Implement self::internalConvertImpl($bitmask_->toBits())*/
+      $bitset=[]; /* TODO Implement self::internalConvertImpl($bitmask_->toBits())*/
 
       return new static($bitset);
     }
@@ -80,7 +80,7 @@ namespace Components;
     /**
      * @var int[]
      */
-    private $m_value=array();
+    private $m_value=[];
     //--------------------------------------------------------------------------
   }
 ?>

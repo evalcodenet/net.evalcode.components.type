@@ -89,7 +89,7 @@ namespace Components;
      */
     public static function forRgbString($string_)
     {
-      $channels=array();
+      $channels=[];
       $count=preg_match_all('/[\d]+/', $string_, $channels);
 
       if(4===$count)

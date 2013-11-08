@@ -21,7 +21,7 @@ namespace Components;
 
 
     // CONSTRUCTION
-    public function __construct(array $value_=array())
+    public function __construct(array $value_=[])
     {
       parent::__construct($value_);
     }
@@ -167,7 +167,7 @@ namespace Components;
      */
     public function clear()
     {
-      $this->m_value=array();
+      $this->m_value=[];
 
       return $this;
     }

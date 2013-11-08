@@ -43,7 +43,7 @@ namespace Components;
     {
       $string_.=$arrayDelimiterL_;
 
-      $values=array();
+      $values=[];
 
       if($maxDepth_>++$level_ && 0<count($array_))
       {
@@ -90,7 +90,7 @@ namespace Components;
       return $string_;
     }
 
-    public static function containsKey(array $array_, $key_, $mode_=3, array &$parentKeys_=array())
+    public static function containsKey(array $array_, $key_, $mode_=3, array &$parentKeys_=[])
     {
       // search current level
       $exists=array_key_exists($key_, $array_);
@@ -115,10 +115,10 @@ namespace Components;
       return $exists;
     }
 
-    public static function containsKeyBySubstring(array $array_, $substring_, $mode_=3, array &$parentKeys_=array())
+    public static function containsKeyBySubstring(array $array_, $substring_, $mode_=3, array &$parentKeys_=[])
     {
       $exists=false;
-      $nestedArrays=array();
+      $nestedArrays=[];
       $recursive=Bitmask::hasBitForBitmask($mode_, self::RECURSIVE);
 
       // search current level
@@ -162,7 +162,7 @@ namespace Components;
       return $exists;
     }
 
-    public static function containsValue(array $array_, $value_, $mode_=3, array &$parentKeys_=array())
+    public static function containsValue(array $array_, $value_, $mode_=3, array &$parentKeys_=[])
     {
       // search current level
       $exists=array_search($value_, $array_);
@@ -187,10 +187,10 @@ namespace Components;
       return $exists;
     }
 
-    public static function containsValueBySubstring(array $array_, $substring_, $mode_=3, array &$parentKeys_=array())
+    public static function containsValueBySubstring(array $array_, $substring_, $mode_=3, array &$parentKeys_=[])
     {
       $exists=false;
-      $nestedArrays=array();
+      $nestedArrays=[];
       $recursive=Bitmask::hasBitForBitmask($mode_, self::RECURSIVE);
 
       // search current level

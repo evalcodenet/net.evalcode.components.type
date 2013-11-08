@@ -64,7 +64,7 @@ namespace Components;
     {
       $removed=$element_;
 
-      $elements=array();
+      $elements=[];
 
       if(null===$element_)
       {
@@ -98,7 +98,7 @@ namespace Components;
      */
     public function removeAll(Collection $elements_)
     {
-      $elements=array();
+      $elements=[];
       foreach($this->m_elements as $element)
       {
         if(false===$elements_->contains($element))
@@ -117,7 +117,7 @@ namespace Components;
      */
     public function retainAll(Collection $elements_)
     {
-      $elements=array();
+      $elements=[];
       foreach($this->m_elements as $element)
       {
         if($elements_->contains($element))
@@ -136,7 +136,7 @@ namespace Components;
      */
     public function clear()
     {
-      $this->m_elements=array();
+      $this->m_elements=[];
       $this->m_position=0;
       $this->m_count=0;
     }

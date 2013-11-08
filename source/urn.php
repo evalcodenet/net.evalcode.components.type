@@ -39,7 +39,7 @@ namespace Components;
     // FIXME Should be not necessary if Uri()->getPath() is correct.
     public function getPath()
     {
-      $pathParams=array();
+      $pathParams=[];
       foreach($this->getPathParams() as $pathParam)
         array_push($pathParams, String::urlEncode($pathParam));
 
@@ -48,7 +48,7 @@ namespace Components;
 
     public function setPath($path_)
     {
-      $this->m_pathParams=array();
+      $this->m_pathParams=[];
 
       if(0==String::indexOf($path_, ':'))
         $pathParams=explode(':', String::substring($path_, 1));
