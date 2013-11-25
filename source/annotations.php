@@ -129,11 +129,9 @@ namespace Components;
       if(false===isset($this->m_annotations[self::TYPE_ANNOTATION][$this->m_type][$annotationName_]))
         return [];
 
-      $this->resolveAnnotation(self::TYPE_ANNOTATION, $this->m_type, $annotationName_,
+      return $this->resolveAnnotation(self::TYPE_ANNOTATION, $this->m_type, $annotationName_,
         $this->m_annotations[self::TYPE_ANNOTATION][$this->m_type][$annotationName_]
       );
-
-      return $this->m_annotationInstances[self::TYPE_ANNOTATION][$this->m_type][$annotationName_];
     }
 
     /**
@@ -154,6 +152,9 @@ namespace Components;
 
         foreach($this->m_annotations[self::METHOD_ANNOTATION] as $methodName=>$annotations)
           $this->resolveAnnotations(self::METHOD_ANNOTATION, $methodName);
+
+        if(false===isset($this->m_annotationInstances[self::METHOD_ANNOTATION]))
+          return [];
 
         return $this->m_annotationInstances[self::METHOD_ANNOTATION];
       }
@@ -189,11 +190,9 @@ namespace Components;
       if(false===isset($this->m_annotations[self::METHOD_ANNOTATION][$methodName_][$annotationName_]))
         return [];
 
-      $this->resolveAnnotation(self::METHOD_ANNOTATION, $methodName_, $annotationName_,
+      return $this->resolveAnnotation(self::METHOD_ANNOTATION, $methodName_, $annotationName_,
         $this->m_annotations[self::METHOD_ANNOTATION][$methodName_][$annotationName_]
       );
-
-      return $this->m_annotationInstances[self::METHOD_ANNOTATION][$methodName_][$annotationName_];
     }
 
     /**
@@ -221,11 +220,9 @@ namespace Components;
       if(false===isset($this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_][$parameterName_]))
         return [];
 
-      $this->resolveParameterAnnotations(self::PARAMETER_ANNOTATION, $methodName_, $parameterName_,
+      return $this->resolveParameterAnnotations(self::PARAMETER_ANNOTATION, $methodName_, $parameterName_,
         $this->m_annotations[self::PARAMETER_ANNOTATION][$methodName_][$parameterName_]
       );
-
-      return $this->m_annotationInstances[self::PARAMETER_ANNOTATION][$methodName_][$parameterName_];
     }
 
     /**
@@ -262,6 +259,9 @@ namespace Components;
         foreach($this->m_annotations[self::PROPERTY_ANNOTATION] as $propertyName=>$annotations)
           $this->resolveAnnotations(self::PROPERTY_ANNOTATION, $propertyName);
 
+        if(false===isset($this->m_annotationInstances[self::PROPERTY_ANNOTATION]))
+          return [];
+
         return $this->m_annotationInstances[self::PROPERTY_ANNOTATION];
       }
 
@@ -296,11 +296,9 @@ namespace Components;
       if(false===isset($this->m_annotations[self::PROPERTY_ANNOTATION][$propertyName_][$annotationName_]))
         return [];
 
-      $this->resolveAnnotation(self::PROPERTY_ANNOTATION, $propertyName_, $annotationName_,
+      return $this->resolveAnnotation(self::PROPERTY_ANNOTATION, $propertyName_, $annotationName_,
         $this->m_annotations[self::PROPERTY_ANNOTATION][$propertyName_][$annotationName_]
       );
-
-      return $this->m_annotationInstances[self::PROPERTY_ANNOTATION][$propertyName_][$annotationName_];
     }
     //--------------------------------------------------------------------------
 
@@ -434,7 +432,6 @@ namespace Components;
 
     private function resolveParameterAnnotations($type_, $methodName_, $parameterName_, array $annotations_)
     {
-
       if(isset($this->m_annotations[$type_][$methodName_][$parameterName_]))
       {
         foreach($this->m_annotations[$type_][$methodName_][$parameterName_] as $annotationName=>$annotationProperties)
