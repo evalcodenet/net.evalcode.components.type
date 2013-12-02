@@ -32,7 +32,7 @@ namespace Components;
      */
     public static function forBitmask($bitmask_)
     {
-      return new static($bitmask_);
+      return new static((int)$bitmask_);
     }
 
     /**
@@ -160,6 +160,9 @@ namespace Components;
      */
     public function has($bit_)
     {
+      if($this->m_value===$bit_)
+        return true;
+
       return 0<($this->m_value&$bit_);
     }
 
