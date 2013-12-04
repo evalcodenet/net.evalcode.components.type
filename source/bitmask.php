@@ -38,7 +38,7 @@ namespace Components;
     /**
      * Returns instance for given bits.
      *
-     * @param array $bits_
+     * @param integer[] $bits_
      *
      * @return \Components\Bitmask
      */
@@ -72,7 +72,7 @@ namespace Components;
      *
      * @param integer $bitmask_
      *
-     * @return integer|array
+     * @return integer[]
      */
     public static function getBitsForBitmask($bitmask_)
     {
@@ -96,7 +96,7 @@ namespace Components;
     /**
      * Returns bitmask for given bits.
      *
-     * @param integer|array $bits_
+     * @param integer[] $bits_
      *
      * @return integer
      */
@@ -150,7 +150,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // ACCESSORS
+    // ACCESSORS/MUTATORS
     /**
      * Checks if given bit is set.
      *
@@ -203,7 +203,7 @@ namespace Components;
     }
 
     /**
-     * @return integer|array
+     * @return integer[]
      */
     public function toBits()
     {
@@ -220,7 +220,7 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES
+    // OVERRIDES/IMPLEMENTS
     /**
      * @see Components\Number::intValue() Components\Number::intValue()
      */
