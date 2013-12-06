@@ -77,9 +77,9 @@ namespace Components;
     public static function getBitsForBitmask($bitmask_)
     {
       $bitset=[];
-
       $bit=PHP_INT_MAX;
-      while(1<$bit)
+
+      while(1<=$bit)
       {
         if(-1<($bitmask_-$bit))
         {
