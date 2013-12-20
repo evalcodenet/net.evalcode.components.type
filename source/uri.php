@@ -818,9 +818,10 @@ namespace Components;
      */
     public function __toString()
     {
-      $string='';
       if($this->m_scheme)
         $string="{$this->m_scheme}://";
+      else
+        $string='//';
 
       if($this->m_username && $this->m_host)
       {
@@ -834,6 +835,8 @@ namespace Components;
 
       if($this->m_host)
         $string.=$this->m_host;
+      if($this->m_port)
+        $string.=':'.$this->m_port;
 
       // FIXME Append root ('/') if no params (test against current integrations using file://, http:// etc.)
       if(count($this->m_pathParams))
