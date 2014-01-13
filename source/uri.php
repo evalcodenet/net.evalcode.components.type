@@ -818,10 +818,12 @@ namespace Components;
      */
     public function __toString()
     {
+      $string='';
+
       if($this->m_scheme)
-        $string="{$this->m_scheme}://";
-      else
-        $string='//';
+        $string.="{$this->m_scheme}://";
+      else if($this->m_host)
+        $string.='//';
 
       if($this->m_username && $this->m_host)
       {
