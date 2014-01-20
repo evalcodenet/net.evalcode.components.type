@@ -93,7 +93,7 @@ namespace Components;
       if(isset($_SERVER['HTTP_HOST']))
         $uri->m_host=$_SERVER['HTTP_HOST'];
 
-      if(isset($_SERVER['SERVER_PROTOCOL']) && false!==strpos($_SERVER['SERVER_PROTOCOL'], 'HTTPS'))
+      if(isset($_SERVER['HTTPS']))
         $uri->m_scheme=\Components\Resource_Type::SCHEME_HTTPS;
       else
         $uri->m_scheme=\Components\Resource_Type::SCHEME_HTTP;
@@ -570,18 +570,10 @@ namespace Components;
      */
     public function getQueryString()
     {
-      $queryString=str_replace(
-        array('+'),
-        array('%20'),
-        http_build_query($this->getQueryParams())
-      );
+      $queryString=str_replace(['+'], ['%20'], http_build_query($this->getQueryParams()));
 
       // FIXME Depends on php.ini configuration - Abstract components/config.
-      $queryString=str_replace(
-        array('&amp;'),
-        array('&'),
-        $queryString
-      );
+      $queryString=str_replace(['&amp;'], ['&'], $queryString);
 
       if($this->getOptions()->has(self::OPTION_QUERY_STRING_FORMAT_JAXRS))
         $queryString=preg_replace('/%5B(?:[0-9]|[1-9][0-9]+)%5D=/', '=', $queryString);
@@ -814,7 +806,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::__toString() \Components\Object::__toString()
+     * @see \Components\Object::__toString() __toString()
      */
     public function __toString()
     {
@@ -825,24 +817,28 @@ namespace Components;
       else if($this->m_host)
         $string.='//';
 
-      if($this->m_username && $this->m_host)
+      if($string)
       {
-        $authority=String::urlEncode($this->m_username);
+        if($this->m_username && $this->m_host)
+        {
+          $authority=String::urlEncode($this->m_username);
 
-        if($this->m_password)
-          $authority.=':'.String::urlEncode($this->m_password);
+          if($this->m_password)
+            $authority.=':'.String::urlEncode($this->m_password);
 
-        $string.="$authority@";
+          $string.="$authority@";
+        }
+
+        if($this->m_host)
+          $string.=$this->m_host;
+        if($this->m_port)
+          $string.=':'.$this->m_port;
       }
 
-      if($this->m_host)
-        $string.=$this->m_host;
-      if($this->m_port)
-        $string.=':'.$this->m_port;
-
-      // FIXME Append root ('/') if no params (test against current integrations using file://, http:// etc.)
       if(count($this->m_pathParams))
         $string.=$this->getPath();
+      else
+        $string.='/';
 
       if($queryString=$this->getQueryString())
         $string.='?'.$queryString;
