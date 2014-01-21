@@ -15,10 +15,6 @@ namespace Components;
    */
   class Resource_Url_Default implements Resource_Url
   {
-    // PREDEFINED PROPERTIES
-    // TODO CURL options
-    //--------------------------------------------------------------------------
-
 
     // CONSTRUCTION
     public function __construct(Uri $uri_)
@@ -35,34 +31,30 @@ namespace Components;
      */
     public static function isSupported()
     {
-      if(null===self::$m_isSupported)
-        self::$m_isSupported=extension_loaded('curl');
-
-      return self::$m_isSupported;
+      return true;
     }
     //--------------------------------------------------------------------------
 
 
     // OVERRIDES
     /**
-     * @see \Components\Resource_Url::resolve() \Components\Resource_Url::resolve()
+     * @see \Components\Resource_Url::resolve() resolve
      */
     public function resolve()
     {
-      // TODO Implement
+      return $this->getContents();
     }
 
     /**
-     * @see \Components\Resource_Url::getContents() \Components\Resource_Url::getContents()
+     * @see \Components\Resource_Url::getContents() getContents
      */
     public function getContents()
     {
-      // TODO Implement curl
       return file_get_contents((string)$this->m_uri);
     }
 
     /**
-     * @see \Components\Resource_Url::getOptions() \Components\Resource_Url::getOptions()
+     * @see \Components\Resource_Url::getOptions() getOptions
      */
     public function getOptions()
     {
@@ -70,7 +62,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::hashCode() \Components\Object::hashCode()
+     * @see \Components\Object::hashCode() hashCode
      */
     public function hashCode()
     {
@@ -78,7 +70,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::equals() \Components\Object::equals()
+     * @see \Components\Object::equals() equals
      */
     public function equals($object_)
     {
@@ -89,7 +81,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::__toString() \Components\Object::__toString()
+     * @see \Components\Object::__toString() __toString
      */
     public function __toString()
     {

@@ -113,7 +113,7 @@ namespace Components;
 
     // ACCESSORS
     /**
-     * @return \Components\Resource
+     * @return \Components\Resource_Url
      */
     public function getResource()
     {
@@ -176,21 +176,27 @@ namespace Components;
      */
     public function getAuthority()
     {
-      if(!$host=$this->getHost())
-        return '';
+      $authority=[];
 
-      if($port=$this->getPort())
-        $host.=':'.$port;
-
-      if($user=$this->getUsername())
+      if($this->m_host)
       {
-        if($password=$this->getPassword())
-          $user.=":$password";
+        if($this->m_username)
+        {
+          $identity=String::urlEncode($this->m_username);
 
-        return "$user@$host";
+          if($this->m_password)
+            $identity.=':'.String::urlEncode($this->m_password);
+
+          $authority[]=$identity;
+        }
+
+        if($this->m_port)
+          $authority[]="{$this->m_host}:{$this->m_port}";
+        else
+          $authority[]=$this->m_host;
       }
 
-      return $host;
+      return implode('@', $authority);
     }
 
     /**
@@ -257,6 +263,9 @@ namespace Components;
      */
     public function getPort()
     {
+      if(null===$this->m_port && null!==$this->m_scheme)
+        return Resource_Type::getPortForScheme($this->m_scheme);
+
       return $this->m_port;
     }
 
@@ -763,7 +772,7 @@ namespace Components;
      */
     public function getContents()
     {
-      return $contents=$this->getResolver()->getContents($this);
+      return $this->getResource()->getContents();
     }
 
     /**

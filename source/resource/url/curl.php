@@ -43,9 +43,26 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES
+    // ACCESSORS/MUTATORS
+    // TODO Magic custom method & protocol support.
+    public function purge()
+    {
+      $curl=curl_init();
+
+      curl_setopt($curl, CURLOPT_URL, (string)$this->m_uri);
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PURGE');
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, 0);
+
+      curl_exec($curl);
+
+      curl_close($curl);
+    }
+    //--------------------------------------------------------------------------
+
+
+    // OVERRIDES/IMPLEMENTS
     /**
-     * @see \Components\Resource_Url::resolve() \Components\Resource_Url::resolve()
+     * @see \Components\Resource_Url::resolve() resolve
      */
     public function resolve()
     {
@@ -53,16 +70,16 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Resource_Url::getContents() \Components\Resource_Url::getContents()
+     * @see \Components\Resource_Url::getContents() getContents
      */
     public function getContents()
     {
       // TODO Implement curl
-      return file_get_contents((string)$this->m_uri);
+      return $this->get();
     }
 
     /**
-     * @see \Components\Resource_Url::getOptions() \Components\Resource_Url::getOptions()
+     * @see \Components\Resource_Url::getOptions() getOptions
      */
     public function getOptions()
     {
@@ -70,7 +87,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::hashCode() \Components\Object::hashCode()
+     * @see \Components\Object::hashCode() hashCode
      */
     public function hashCode()
     {
@@ -78,7 +95,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::equals() \Components\Object::equals()
+     * @see \Components\Object::equals() equals
      */
     public function equals($object_)
     {
@@ -89,7 +106,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::__toString() \Components\Object::__toString()
+     * @see \Components\Object::__toString() __toString
      */
     public function __toString()
     {
@@ -108,6 +125,11 @@ namespace Components;
      * @var boolean
      */
     private static $m_isSupported;
+
+    /**
+     * @var resource
+     */
+    private $m_curl;
     /**
      * @var \Components\Uri
      */
