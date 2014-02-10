@@ -5,17 +5,16 @@ namespace Components;
 
 
   /**
-   * Resource_Url_Default
+   * Resource_Uri_Default
    *
    * @api
    * @package net.evalcode.components.type
-   * @subpackage resource.url
+   * @subpackage resource.uri
    *
    * @author evalcode.net
    */
-  class Resource_Url_Default implements Resource_Url
+  class Resource_Uri_Default implements Resource_Uri
   {
-
     // CONSTRUCTION
     public function __construct(Uri $uri_)
     {
@@ -38,7 +37,7 @@ namespace Components;
 
     // OVERRIDES
     /**
-     * @see \Components\Resource_Url::resolve() resolve
+     * @see \Components\Resource_Uri::resolve() resolve
      */
     public function resolve()
     {
@@ -46,7 +45,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Resource_Url::getContents() getContents
+     * @see \Components\Resource_Uri::getContents() getContents
      */
     public function getContents()
     {
@@ -54,7 +53,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Resource_Url::getOptions() getOptions
+     * @see \Components\Resource_Uri::getOptions() getOptions
      */
     public function getOptions()
     {

@@ -113,7 +113,7 @@ namespace Components;
 
     // ACCESSORS
     /**
-     * @return \Components\Resource_Url
+     * @return \Components\Resource_Uri
      */
     public function getResource()
     {
@@ -122,7 +122,7 @@ namespace Components;
         if($type=Resource_Type::getResourceTypeForScheme($this->m_scheme))
           $this->m_resource=new $type($this);
         else
-          $this->m_resource=Resource_Url_Factory::create($this);
+          $this->m_resource=Resource_Uri_Factory::create($this);
       }
 
       return $this->m_resource;

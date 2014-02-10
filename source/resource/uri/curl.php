@@ -5,15 +5,15 @@ namespace Components;
 
 
   /**
-   * Resource_Url_Curl
+   * Resource_Uri_Curl
    *
    * @api
    * @package net.evalcode.components.type
-   * @subpackage resource.url
+   * @subpackage resource.uri
    *
    * @author evalcode.net
    */
-  class Resource_Url_Curl implements Resource_Url
+  class Resource_Uri_Curl implements Resource_Uri
   {
     // PREDEFINED PROPERTIES
     // TODO CURL options
@@ -51,18 +51,35 @@ namespace Components;
 
       curl_setopt($curl, CURLOPT_URL, (string)$this->m_uri);
       curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PURGE');
-      curl_setopt($curl, CURLOPT_RETURNTRANSFER, 0);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-      curl_exec($curl);
+      $result=curl_exec($curl);
 
       curl_close($curl);
+
+      return $result;
+    }
+
+    public function get()
+    {
+      $curl=curl_init();
+
+      curl_setopt($curl, CURLOPT_URL, (string)$this->m_uri);
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+      $result=curl_exec($curl);
+
+      curl_close($curl);
+
+      return $result;
     }
     //--------------------------------------------------------------------------
 
 
     // OVERRIDES/IMPLEMENTS
     /**
-     * @see \Components\Resource_Url::resolve() resolve
+     * @see \Components\Resource_Uri::resolve() resolve
      */
     public function resolve()
     {
@@ -70,7 +87,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Resource_Url::getContents() getContents
+     * @see \Components\Resource_Uri::getContents() getContents
      */
     public function getContents()
     {
@@ -79,7 +96,9 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Resource_Url::getOptions() getOptions
+     * @see \Components\Resource_Uri::getOptions() getOptions
+     *
+     * @return \Components\Bitmask
      */
     public function getOptions()
     {

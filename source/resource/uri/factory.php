@@ -5,28 +5,28 @@ namespace Components;
 
 
   /**
-   * Resource_Url_Factory
+   * Resource_Uri_Factory
    *
    * @api
    * @package net.evalcode.components.type
-   * @subpackage resource.url
+   * @subpackage resource.uri
    *
    * @author evalcode.net
    */
-  class Resource_Url_Factory implements Resource_Factory
+  class Resource_Uri_Factory implements Resource_Factory
   {
     // STATIC ACCESSORS
     /**
      * @param \Components\Uri $uri_
      *
-     * @return \Components\Resource_Url
+     * @return \Components\Resource_Uri
      */
     public static function create(Uri $uri_)
     {
-      if(Resource_Url_Curl::isSupported())
-        return new Resource_Url_Curl($uri_);
+      if(Resource_Uri_Curl::isSupported())
+        return new Resource_Uri_Curl($uri_);
 
-      return new Resource_Url_Default($uri_);
+      return new Resource_Uri_Default($uri_);
     }
     //--------------------------------------------------------------------------
   }

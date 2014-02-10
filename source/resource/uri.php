@@ -5,7 +5,7 @@ namespace Components;
 
 
   /**
-   * Resource_Url
+   * Resource_Uri
    *
    * @api
    * @package net.evalcode.components.type
@@ -13,7 +13,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  interface Resource_Url extends Resource
+  interface Resource_Uri extends Resource
   {
     // ACCESSORS
     function resolve();
