@@ -916,7 +916,7 @@ namespace Components;
      */
     public static function toBase64Url($string_)
     {
-      return self::replaceAll(self::toBase64($string_), array('+', '/'), array('-', '_'));
+      return self::urlEncode(self::toBase64($string_));
     }
 
     /**
@@ -928,7 +928,7 @@ namespace Components;
      */
     public static function fromBase64Url($string_)
     {
-      return self::fromBase64(self::replaceAll($string_, array('-', '_'), array('+', '/')));
+      return self::fromBase64(self::urlDecode($string_));
     }
 
     /**
@@ -964,20 +964,20 @@ namespace Components;
      */
     public static function isUrlEncoded($string_)
     {
-      static $m_urlEncoded=array(
+      static $m_urlEncoded=[
         '%20', '%21', '%2A', '%27',
         '%28', '%29', '%3B', '%3A',
         '%40', '%26', '%3D', '%2B',
         '%24', '%2C', '%2F', '%3F',
         '%25', '%23', '%5B', '%5D'
-      );
-      static $m_urlDecoded=array(
+      ];
+      static $m_urlDecoded=[
         ' ', '!', '*', "'",
         "(", ")", ";", ":",
         "@", "&", "=", "+",
         "$", ",", "/", "?",
         "%", "#", "[", "]"
-      );
+      ];
 
       $count=0;
       str_replace($m_urlEncoded, $m_urlDecoded, $string_, $count);
