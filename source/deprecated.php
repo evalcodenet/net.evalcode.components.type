@@ -12,7 +12,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Deprecated extends Runtime_Exception
+  class Deprecated extends Runtime_Error_Abstract
   {
     // STATIC ACCESSORS
     /**

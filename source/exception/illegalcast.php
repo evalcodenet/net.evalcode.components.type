@@ -13,7 +13,7 @@ namespace Components;
    *
    * @author evalcode.net
    */
-  class Exception_IllegalCast extends Runtime_Exception
+  class Exception_IllegalCast extends Runtime_Exception_Abstract
   {
 
   }
