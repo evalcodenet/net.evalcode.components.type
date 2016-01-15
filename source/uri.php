@@ -10,7 +10,7 @@ namespace Components;
    * scheme://username:password@domain.tld:port/path/file.ext?key0=val0#fragment
    * \____/   \_______________/ \________/ \__/      \__/ \_/ \_______/ \______/
    *   |              |             |       |          |   |      |        |
-   *   |            user           host    port        |   |    query   fragment
+   *   |         credentials       host    port        |   |    query   fragment
    *   |      \_______________________________/\_______|___|/
    *   |                    |                      |   |   |
    * scheme             authority                path  |   |
@@ -89,14 +89,27 @@ namespace Components;
         $uri=$_SERVER['REQUEST_URI'];
 
       $uri=static::valueOf($uri);
-
-      if(isset($_SERVER['HTTP_HOST']))
-        $uri->m_host=$_SERVER['HTTP_HOST'];
+      $uri->m_host=Runtime::getHost();
 
       if(isset($_SERVER['HTTPS']))
         $uri->m_scheme=\Components\Resource_Type::SCHEME_HTTPS;
       else
         $uri->m_scheme=\Components\Resource_Type::SCHEME_HTTP;
+
+      return $uri;
+    }
+
+    /**
+     * @return \Components\Uri
+     */
+    public static function currentRequestUri()
+    {
+      $uri='/';
+      if(isset($_SERVER['REQUEST_URI']))
+        $uri=$_SERVER['REQUEST_URI'];
+
+      $uri=static::valueOf($uri);
+      $uri->m_host=Runtime::getHost();
 
       return $uri;
     }
@@ -182,10 +195,10 @@ namespace Components;
       {
         if($this->m_username)
         {
-          $identity=String::urlEncode($this->m_username);
+          $identity=\str\encodeUrl($this->m_username);
 
           if($this->m_password)
-            $identity.=':'.String::urlEncode($this->m_password);
+            $identity.=':'.\str\encodeUrl($this->m_password);
 
           $authority[]=$identity;
         }
@@ -370,7 +383,7 @@ namespace Components;
     {
       $pathParams=[];
       foreach($this->m_pathParams as $pathParam)
-        array_push($pathParams, String::urlEncode($pathParam));
+        array_push($pathParams, \str\encodeUrl($pathParam));
 
       return '/'.implode('/', $pathParams);
     }
@@ -397,7 +410,7 @@ namespace Components;
       foreach($pathParams as $pathParam)
       {
         if(null!==$pathParam && 0<strlen($pathParam))
-          array_push($this->m_pathParams, String::urlDecode($pathParam));
+          array_push($this->m_pathParams, \str\decodeUrl($pathParam));
       }
 
       return $this;
@@ -422,10 +435,27 @@ namespace Components;
       foreach($pathParams_ as $pathParam)
       {
         if(null!==$pathParam && 0<strlen($pathParam))
-          array_push($this->m_pathParams, String::urlDecode($pathParam));
+          array_push($this->m_pathParams, \str\decodeUrl($pathParam));
       }
 
       return $this;
+    }
+
+    /**
+     * Checks occurrence of path parameters.
+     *
+     * <pre>
+     *   [scheme]://[username]:[password]@[host]:[port]/[path]?[query_string]#[fragment]
+     *                                                   ^^^^
+     * </pre>
+     *
+     * @param string $parameterName_
+     *
+     * @return boolean
+     */
+    public function hasPathParam($parameterName_)
+    {
+      return in_array($parameterName_, $this->getPathParams());
     }
 
     /**
@@ -579,15 +609,11 @@ namespace Components;
      */
     public function getQueryString()
     {
-      $queryString=str_replace(['+'], ['%20'], http_build_query($this->getQueryParams()));
-
+      // FIXME PHP_QUERY_RFC1738, PHP_QUERY_RFC3986
+      return http_build_query($this->getQueryParams());
       // FIXME Depends on php.ini configuration - Abstract components/config.
-      $queryString=str_replace(['&amp;'], ['&'], $queryString);
-
-      if($this->getOptions()->has(self::OPTION_QUERY_STRING_FORMAT_JAXRS))
-        $queryString=preg_replace('/%5B(?:[0-9]|[1-9][0-9]+)%5D=/', '=', $queryString);
-
-      return $queryString;
+      // $queryString=str_replace(['+'], ['%20'], http_build_query($this->getQueryParams()));
+      // str_replace(['&amp;'], ['&'], $queryString);
     }
 
     /**
@@ -783,11 +809,7 @@ namespace Components;
     public function getOptions()
     {
       if(null===$this->m_options)
-      {
-        $this->m_options=Bitmask::forBits(array(
-          self::OPTION_QUERY_STRING_FORMAT_PHP
-        ));
-      }
+        $this->m_options=Bitmask::forBits([self::OPTION_QUERY_STRING_FORMAT_PHP]);
 
       return $this->m_options;
     }
@@ -796,7 +818,7 @@ namespace Components;
 
     // OVERRIDES
     /**
-     * @see \Components\Object::equals() \Components\Object::equals()
+     * @see \Components\Object::equals() equals
      */
     public function equals($object_)
     {
@@ -807,15 +829,15 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::hashCode() \Components\Object::hashCode()
+     * @see \Components\Object::hashCode() hashCode
      */
     public function hashCode()
     {
-      return string_hash((string)$this);
+      return \math\hashs((string)$this);
     }
 
     /**
-     * @see \Components\Object::__toString() __toString()
+     * @see \Components\Object::__toString() __toString
      */
     public function __toString()
     {
@@ -830,10 +852,10 @@ namespace Components;
       {
         if($this->m_username && $this->m_host)
         {
-          $authority=String::urlEncode($this->m_username);
+          $authority=\str\encodeUrl($this->m_username);
 
           if($this->m_password)
-            $authority.=':'.String::urlEncode($this->m_password);
+            $authority.=':'.\str\encodeUrl($this->m_password);
 
           $string.="$authority@";
         }
@@ -853,13 +875,13 @@ namespace Components;
         $string.='?'.$queryString;
 
       if($this->m_fragment)
-        $string.='#'.String::urlEncode($this->m_fragment);
+        $string.='#'.\str\encodeUrl($this->m_fragment);
 
       return $string;
     }
 
     /**
-     * @see \Components\Cloneable::__clone() \Components\Cloneable::__clone()
+     * @see \Components\Cloneable::__clone() __clone
      */
     public function __clone()
     {
@@ -882,7 +904,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Serializable_Php::__sleep() \Components\Serializable_Php::__sleep()
+     * @see \Components\Serializable_Php::__sleep() __sleep
      */
     public function __sleep()
     {
@@ -896,7 +918,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Serializable_Php::__wakeup() \Components\Serializable_Php::__wakeup()
+     * @see \Components\Serializable_Php::__wakeup() __wakeup
      */
     public function __wakeup()
     {
@@ -906,7 +928,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Serializable::serialVersionUid() \Components\Serializable::serialVersionUid()
+     * @see \Components\Serializable::serialVersionUid() serialVersionUid
      */
     public function serialVersionUid()
     {
@@ -914,7 +936,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Value_String::value() \Components\Value_String::value()
+     * @see \Components\Value_String::value() value
      */
     public function value()
     {
@@ -949,48 +971,45 @@ namespace Components;
       $this->m_scheme=isset($uri_['scheme']) && 'null'!==$uri_['scheme']?$uri_['scheme']:null;
       $this->m_host=isset($uri_['host'])?$uri_['host']:null;
       $this->m_port=isset($uri_['port'])?(int)$uri_['port']:null;
-      $this->m_username=isset($uri_['user'])?String::urlDecode($uri_['user']):null;
-      $this->m_password=isset($uri_['pass'])?String::urlDecode($uri_['pass']):null;
+      $this->m_username=isset($uri_['user'])?\str\decodeUrl($uri_['user']):null;
+      $this->m_password=isset($uri_['pass'])?\str\decodeUrl($uri_['pass']):null;
 
       $this->setPath(isset($uri_['path'])?$uri_['path']:null);
       $this->m_queryParams=isset($uri_['query'])?self::parseQueryString($uri_['query']):[];
 
-      $this->m_fragment=isset($uri_['fragment'])?String::urlDecode($uri_['fragment']):null;
+      $this->m_fragment=isset($uri_['fragment'])?\str\decodeUrl($uri_['fragment']):null;
     }
 
 
     // HELPERS
+    /**
+     * @param string $queryString_
+     *
+     * @return scalar[]
+     */
     protected static function parseQueryString($queryString_)
     {
       $queryParams=[];
-
-      if(!$queryString_=trim($queryString_))
-        return $queryParams;
-
-      foreach(explode('&', $queryString_) as $pair)
-      {
-        $chunks=explode('=', $pair);
-
-        if(isset($chunks[1]))
-          $queryParams[String::urlDecode($chunks[0])]=String::urlDecode($chunks[1]);
-        else
-          $queryParams[String::urlDecode($chunks[0])]=null;
-      }
+      parse_str(ltrim($queryString_, '?'), $queryParams);
 
       return $queryParams;
     }
 
-    protected static function arrayForString($uri_)
+    /**
+     * @param string $string_
+     *
+     * @return scalar[]
+     *
+     * @throws \Components\Exception_IllegalArgument
+     */
+    protected static function arrayForString($string_)
     {
-      if(false===($uri=@parse_url($uri_)))
+      if(false===($uri=@parse_url($string_)))
       {
-        throw new Exception_IllegalArgument('components/type/uri',
-          sprintf('Unable to parse URI for string [%1$s].', $uri_)
-        );
+        throw new Exception_IllegalArgument('uri', sprintf(
+          'Unable to parse URI [string: %s].', $string_
+        ));
       }
-
-      if(false===isset($uri['scheme']) && false===strpos($uri_, '/'))
-        return static::arrayForString("null://$uri_");
 
       return $uri;
     }

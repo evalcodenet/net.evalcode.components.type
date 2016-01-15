@@ -187,6 +187,60 @@ namespace Components;
     {
       throw new Exception_NotImplemented('components/type/primitive', 'Override Primitive::valueOf().');
     }
+
+    /**
+     * @param string $type_
+     * @param mixed $value_
+     *
+     * @return Primitive
+     */
+    public static function boxedForType($type_, $value_)
+    {
+      if(isset(self::$m_nativeToBoxed[$type_]))
+      {
+        $type_=self::$m_nativeToBoxed[$type_];
+
+        return $type_::valueOf($value_);
+      }
+
+      if(isset(self::$m_boxedToNative[$type_]))
+        return $type_::valueOf($value_);
+
+      return null;
+    }
+
+    /**
+     * @param string $type_
+     * @param mixed $value_
+     *
+     * @return mixed
+     */
+    public static function castTo($type_, $value_)
+    {
+      if(null===self::$m_cast)
+      {
+        self::$m_cast=[
+          Boolean::TYPE_NATIVE=>'boolval',
+          Double::TYPE_NATIVE=>'doubleval',
+          Float::TYPE_NATIVE=>'floatval',
+          HashMap::TYPE_NATIVE=>function($value_) {return (array)$value_;},
+          Integer::TYPE_NATIVE=>'intval',
+          String::TYPE_NATIVE=>function($value_) {return (string)$value_;},
+          Boolean::TYPE=>['\\Components\\Boolean', 'valueOf'],
+          Double::TYPE=>['\\Components\\Double', 'valueOf'],
+          Character::TYPE=>['\\Components\\Character', 'valueOf'],
+          Float::TYPE=>['\\Components\\Float', 'valueOf'],
+          HashMap::TYPE=>['\\Components\\HashMap', 'valueOf'],
+          Integer::TYPE=>['\\Components\\Integer', 'valueOf'],
+          String::TYPE=>['\\Components\\String', 'valueOf']
+        ];
+      }
+
+      if($method=self::$m_cast[$type_])
+        return call_user_func($method, $value_);
+
+      return null;
+    }
     //--------------------------------------------------------------------------
 
 
@@ -210,21 +264,21 @@ namespace Components;
      *
      * @var string[]
      */
-    private static $m_nativeToBoxed=array(
+    private static $m_nativeToBoxed=[
       Boolean::TYPE_NATIVE=>Boolean::TYPE,
       Double::TYPE_NATIVE=>Double::TYPE,
       Float::TYPE_NATIVE=>Float::TYPE,
       HashMap::TYPE_NATIVE=>HashMap::TYPE,
       Integer::TYPE_NATIVE=>Integer::TYPE,
       String::TYPE_NATIVE=>String::TYPE
-    );
+    ];
     /**
      * PHP built-in/native primitives
      * for their corresponding boxed implementations.
      *
      * @var string[]
      */
-    private static $m_boxedToNative=array(
+    private static $m_boxedToNative=[
       Boolean::TYPE=>Boolean::TYPE_NATIVE,
       Double::TYPE=>Double::TYPE_NATIVE,
       Character::TYPE=>Character::TYPE_NATIVE,
@@ -232,7 +286,12 @@ namespace Components;
       HashMap::TYPE=>HashMap::TYPE_NATIVE,
       Integer::TYPE=>Integer::TYPE_NATIVE,
       String::TYPE=>String::TYPE_NATIVE
-    );
+    ];
+
+    /**
+     * @var callable[]
+     */
+    private static $m_cast;
 
     /**
      * Primitive value.

@@ -40,6 +40,23 @@ namespace Components;
     }
 
     /**
+     * @param string $value_
+     *
+     * @return \Components\Time
+     */
+    public static function parse($value_)
+    {
+      $date=date_parse($value_);
+
+      $seconds=$date['second'];
+      $seconds+=self::SECONDS_MINUTE*$date['minute'];
+      $seconds+=self::SECONDS_HOUR*$date['hour'];
+      $seconds+=self::SECONDS_DAY*$date['day'];
+
+      return static::forSeconds($seconds);
+    }
+
+    /**
      * @param integer $value_
      *
      * @return \Components\Time
@@ -170,13 +187,13 @@ namespace Components;
 
 
     // IMPLEMENTATION
-    protected static $m_conversionTable=array(
+    protected static $m_conversionTable=[
       self::TIMEUNIT_SECONDS=>1,
       self::TIMEUNIT_MINUTES=>self::SECONDS_MINUTE,
       self::TIMEUNIT_HOURS=>self::SECONDS_HOUR,
       self::TIMEUNIT_DAYS=>self::SECONDS_DAY,
       self::TIMEUNIT_WEEKS=>self::SECONDS_WEEK
-    );
+    ];
     //--------------------------------------------------------------------------
   }
 ?>

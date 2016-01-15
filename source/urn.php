@@ -41,7 +41,7 @@ namespace Components;
     {
       $pathParams=[];
       foreach($this->getPathParams() as $pathParam)
-        array_push($pathParams, String::urlEncode($pathParam));
+        array_push($pathParams, \str\encodeUrl($pathParam));
 
       return implode(':', $pathParams);
     }
@@ -56,7 +56,7 @@ namespace Components;
         $pathParams=explode(':', $path_);
 
       foreach($pathParams as $pathParam)
-        $this->pushPathParam(String::urlDecode($pathParam));
+        $this->pushPathParam(\str\decodeUrl($pathParam));
 
       return $this;
     }

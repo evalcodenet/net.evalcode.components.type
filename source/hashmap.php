@@ -30,8 +30,8 @@ namespace Components;
 
     // STATIC ACCESSORS
     /**
+     * @see \Components\Primitive::native() native
      *
-     * @see \Components\Primitive::native() \Components\Primitive::native()
      * @return string
      */
     public static function native()
@@ -40,9 +40,11 @@ namespace Components;
     }
 
     /**
+     * @see \Components\Primitive::cast() cast
+     *
      * @param mixed $value_
      *
-     * @return array
+     * @return mixed[]
      */
     public static function cast($value_)
     {
@@ -50,6 +52,8 @@ namespace Components;
     }
 
     /**
+     * @see \Components\Primitive::valueOf() valueOf
+     *
      * @param mixed $value_
      *
      * @return \Components\HashMap
@@ -69,9 +73,9 @@ namespace Components;
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES
+    // OVERRIDES/IMPLEMENTS
     /**
-     * @see \Components\Collection::arrayValue() \Components\Collection::arrayValue()
+     * @see \Components\Collection::arrayValue() arrayValue
      */
     public function arrayValue()
     {
@@ -79,7 +83,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Collection::isEmpty() \Components\Collection::isEmpty()
+     * @see \Components\Collection::isEmpty() isEmpty
      */
     public function isEmpty()
     {
@@ -87,7 +91,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Countable::count() \Components\Countable::count()
+     * @see \Components\Countable::count() count
      */
     public function count()
     {
@@ -95,15 +99,15 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::containsKey() \Components\Map::containsKey()
+     * @see \Components\Map::containsKey() containsKey
      */
     public function containsKey($key_)
     {
-      return isset($this->m_value[$key_]);
+      return array_key_exists($key_, $this->m_value);
     }
 
     /**
-     * @see \Components\Map::containsValue() \Components\Map::containsValue()
+     * @see \Components\Map::containsValue() containsValue
      */
     public function containsValue($value_)
     {
@@ -111,15 +115,18 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::get() \Components\Map::get()
+     * @see \Components\Map::get() get
      */
     public function get($key_)
     {
+      if(false===isset($this->m_value[$key_]))
+        return null;
+
       return $this->m_value[$key_];
     }
 
     /**
-     * @see \Components\Map::put() \Components\Map::put()
+     * @see \Components\Map::put() put
      */
     public function put($key_, $value_)
     {
@@ -129,7 +136,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::putMap() \Components\Map::putMap()
+     * @see \Components\Map::putMap() putMap
      */
     public function putMap(Map $map_)
     {
@@ -140,7 +147,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::putArray() \Components\Map::putArray()
+     * @see \Components\Map::putArray() putArray
      */
     public function putArray(array $array_)
     {
@@ -151,7 +158,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::remove() \Components\Map::remove()
+     * @see \Components\Map::remove() remove
      */
     public function remove($key_)
     {
@@ -163,7 +170,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::clear() \Components\Map::clear()
+     * @see \Components\Map::clear() clear
      */
     public function clear()
     {
@@ -173,7 +180,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::keys() \Components\Map::keys()
+     * @see \Components\Map::keys() keys
      */
     public function keys()
     {
@@ -181,7 +188,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::keySet() \Components\Map::keySet()
+     * @see \Components\Map::keySet() keySet
      */
     public function keySet()
     {
@@ -189,7 +196,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::values() \Components\Map::values()
+     * @see \Components\Map::values() values
      */
     public function values()
     {
@@ -197,7 +204,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::valueSet() \Components\Map::valueSet()
+     * @see \Components\Map::valueSet() valueSet
      */
     public function valueSet()
     {
@@ -205,15 +212,15 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::__isset() \Components\Map::__isset()
+     * @see \Components\Map::__isset() __isset
      */
     public function __isset($key_)
     {
-      return isset($this->m_value[$key_]);
+      return array_key_exists($key_, $this->m_value);
     }
 
     /**
-     * @see \Components\Map::__unset() \Components\Map::__unset()
+     * @see \Components\Map::__unset() __unset
      */
     public function __unset($key_)
     {
@@ -221,7 +228,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::__get() \Components\Map::__get()
+     * @see \Components\Map::__get() __get
      */
     public function __get($key_)
     {
@@ -229,7 +236,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::__set() \Components\Map::__set()
+     * @see \Components\Map::__set() __set
      */
     public function __set($key_, $value_)
     {
@@ -237,7 +244,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::offsetExists() \Components\Map::offsetExists()
+     * @see \Components\Map::offsetExists() offsetExists
      */
     public function offsetExists($offset_)
     {
@@ -245,7 +252,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::offsetGet() \Components\Map::offsetGet()
+     * @see \Components\Map::offsetGet() offsetGet
      */
     public function offsetGet($offset_)
     {
@@ -253,7 +260,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::offsetSet() \Components\Map::offsetSet()
+     * @see \Components\Map::offsetSet() offsetSet
      */
     public function offsetSet($offset_, $value_)
     {
@@ -261,7 +268,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Map::offsetUnset() \Components\Map::offsetUnset()
+     * @see \Components\Map::offsetUnset() offsetUnset
      */
     public function offsetUnset($offset_)
     {
@@ -270,7 +277,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Cloneable::__clone() \Components\Cloneable::__clone()
+     * @see \Components\Cloneable::__clone() __clone
      */
     public function __clone()
     {
@@ -278,16 +285,16 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::hashCode() \Components\Object::hashCode()
+     * @see \Components\Object::hashCode() hashCode
      */
     public function hashCode()
     {
       // TODO Implement
-      return object_hash($this);
+      return \math\hasho($this);
     }
 
     /**
-     * @see \Components\Object::equals() \Components\Object::equals()
+     * @see \Components\Object::equals() equals
      */
     public function equals($object_)
     {
@@ -298,7 +305,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::__toString() \Components\Object::__toString()
+     * @see \Components\Object::__toString() __toString
      */
     public function __toString()
     {
@@ -306,7 +313,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Serializable::serialVersionUid() \Components\Serializable::serialVersionUid()
+     * @see \Components\Serializable::serialVersionUid() serialVersionUid
      */
     public function serialVersionUid()
     {

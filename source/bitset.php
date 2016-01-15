@@ -43,7 +43,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return integer_hash($this->m_value);
+      return \math\hashi($this->m_value);
     }
 
     /**

@@ -46,7 +46,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return string_hash(static::NAME);
+      return \math\hashs(static::NAME);
     }
 
     /**

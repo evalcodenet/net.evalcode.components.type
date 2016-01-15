@@ -108,7 +108,7 @@ namespace Components;
 
     // OVERRIDES
     /**
-     * @see \Components\Object::equals() \Components\Object::equals()
+     * @see \Components\Object::equals() equals
      */
     public function equals($object_)
     {
@@ -119,15 +119,15 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::hashCode() \Components\Object::hashCode()
+     * @see \Components\Object::hashCode() hashCode
      */
     public function hashCode()
     {
-      return string_hash($this->m_name);
+      return \math\hashs($this->m_name);
     }
 
     /**
-     * @see \Components\Object::__toString() \Components\Object::__toString()
+     * @see \Components\Object::__toString() __toString
      */
     public function __toString()
     {
@@ -135,7 +135,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Cloneable::__clone() \Components\Cloneable::__clone()
+     * @see \Components\Cloneable::__clone() __clone
      */
     public function __clone()
     {
@@ -143,25 +143,31 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Serializable::serialVersionUid() \Components\Serializable::serialVersionUid()
+     * @see \Components\Serializable::serialVersionUid() serialVersionUid
      */
     public function serialVersionUid()
     {
       return 1;
     }
 
+    /**
+     * @see \Components\Serializable_Php::__sleep() __sleep
+     */
     public function __sleep()
     {
       return array('m_name');
     }
 
+    /**
+     * @see \Components\Serializable_Php::__wakeup() __wakeup
+     */
     public function __wakeup()
     {
       $this->m_timezone=timezone_open($this->m_name);
     }
 
     /**
-     * @see \Components\Value_String::value() \Components\Value_String::value()
+     * @see \Components\Value_String::value() value
      */
     public function value()
     {

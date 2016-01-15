@@ -226,7 +226,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return integer_hash_m($this->r, $this->g, $this->b, $this->a);
+      return \math\hashiv($this->r, $this->g, $this->b, $this->a);
     }
 
     /**

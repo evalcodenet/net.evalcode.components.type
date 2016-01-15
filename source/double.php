@@ -26,7 +26,7 @@ namespace Components;
 
     // STATIC ACCESSORS
       /**
-     * @see \Components\Primitive::native() \Components\Primitive::native()
+     * @see \Components\Primitive::native() native
      */
     public static function native()
     {
@@ -34,7 +34,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Primitive::cast() \Components\Primitive::cast()
+     * @see \Components\Primitive::cast() cast
      *
      * @return float
      */
@@ -44,7 +44,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Primitive::valueOf() \Components\Primitive::valueOf()
+     * @see \Components\Primitive::valueOf() valueOf
      *
      * @return \Components\Float
      */
@@ -57,7 +57,7 @@ namespace Components;
 
     // OVERRIDES
     /**
-     * @see \Components\Primitive::value() \Components\Primitive::value()
+     * @see \Components\Primitive::value() value
      *
      * @return double
      */
@@ -67,7 +67,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Number::intValue() \Components\Number::intValue()
+     * @see \Components\Number::intValue() intValue
      */
     public function intValue()
     {
@@ -75,7 +75,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Number::doubleValue() \Components\Number::doubleValue()
+     * @see \Components\Number::doubleValue() doubleValue
      */
     public function doubleValue()
     {
@@ -83,7 +83,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Number::floatValue() \Components\Number::floatValue()
+     * @see \Components\Number::floatValue() floatValue
      */
     public function floatValue()
     {
@@ -91,7 +91,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Comparable::compareTo() \Components\Comparable::compareTo()
+     * @see \Components\Comparable::compareTo() compareTo
      */
     public function compareTo($object_)
     {
@@ -117,13 +117,13 @@ namespace Components;
         return -1;
       }
 
-      throw new Exception_IllegalCast('components/type/double', sprintf(
+      throw new Exception_IllegalCast('components/double', sprintf(
         'Can not compare to given parameter [%s].', $object_
       ));
     }
 
     /**
-     * @see \Components\Serializable::serialVersionUid() \Components\Serializable::serialVersionUid()
+     * @see \Components\Serializable::serialVersionUid() serialVersionUid
      */
     public function serialVersionUid()
     {
@@ -132,7 +132,7 @@ namespace Components;
 
     public function __sleep()
     {
-      return array('m_value');
+      return ['m_value'];
     }
 
     public function __wakeup()
@@ -141,7 +141,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Cloneable::__clone() \Components\Cloneable::__clone()
+     * @see \Components\Cloneable::__clone() __clone
      */
     public function __clone()
     {
@@ -149,7 +149,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::hashCode() \Components\Object::hashCode()
+     * @see \Components\Object::hashCode() hashCode
      */
     public function hashCode()
     {
@@ -157,7 +157,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::equals() \Components\Object::equals()
+     * @see \Components\Object::equals() equals
      */
     public function equals($object_)
     {
@@ -168,7 +168,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::__toString() \Components\Object::__toString()
+     * @see \Components\Object::__toString() __toString
      */
     public function __toString()
     {

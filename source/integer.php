@@ -96,7 +96,7 @@ namespace Components;
      */
     public static function hash($integer0_/*, $integer1_, $integer2_, ...*/)
     {
-      return integer_hash_a(func_get_args());
+      return \math\hashia(func_get_args());
     }
 
     /**
@@ -130,7 +130,7 @@ namespace Components;
 
     // OVERRIDES
     /**
-     * @see \Components\Number::intValue() \Components\Number::intValue()
+     * @see \Components\Number::intValue() intValue
      */
     public function intValue()
     {
@@ -138,7 +138,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Number::doubleValue() \Components\Number::doubleValue()
+     * @see \Components\Number::doubleValue() doubleValue
      */
     public function doubleValue()
     {
@@ -146,7 +146,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Number::floatValue() \Components\Number::floatValue()
+     * @see \Components\Number::floatValue() floatValue
      */
     public function floatValue()
     {
@@ -154,7 +154,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Comparable::compareTo() \Components\Comparable::compareTo()
+     * @see \Components\Comparable::compareTo() compareTo
      */
     public function compareTo($object_)
     {
@@ -180,29 +180,29 @@ namespace Components;
         return -1;
       }
 
-      throw new Exception_IllegalCast('components/type/integer', sprintf(
+      throw new Exception_IllegalCast('integer', sprintf(
         'Can not compare to given parameter [%s].', $object_
       ));
     }
 
     /**
-     * @see \Components\Serializable_Php::__wakeup() \Components\Serializable_Php::__wakeup()
+     * @see \Components\Serializable_Php::__wakeup() __wakeup
      */
     public function __wakeup()
     {
-
+      // Do nothing.
     }
 
     /**
-     * @see \Components\Serializable_Php::__sleep() \Components\Serializable_Php::__sleep()
+     * @see \Components\Serializable_Php::__sleep() __sleep
      */
     public function __sleep()
     {
-      return array('m_value');
+      return ['m_value'];
     }
 
     /**
-     * @see \Components\Serializable::serialVersionUid() \Components\Serializable::serialVersionUid()
+     * @see \Components\Serializable::serialVersionUid() serialVersionUid
      */
     public function serialVersionUid()
     {
@@ -210,7 +210,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Cloneable::__clone() \Components\Cloneable::__clone()
+     * @see \Components\Cloneable::__clone() __clone
      */
     public function __clone()
     {
@@ -218,15 +218,15 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::hashCode() \Components\Object::hashCode()
+     * @see \Components\Object::hashCode() hashCode
      */
     public function hashCode()
     {
-      return integer_hash($this->m_value);
+      return \math\hashi($this->m_value);
     }
 
     /**
-     * @see \Components\Object::equals() \Components\Object::equals()
+     * @see \Components\Object::equals() equals
      */
     public function equals($object_)
     {
@@ -237,7 +237,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Object::__toString() \Components\Object::__toString()
+     * @see \Components\Object::__toString() __toString
      */
     public function __toString()
     {

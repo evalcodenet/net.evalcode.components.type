@@ -24,20 +24,20 @@ namespace Components;
      */
     const TYPE_NATIVE='string';
 
-    const ASCII_TABLE_NUMBERS           =00000001;
-    const ASCII_TABLE_LETTERS           =00000010;
-    const ASCII_TABLE_LOWERCASE         =00000100;
-    const ASCII_TABLE_UPPERCASE         =00001000;
+    const ASCII_TABLE_NUMBERS=00000001;
+    const ASCII_TABLE_LETTERS=00000010;
+    const ASCII_TABLE_LOWERCASE=00000100;
+    const ASCII_TABLE_UPPERCASE=00001000;
     const ASCII_TABLE_SPECIAL_CHARACTERS=00010000;
     const ASCII_TABLE_CONTROL_CHARACTERS=00100000;
-    const ASCII_TABLE_FULL              =00111111;
+    const ASCII_TABLE_FULL=00111111;
 
-    const TRUNCATE_END=1;
-    const TRUNCATE_MIDDLE=2;
-    const TRUNCATE_REVERSE=4;
+    const TRUNCATE_END=LIBSTD_STR_TRUNCATE_END;
+    const TRUNCATE_MIDDLE=LIBSTD_STR_TRUNCATE_MIDDLE;
+    const TRUNCATE_REVERSE=LIBSTD_STR_TRUNCATE_REVERSE;
 
-    const PAD_LEFT=1;
-    const PAD_RIGHT=2;
+    const PAD_LEFT=LIBSTD_STR_LEFT;
+    const PAD_RIGHT=LIBSTD_STR_RIGHT;
     //--------------------------------------------------------------------------
 
 
@@ -76,945 +76,508 @@ namespace Components;
      */
     public static function cast($value_)
     {
-      return (string)$value_;
+      return new static((string)$value_);
     }
 
     /**
-     * Determines whether two passed strings are equal to each other.
-     *
-     * <p>
-     *   Returns 'true' if passed $string0_, $string1_ are equal, otherwise
-     *   returns 'false'.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     *
-     * @return boolean
+     * @see \str\equals() equals
      */
     public static function equal($string0_, $string1_)
     {
-      return 0===strnatcmp($string0_, $string1_);
+      return \str\equals($string0_, $string1_);
     }
 
     /**
-     * Calculates hash code for given string.
-     *
-     * @param string $string_
-     *
-     * @return integer
+     * @see \str\hash() hash
      */
     public static function hash($string_)
     {
-      return string_hash($string_);
+      return \math\hashs_fnv($string_);
     }
 
     /**
-     * Determines whether given string is 'null' or of zero-length.
-     *
-     * @param string $string_
-     *
-     * @return boolean
+     * @see \str\isEmpty() isEmpty
      */
     public static function isEmpty($string_)
     {
-      return null===$string_ || 1>mb_strlen($string_);
+      return \str\isEmpty($string_);
     }
 
     /**
-     * Determines whether given string contains any readable non-zero
-     * nor 'null' characters.
-     *
-     * @param string $string_
-     *
-     * @return boolean
+     * @see \str\isNullOrEmpty() isNullOrEmpty
      */
     public static function isNullOrEmpty($string_)
     {
-      return null===$string_ || (!trim($string_) && !self::isZero($string_));
+      return \str\isNullOrEmpty($string_);
     }
 
     /**
-     * Determines whether given string is equal to '0' (zero).
-     *
-     * @param string $string_
-     *
-     * @return boolean
+     * @see \str\isZero() isZero
      */
     public static function isZero($string_)
     {
-      return 1===preg_match('/^[0]+$/', (string)$string_);
+      return \str\isZero($string_);
     }
 
     /**
-     * Determines whether given string consists only of integers.
-     *
-     * @param string $string_
-     *
-     * @return boolean
+     * @see \str\isInteger() isInteger
      */
     public static function isInteger($string_)
     {
-      return 1===preg_match('/^[+-]?[0-9]+$/', (string)$string_);
+      return \str\isInteger($string_);
     }
 
     /**
-     * Determines whether given argument is of type or can be cast to string.
-     *
-     * @param mixed $object_
-     *
-     * @return boolean
+     * @see \str\isTypeCompatible() isTypeCompatible
      */
-    public static function isTypeCompatible($object_)
+    public static function isTypeCompatible($mixed_)
     {
-      return is_string($object_) || $object_ instanceof static || method_exists(array($object_, '__toString'));
+      return \str\isTypeCompatible($mixed_);
     }
 
     /**
-     * Returns length of passed string.
-     *
-     * <p>
-     *   Returns length of passed $string_.
-     * </p>
-     *
-     * @param string $string_
-     *
-     * @return integer
+     * @see \str\length() length
      */
     public static function length($string_)
     {
-      return mb_strlen($string_);
+      return \str\length($string_);
     }
 
     /**
-     * Transforms given string's characters to and returns as lowercase.
-     *
-     * @param string $string_
+     * @see \str\lowercase() lowercase
      */
     public static function lowercase($string_)
     {
-      return mb_convert_case($string_, MB_CASE_LOWER, 'UTF-8');
+      return \str\lowercase($string_);
     }
 
     /**
-     * Transforms given string's characters to and returns as uppercase.
-     *
-     * @param string $string_
+     * @see \str\uppercase() uppercase
      */
     public static function uppercase($string_)
     {
-      return mb_convert_case($string_, MB_CASE_UPPER, 'UTF-8');
-    }
-
-    public static function uppercaseWords($string_)
-    {
-      return mb_convert_case($string_, MB_CASE_TITLE, 'UTF-8');
+      return \str\uppercase($string_);
     }
 
     /**
-     * Returns first position of second given string in first given string.
-     *
-     * <p>
-     *   Returns first position of $string1_ in $string0_ starting at $offset_.
-     *   Returns -1 if indexed (sub-)$string0_ does not contain $string1_.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     * @param integer $offset_
-     *
-     * @return integer
+     * @see \str\capitalize() capitalize
+     */
+    public static function capitalize($string_)
+    {
+      return \str\capitalize($string_);
+    }
+
+    /**
+     * @see \str\indexOf() indexOf
      */
     public static function indexOf($string0_, $string1_, $offset_=0)
     {
-      if(false===($idx=mb_strpos($string0_, $string1_, $offset_)))
-        return -1;
-
-      return $idx;
+      return \str\isNullOrEmpty($string0_, $string1_, $offset_);
     }
 
     /**
-     * Returns last position of second given string in first given string.
-     *
-     * <p>
-     *   Returns last position of $string1_ in $string0_ starting at $offset_.
-     *   Returns -1 if indexed (sub-)$string0_ does not contain $string1_.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     * @param integer $offset_
-     *
-     * @return integer
+     * @see \str\lastIndexOf() lastIndexOf
      */
     public static function lastIndexOf($string0_, $string1_, $offset_=0)
     {
-      if(false===($idx=mb_strrpos($string0_, $string1_, $offset_)))
-        return -1;
-
-      return $idx;
+      return \str\lastIndexOf($string0_, $string1_, $offset_);
     }
 
     /**
-     * Returns specified part of given string.
-     *
-     * <p>
-     *   Extracts and returns a string from passed $string_ ranging
-     *   from $offset_ to $offset_+$length_.
-     * </p>
-     *
-     * @param string $string_
-     * @param integer $offset_
-     * @param integer $length_
-     *
-     * @return string
+     * @see \str\substring() substring
      */
     public static function substring($string_, $offset_, $length_=null)
     {
-      if(null===$length_)
-        return mb_substr($string_, $offset_);
-
-      return mb_substr($string_, $offset_, $length_);
+      return \str\substring($string_, $offset_, $length_);
     }
 
     /**
-     * Split given string into chunks of given length.
-     *
-     * @param string $string_
-     * @param integer $lengthChunks_
-     *
-     * @return string[]
+     * @see \str\split() split
      */
     public static function split($string_, $lengthChunks_=1)
     {
-      // FIXME Throws errors in certain versions if input is not recognizable..
-      $string_=@iconv('UTF-8', 'UTF-16', $string_);
-      $string_=substr($string_, 2);
-
-      $m=2*$lengthChunks_;
-      $length=strlen($string_);
-
-      $chars=[];
-      for($i=0; $i<$length; $i+=$m)
-      {
-        // TODO Optimize?
-        // FIXME Throws errors in certain versions if input is not recognizable..
-        $chars[]=@iconv('UTF-16', 'UTF-8', substr($string_, $i, $m));
-      }
-
-      return $chars;
+      return \str\split($string_, $lengthChunks_);
     }
 
     /**
-     * Compares two strings to each other case-sensitive and returns
-     * an numeric indicator of which one is the greater one.
-     *
-     * <p>
-     *   Returns an integer below, equal to or above zero indicating whether
-     *   passed $string0_ is less than, equal to or more than passed $string1_.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     *
-     * @return integer
+     * @see \str\compare() compare
      */
     public static function compare($string0_, $string1_)
     {
-      return strnatcmp($string0_, $string1_);
+      return \str\compare($string0_, $string1_);
     }
 
     /**
-     * Compares two strings to each other case-insensitive and returns
-     * an numeric indicator of which one is the greater one.
-     *
-     * <p>
-     *   Returns an integer below, equal to or above zero indicating whether
-     *   passed $string0_ is less than, equal to or more than passed $string1_.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     *
-     * @return integer
+     * @see \str\compareIgnoreCase() compareIgnoreCase
      */
     public static function compareIgnoreCase($string0_, $string1_)
     {
-      return strnatcasecmp($string0_, $string1_);
+      return \str\compareIgnoreCase($string0_, $string1_);
     }
 
     /**
-     * Determines whether passed string contains second passed string.
-     *
-     * <p>
-     *   Returns 'true' if $string0_ contains contents of $string1_,
-     *   otherwise returns 'false'.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     *
-     * @return boolean
+     * @see \str\contains() contains
      */
     public static function contains($string0_, $string1_)
     {
-      return false!==mb_strpos($string0_, $string1_);
+      return \str\contains($string0_, $string1_);
     }
 
     /**
-     * Determines whether passed string starts with second passed string.
-     *
-     * <p>
-     *   Returns 'true' if $string0_ starts with contents of $string1_,
-     *   otherwise returns 'false'.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     *
-     * @return boolean
+     * @see \str\startsWith() startsWith
      */
     public static function startsWith($string0_, $string1_)
     {
-      return 0===mb_strpos($string0_, $string1_);
+      return \str\startsWith($string0_, $string1_);
     }
 
     /**
-     * Determines whether passed string starts with second passed string
-     * ignoring case sensitivity.
-     *
-     * <p>
-     *   Returns 'true' if $string0_ starts with contents of $string1_
-     *   regardless whether passed strings may contain different capitalization.
-     *   Otherwise returns 'false'.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     *
-     * @return boolean
+     * @see \str\startsWithIgnoreCase() startsWithIgnoreCase
      */
     public static function startsWithIgnoreCase($string0_, $string1_)
     {
-      return 0===mb_stripos($string0_, $string1_);
+      return \str\startsWithIgnoreCase($string0_, $string1_);
     }
 
     /**
-     * Determines whether passed string ends with second passed string.
-     *
-     * <p>
-     *   Returns 'true' if $string0_ ends with contents of $string1_,
-     *   otherwise returns 'false'.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     *
-     * @return boolean
+     * @see \str\endsWith() endsWith
      */
     public static function endsWith($string0_, $string1_)
     {
-      if(false===($pos=mb_strrpos($string0_, $string1_)))
-        return false;
-
-      return mb_strlen($string0_)===$pos+mb_strlen($string1_);
+      return \str\endsWith($string0_, $string1_);
     }
 
     /**
-     * Determines whether passed string ends with second passed string
-     * ignoring case sensitivity.
-     *
-     * <p>
-     *   Returns 'true' if $string0_ ends with contents of $string1_
-     *   regardless whether passed strings may contain different capitalization.
-     *   Otherwise returns 'false'.
-     * </p>
-     *
-     * @param string $string0_
-     * @param string $string1_
-     *
-     * @return boolean
+     * @see \str\endsWithIgnoreCase() endsWithIgnoreCase
      */
     public static function endsWithIgnoreCase($string0_, $string1_)
     {
-      if(false===($pos=mb_strripos($string0_, $string1_)))
-        return false;
-
-      return mb_strlen($string0_)===$pos+mb_strlen($string1_);
+      return \str\endsWithIgnoreCase($string0_, $string1_);
     }
 
     /**
-     * @param string $string_
-     * @param string $match_
-     * @param string $replace_
-     *
-     * @return string
+     * @see \str\replace() replace
      */
     public static function replace($string_, $match_, $replace_=null, $offset_=0)
     {
-      if(null===$replace_)
-        $replace_='';
-
-      if(0===$offset_)
-        return str_replace($match_, $replace_, $string_);
-
-      if(-1<($idx=mb_strpos($string_, $match_, $offset_)))
-        return mb_substr($string_, 0, $idx).$replace_.mb_substr($string_, $idx+mb_strlen($match_));
-
-      return $string_;
+      return \str\replace($string_, $match_, $replace_, $offset_);
     }
 
     /**
-     * @param string $string_
-     * @param string $match_
-     * @param string $replace_
-     *
-     * @return string
+     * @see \str\replaceAll() replaceAll
      */
-    // TODO Implement $offset_.
     public static function replaceAll($string_, $match_, $replace_)
     {
-      return str_replace($match_, $replace_, $string_);
+      return \str\replaceAll($string_, $match_, $replace_);
     }
 
     /**
-     * @param string $string_
-     * @param integer $length_
-     * @param string $append_
-     * @param string $truncateAtCharacter_
-     *
-     * @return string
+     * @see \str\truncate() truncate
      */
     public static function truncate($string_, $length_, $append_=null, $truncateAtCharacter_=null, $style_=self::TRUNCATE_END)
     {
-      if($length_>=mb_strlen($string_))
-        return $string_;
-
-      if(0<($style_&self::TRUNCATE_REVERSE))
-      {
-        $string_=static::reverse($string_);
-        $string=mb_substr($string_, 0, $length_);
-
-        if(null===$truncateAtCharacter_)
-          return $append_.static::reverse($string);
-
-        $truncatePos=mb_strpos($string_, $truncateAtCharacter_, $length_);
-
-        return $append_.static::reverse($string.mb_substr($string_, $length_, $truncatePos-$length_));
-      }
-
-      $string=mb_substr($string_, 0, $length_);
-      if(null===$truncateAtCharacter_)
-        return $string.$append_;
-
-      $truncatePos=mb_strpos($string_, $truncateAtCharacter_, $length_);
-
-      return $string.mb_substr($string_, $length_, $truncatePos-$length_).$append_;
+      return \str\truncate($string_, $length_, $append_, $truncateAtCharacter_, $style_);
     }
 
     /**
-     * @param string $string_
-     * @param integer $padLength_
-     * @param string $padString_
-     * @param integer $padType_
-     *
-     * @return string
+     * @see \str\pad() pad
      */
     public static function pad($string_, $padLength_, $padString_, $padType_=null)
     {
-      if(null===$padType_)
-        $padType_=self::PAD_LEFT|self::PAD_RIGHT;
-
-      if(0<($padType_&self::PAD_LEFT))
-        $string_=str_pad($string_, $padLength_, $padString_, STR_PAD_LEFT);
-      if(0<($padType_&self::PAD_RIGHT))
-        $string_=str_pad($string_, $padLength_, $padString_, STR_PAD_RIGHT);
-
-      return $string_;
+      return \str\pad($string_, $padLength_, $padString_, $padType_);
     }
 
     /**
-     * Reverse given string.
-     *
-     * @param string $string_
-     *
-     * @return string
+     * @see \str\reverse() reverse
      */
     public static function reverse($string_)
     {
-      $characters=static::split($string_, 1);
-      $characters=array_reverse($characters);
-
-      return implode('', $characters);
+      return \str\reverse($string_);
     }
 
     /**
-     * Checks for ASCII string.
-     *
-     * @param string $string_
-     *
-     * @return bool
+     * @see \str\isAscii() isAscii
      */
     public static function isAscii($string_)
     {
-      return 1!==preg_match('/[^\x00-\x7F]/', $string_);
+      return \str\isAscii($string_);
     }
 
     /**
-     * Converts string to ASCII.
-     *
-     * @param string $string_
-     *
-     * @return string
-     *
-     * FIXME Internationalize
+     * @see \str\toAscii() toAscii
      */
     public static function toAscii($string_)
     {
-      // FIXME Throws errors in certain versions if input is not recognizable..
-      return @iconv('UTF-8', 'ASCII//TRANSLIT', $string_);
+      return \str\toAscii($string_);
     }
 
     /**
-     * Checks for LATIN-1 string.
-     *
-     * @param string $string_
-     *
-     * @return boolean
+     * @see \str\isLatin1() isLatin1
      */
     public static function isLatin1($string_)
     {
-      $len=mb_strlen($string_);
-
-      for($i=0; $i<$len; ++$i)
-      {
-        $ord=ord($string_[$i]);
-
-        // ASCII?
-        if($ord>=0 && $ord<=127)
-          continue;
-
-        // 2 byte sequence?
-        if($ord>=192 && $ord<=223)
-        {
-          $ord=($ord-192)*64+ord($string_[++$i])-128;
-
-          // LATIN-1?
-          if($ord<=0xff)
-            continue;
-        }
-
-        return false;
-      }
-
-      return true;
+      return \str\isLatin1($string_);
     }
 
     /**
-     * Checks for camelcase name.
-     *
-     * @param string $string_
-     *
-     * @return boolean
+     * @see \str\isCamelCase() isCamelCase
      */
     public static function isCamelCase($string_)
     {
-      return 1===preg_match('/^[a-z][a-zA-Z0-9]*$/', $string_);
+      return \str\isCamelCase($string_);
     }
 
     /**
-     * @param string $string_ mul ti ply
-     *
-     * @return string mulTiPly
+     * @see \str\toCamelCase() toCamelCase
      */
     public static function toCamelCase($string_)
     {
-      if(false===is_string($string_))
-        $string_=(string)$string_;
-
-      $string='';
-
-      $string_=mb_strtolower(trim($string_));
-      $len=mb_strlen($string_);
-      for($i=0; $i<$len; $i++)
-      {
-        if(32===($dec=ord($string_[$i])))
-          $string.=mb_strtoupper($string_[++$i]);
-        else
-          $string.=$string_[$i];
-      }
-
-      return $string;
+      return \str\toCamelCase($string_);
     }
 
     /**
-     * @param string $string_
-     *
-     * @return string
+     * @see \str\toTypeName() toTypeName
      */
     public static function toTypeName($string_)
     {
-      $string_=preg_replace('/[^a-z0-9]/i', ' ', $string_);
-      $string_=ucwords(strtolower($string_));
-
-      return preg_replace('/[ ]+/', '_', $string_);
+      return \str\toTypeName($string_);
     }
 
     /**
-     * @param string $string_ propErTy
-     *
-     * @return string PROP ER TY
+     * @see \str\camelCaseToUppercase() camelCaseToUppercase
      */
     public static function camelCaseToUppercase($string_)
     {
-      return strtoupper(static::camelCaseToLowercase($string_));
+      return \str\camelCaseToUppercase($string_);
     }
 
     /**
-     * @param string $string_ propErTy
-     *
-     * @return string prop er ty
+     * @see \str\camelCaseToLowercase() camelCaseToLowercase
      */
     public static function camelCaseToLowercase($string_)
     {
-      static $stringTable=array(
-        'A'=>' a', 'B'=>' b', 'C'=>' c', 'D'=>' d', 'E'=>' e', 'F'=>' f', 'G'=>' g', 'H'=>' h',
-        'I'=>' i', 'J'=>' j', 'K'=>' k', 'L'=>' l', 'M'=>' m', 'N'=>' n', 'O'=>' o', 'P'=>' p',
-        'Q'=>' q', 'R'=>' r', 'S'=>' s', 'T'=>' t', 'U'=>' u', 'V'=>' v', 'W'=>' w', 'X'=>' x',
-        'Y'=>' y', 'Z'=>' z'
-      );
-
-      return strtr(trim($string_), $stringTable);
+      return \str\camelCaseToLowercase($string_);
     }
 
     /**
-     * Converts camelcase names to underscore.
-     *
-     * @param string $string_ propErTy
-     *
-     * @return string prop_er_ty
+     * @see \str\camelCaseToUnderscore() camelCaseToUnderscore
      */
     public static function camelCaseToUnderscore($string_)
     {
-      static $stringTable=array(
-        'A'=>'_a', 'B'=>'_b', 'C'=>'_c', 'D'=>'_d', 'E'=>'_e', 'F'=>'_f', 'G'=>'_g', 'H'=>'_h',
-        'I'=>'_i', 'J'=>'_j', 'K'=>'_k', 'L'=>'_l', 'M'=>'_m', 'N'=>'_n', 'O'=>'_o', 'P'=>'_p',
-        'Q'=>'_q', 'R'=>'_r', 'S'=>'_s', 'T'=>'_t', 'U'=>'_u', 'V'=>'_v', 'W'=>'_w', 'X'=>'_x',
-        'Y'=>'_y', 'Z'=>'_z'
-      );
-
-      return strtr(trim($string_), $stringTable);
+      return \str\camelCaseToUnderscore($string_);
     }
 
     /**
-     * Converts underscore names to camelcase.
-     *
-     * @param string $string_ prop_er_ty
-     *
-     * @return string propErTy
+     * @see \str\underscoreToCamelCase() underscoreToCamelCase
      */
     public static function underscoreToCamelCase($string_)
     {
-      $camelcase=ucwords(strtr(trim($string_), '_', ' '));
-      $camelcase[0]=self::lowercase($camelcase[0]);
-
-      return mb_ereg_replace(' ', '', $camelcase);
+      return \str\underscoreToCamelCase($string_);
     }
 
     /**
-     * Converts underscore names to namespaces.
-     *
-     * @param string $string_ Name_Space_Type_Name
-     *
-     * @return string name/space/type/name
+     * @see \str\underscoreToNamespace() underscoreToNamespace
      */
     public static function underscoreToNamespace($string_)
     {
-      return strtolower(strtr($string_, '_', '/'));
+      return \str\underscoreToNamespace($string_);
     }
 
     /**
-     * Converts PHP type names to namespaces.
-     *
-     * @param string $string_ Name\\Space\\Type_Name
-     *
-     * @return string name/space/type/name
-     *
-     * For actual type <> name conversion look at runtime/classloader#lookupName
-     * @see \Components\Runtime_Classloader::lookupName() \Components\Runtime_Classloader::lookupName()
+     * @see \str\typeToNamespace() typeToNamespace
      */
     public static function typeToNamespace($string_)
     {
-      return strtolower(strtr($string_, '\\_', '//'));
-    }
-
-    public static function typeToPath($string_)
-    {
-      return strtolower(strtr(str_replace('\\', '//', $string_), '_', '/'));
-    }
-
-    public static function pathToType($string_)
-    {
-      $chunks=explode('//', $string_);
-
-      $type=array_pop($chunks);
-      $type=strtr(ucwords(strtr($type, '/', ' ')), ' ', '_');
-
-      if(1>count($chunks))
-        return $type;
-
-      $namespace=strtr(ucwords(implode(' ', $chunks)), ' ', '\\');
-
-      return "$namespace\\$type";
+      return \str\typeToNamespace($string_);
     }
 
     /**
-     * Converts namespace notation to PHP type names.
-     *
-     * @param string $string_ name/space/type/name
-     *
-     * @return string Name_Space_Type_Name
-     *
-     * For actual name <> type resolution look at runtime/classloader#lookup
-     * @see \Components\Runtime_Classloader::lookup() \Components\Runtime_Classloader::lookup()
+     * @see \str\typeToPath() typeToPath
+     */
+    public static function typeToPath($string_)
+    {
+      return \str\typeToPath($string_);
+    }
+
+    /**
+     * @see \str\pathToType() pathToType
+     */
+    public static function pathToType($string_)
+    {
+      return \str\pathToType($string_);
+    }
+
+    /**
+     * @see \str\namespaceToType() namespaceToType
      */
     public static function namespaceToType($string_)
     {
-      $string_=strtr($string_, '/', ' ');
-      $string_=ucwords($string_);
-
-      return strtr($string_, ' ', '_');
+      return \str\namespaceToType($string_);
     }
 
     /**
-     * Converts namespace notation to database table names.
-     *
-     * @param string $string_ entity/foo/bar
-     *
-     * @return string entity_foo_bar
+     * @see \str\namespaceToTableName() namespaceToTableName
      */
     public static function namespaceToTableName($string_)
     {
-      $string_=preg_replace('/[^a-z0-9]/i', '_', $string_);
-
-      return preg_replace('/_+/', '_', strtolower($string_));
+      return \str\namespaceToTableName($string_);
     }
 
     /**
-     * Checks for lowercase url friendly string.
-     *
-     * @param string $string_
-     *
-     * @return bool
+     * @see \str\isLowercaseUrlIdentifier() isLowercaseUrlIdentifier
      */
     public static function isLowercaseUrlIdentifier($string_)
     {
-      return 1===preg_match('/^[a-z][a-z0-9_\-]*$/', $string_);
+      return \str\isLowercaseUrlIdentifier($string_);
     }
 
     /**
-     * Converts to lowercase url friendly string.
-     *
-     * @param string $string_
-     *
-     * @return string
+     * @see \str\toLowercaseUrlIdentifier() toLowercaseUrlIdentifier
      */
     public static function toLowercaseUrlIdentifier($string_, $preserveUnicode_=false)
     {
-      if($preserveUnicode_)
-        $string_=mb_convert_encoding($string_, 'HTML-ENTITIES', 'UTF-8');
-      else
-        $string_=static::toAscii($string_);
-
-      $string_=preg_replace('/[^a-z0-9]/i', '-', $string_);
-      $string_=preg_replace('/-+/', '-', strtolower($string_));
-
-      if('-'===$string_)
-        return null;
-
-      return $string_;
+      return \str\toLowercaseUrlIdentifier($string_, $preserveUnicode_);
     }
 
     /**
-     * Removes HTML and PHP tags from given string.
-     *
-     * @param string $string_
-     * @param string $ignoreTags_
-     * @param boolean $escapeHtml_
-     * @param Io_Charset $charset_
-     *
-     * @return string
+     * @see \html\stripTags() stripTags
      */
     public static function stripTags($string_, $ignoreTags_=null,
-      $escapeHtml_=true, Io_Charset $charset_=null)
-    {
-      if(false===$escapeHtml_)
-        return strip_tags($string_, $ignoreTags_);
-
-      return static::escapeHtml(strip_tags($string_, $ignoreTags_), $charset_);
-    }
-
-    /**
-     * @param string $string_
-     * @param Io_Charset $charset_
-     *
-     * @return string
-     */
-    public static function escapeHtml($string_, Io_Charset $charset_=null)
+      Io_Charset $charset_=null, $escapeHtml_=true, $flags_=ENT_QUOTES)
     {
       if(null===$charset_)
-        return htmlentities($string_, ENT_COMPAT, 'UTF-8');
+        return \html\strip($string_, $ignoreTags_, null, $escapeHtml_, ENT_XHTML, $flags_);
 
-      return htmlentities($string_, ENT_COMPAT, $charset_->name());
+      return \html\strip($string_, $ignoreTags_, $charset_->name(), $escapeHtml_, ENT_XHTML, $flags_);
     }
 
     /**
-     * Escapes string for use with javascript.
-     *
-     * @param string $string_
-     *
-     * @return string
+     * @see \html\escape escape
+     */
+    public static function escapeHtml($string_, Io_Charset $charset_=null, $flags_=ENT_QUOTES)
+    {
+      if(null===$charset_)
+        return \html\escape($string_, null, ENT_XHTML, $flags_);
+
+      return \html\escape($string_, $charset_->name(), ENT_XHTML, $flags_);
+    }
+
+    /**
+     * @see \html\escape5 escape5
+     */
+    public static function escapehtml5($string_, Io_Charset $charset_=null, $flags_=ENT_QUOTES)
+    {
+      if(null===$charset_)
+        return \html\escape5($string_, null, ENT_HTML5, $flags_);
+
+      return \html\escape5($string_, $charset_->name(), ENT_HTML5, $flags_);
+    }
+
+    /**
+     * @see \xml\escape() escape
+     */
+    public static function escapeXml($string_, Io_Charset $charset_=null, $flags_=ENT_QUOTES)
+    {
+      if(null===$charset_)
+        return \xml\escape($string_, null, ENT_XML1, $flags_);
+
+      return \xml\escape($string_, $charset_->name(), ENT_XML1, $flags_);
+    }
+
+    /**
+     * @see \js\escape() escape
      */
     public static function escapeJs($string_)
     {
-      static $match=array("/\\\\/", "/\n/", "/\r/", "/\"/", "/\'/", "/&/", "/</", "/>/");
-      static $replace=array("\\\\\\\\", "\\n", "\\r", "\\\"", "\\'", "\\x26", "\\x3C", "\\x3E");
-
-      return self::replaceAll($string_, $match, $replace);
+      return \js\escape($string_);
     }
 
     /**
-     * Encodes to base64.
-     *
-     * @param string $string_
-     *
-     * @return string
+     * @see \str\encodeBase64() encodeBase64
      */
-    public static function toBase64($string_)
+    public static function encodeBase64($string_)
     {
-      return base64_encode($string_);
+      return \str\encodeBase64($string_);
     }
 
     /**
-     * Decodes from base64.
-     *
-     * @param string $string_
-     *
-     * @return string
+     * @see \str\decodeBase64() decodeBase64
      */
-    public static function fromBase64($string_)
+    public static function decodeBase64($string_)
     {
-      return base64_decode($string_);
+      return \str\decodeBase64($string_);
     }
 
     /**
-     * Encodes to url-friendly base64.
-     *
-     * @param string $string_
-     *
-     * @return string
+     * @see \str\encodeBase64Url() encodeBase64Url
      */
-    public static function toBase64Url($string_)
+    public static function encodeBase64Url($string_)
     {
-      return self::urlEncode(self::toBase64($string_));
+      return \str\encodeBase64Url($string_);
     }
 
     /**
-     * Decodes from url-friendly base64.
-     *
-     * @param string $string_
-     *
-     * @return string
+     * @see \str\decodeBase64Url() decodeBase64Url
      */
-    public static function fromBase64Url($string_)
+    public static function decodeBase64Url($string_)
     {
-      return self::fromBase64(self::urlDecode($string_));
+      return \str\decodeBase64Url($string_);
     }
 
     /**
-     * Encodes to quoted printable.
-     *
-     * @param string $string_
-     *
-     * @return string
+     * @see \str\encodeQuotedPrintable() encodeQuotedPrintable
      */
-    public static function toQuotedPrintable($string_)
+    public static function encodeQuotedPrintable($string_)
     {
-      return quoted_printable_encode($string_);
+      return \str\encodeQuotedPrintable($string_);
     }
 
     /**
-     * Decodes from quoted printable.
-     *
-     * @param string $string_
-     *
-     * @return string
+     * @see \str\decodeQuotedPrintable() decodeQuotedPrintable
      */
-    public static function fromQuotedPrintable($string_)
+    public static function decodeQuotedPrintable($string_)
     {
-      return quoted_printable_decode($string_);
+      return \str\decodeQuotedPrintable($string_);
     }
 
     /**
-     * Checks if given string is encoded by rawurlencode.
-     *
-     * @param string $string_
-     *
-     * @return boolean
+     * @see \str\encodedUrl() encodedUrl
      */
-    public static function isUrlEncoded($string_)
+    public static function encodedUrl($string_)
     {
-      static $m_urlEncoded=[
-        '%20', '%21', '%2A', '%27',
-        '%28', '%29', '%3B', '%3A',
-        '%40', '%26', '%3D', '%2B',
-        '%24', '%2C', '%2F', '%3F',
-        '%25', '%23', '%5B', '%5D'
-      ];
-      static $m_urlDecoded=[
-        ' ', '!', '*', "'",
-        "(", ")", ";", ":",
-        "@", "&", "=", "+",
-        "$", ",", "/", "?",
-        "%", "#", "[", "]"
-      ];
-
-      $count=0;
-      str_replace($m_urlEncoded, $m_urlDecoded, $string_, $count);
-
-      return 0<$count;
+      return \str\encodedUrl($string_);
     }
 
     /**
-     * Encodes to url-friendly string.
-     *
-     * @param string $string_
-     * @param boolean $avoidDoubleEncoding_ Only encodes if given string is not already encoded.
-     *
-     * @return string
+     * @see \str\encodeUrl() encodeUrl
      */
-    public static function urlEncode($string_, $avoidDoubleEncoding_=true)
+    public static function encodeUrl($string_, $avoidDoubleEncoding_=false)
     {
-      if(false===$avoidDoubleEncoding_ || false===self::isUrlEncoded($string_))
-        return rawurlencode($string_);
-
-      return $string_;
+      return \str\encodeUrl($string_, $avoidDoubleEncoding_);
     }
 
     /**
-     * Decodes back from url-friendly string.
-     *
-     * @param string $string_
-     * @param boolean $avoidDoubleDecoding_ Only decodes if given string is url encoded.
-     *
-     * @return string
+     * @see \str\decodeUrl() decodeUrl
      */
-    public static function urlDecode($string_, $avoidDoubleDecoding_=true)
+    public static function decodeUrl($string_, $avoidDoubleDecoding_=false)
     {
-      if(false===$avoidDoubleDecoding_ || self::isUrlEncoded($string_))
-        return rawurldecode($string_);
+      return \str\decodeUrl($string_, $avoidDoubleDecoding_);
+    }
 
-      return $string_;
+    /**
+     * @see \str\toNumber() toNumber
+     */
+    public static function toNumber($string_)
+    {
+      return \str\toNumber($string_);
+    }
+
+    /**
+     * @see \str\toPhoneNumber() toPhoneNumber
+     */
+    public static function toPhoneNumber($string_, $convertMobileCountryCodeIdentifier_=false)
+    {
+      return \str\toPhoneNumber($string_, $convertMobileCountryCodeIdentifier_);
     }
 
     /**
@@ -1027,16 +590,17 @@ namespace Components;
      */
     public static function generatePassword($length_=8, $complexity_=3)
     {
-      if($length_>25 || $length_<6)
+      if($length_>32 || $length_<8)
       {
-        throw new Exception_IllegalArgument('components/text',
-          'Password length must be greater than 6 and less than 25.'
+        throw new Exception_IllegalArgument('string',
+          'Value of password length must be between 7 and 33.'
         );
       }
 
-      static $maxValues=array(1=>60, 2=>80, 3=>90, 4=>100);
+      static $maxValues=[1=>60, 2=>80, 3=>90, 4=>100];
 
       $password='';
+
       for($i=0; $i<$length_; $i++)
       {
         $value=rand(1, $maxValues[$complexity_]);
@@ -1070,7 +634,8 @@ namespace Components;
      *
      * @return string
      */
-    public static function generateSerialNumber($length_=29, $lengthSegments_=5, $separatorSegments_='-', $asciiTable_=null)
+    public static function generateSerialNumber($length_=29, $lengthSegments_=5,
+      $separatorSegments_='-', $asciiTable_=null)
     {
       if(null===$asciiTable_)
         $asciiTable_=self::ASCII_TABLE_NUMBERS|self::ASCII_TABLE_LETTERS|self::ASCII_TABLE_UPPERCASE;
@@ -1123,69 +688,55 @@ namespace Components;
 
       return self::$m_asciiTable[$type_]=$table;
     }
-
-    public static function toPhoneNumber($string_, $convertMobileCountryCodeIdentifier_=false)
-    {
-      $string_=preg_replace('/[^+0-9]/', '', $string_);
-
-      if($convertMobileCountryCodeIdentifier_)
-        $string_=str_replace('+', '00', $string_);
-
-      return $string_;
-    }
-
-    public static function toNumber($string_)
-    {
-      return preg_replace('/[^0-9]/', '', $string_);
-    }
     //--------------------------------------------------------------------------
 
 
-    // OVERRIDES
-    /**    * @see \Components\Cloneable::__clone() \Components\Cloneable::__clone()
-    */
+    // OVERRIDES/IMPLEMENTS
+    /**
+     * @see \Components\Cloneable::__clone() __clone
+     */
     public function __clone()
     {
       return new self($this->m_value);
     }
 
     /**
-     * @see \Components\Comparable::compareTo() \Components\Comparable::compareTo()
+     * @see \Components\Comparable::compareTo() compareTo
      */
     public function compareTo($object_)
     {
       if($object_ instanceof self)
-        return static::compare($this->m_value, $object_->m_value);
+        return \str\compare($this->m_value, $object_->m_value);
 
-      if(is_string($object_))
-        return static::compare($this->m_value, $object_);
+      if(is_scalar($object_) || method_exists([$object_, '__toString']))
+        return \str\compare($this->m_value, (string)$object_);
 
-      throw new Exception_IllegalCast('components/type/string', sprintf(
+      throw new Exception_IllegalCast('string', sprintf(
         'Can not compare to given parameter [%s].', $object_
       ));
     }
 
     /**
-     * @see \Components\Object::hashCode() \Components\Object::hashCode()
+     * @see \Components\Object::hashCode() hashCode
      */
     public function hashCode()
     {
-      return string_hash($this->m_value);
+      return \math\hashs_fnv($this->m_value);
     }
 
     /**
-     * @see \Components\Object::equals() \Components\Object::equals()
+     * @see \Components\Object::equals() equals
      */
     public function equals($object_)
     {
       if($object_ instanceof self)
-        return static::equals($this->m_value, $object_->m_value);
+        return \str\equals($this->m_value, $object_->m_value);
 
       return $this->m_value===$object_;
     }
 
     /**
-     * @see \Components\Object::__toString() \Components\Object::__toString()
+     * @see \Components\Object::__toString() __toString
      */
     public function __toString()
     {
@@ -1193,7 +744,7 @@ namespace Components;
     }
 
     /**
-     * @see \Components\Serializable::serialVersionUid() \Components\Serializable::serialVersionUid()
+     * @see \Components\Serializable::serialVersionUid() serialVersionUid
      */
     public function serialVersionUid()
     {

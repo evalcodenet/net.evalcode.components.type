@@ -106,7 +106,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return float_hash($this->x, $this->y);
+      return \math\hashfv($this->x, $this->y);
     }
 
     /**

@@ -529,12 +529,7 @@ namespace Components;
      */
     public function beginningOfDay()
     {
-      $utc=Timezone::utc();
-
-      $date=new \DateTime($this->format('Y-m-dT00:00:00+0000', $utc), $utc->internal());
-      $date->setTimezone($utc->internal());
-
-      return new self($date);
+      return self::parse($this->format('Y-m-dT00:00:00+0000'), Timezone::systemDefault());
     }
 
     /**
@@ -542,9 +537,7 @@ namespace Components;
      */
     public function endOfDay()
     {
-      return $this->beginningOfDay()->after(
-        Time::get(Time::SECONDS_DAY-1, Time::TIMEUNIT_SECONDS)
-      );
+      return self::parse($this->format('Y-m-dT23:59:59+0000'), Timezone::systemDefault());
     }
 
     /**
@@ -552,12 +545,7 @@ namespace Components;
      */
     public function beginningOfMonth()
     {
-      $utc=Timezone::utc();
-
-      $date=new \DateTime($this->format('Y-m-01T00:00:00+0000', $utc), $utc->internal());
-      $date->setTimezone($utc->internal());
-
-      return new self($date);
+      return self::parse($this->format('Y-m-01T00:00:00+0000'), Timezone::systemDefault());
     }
 
     /**
@@ -565,12 +553,7 @@ namespace Components;
      */
     public function beginningOfYear()
     {
-      $utc=Timezone::utc();
-
-      $date=new \DateTime($this->format('Y-01-01T00:00:00+0000', $utc), $utc->internal());
-      $date->setTimezone($utc->internal());
-
-      return new self($date);
+      return self::parse($this->format('Y-01-01T00:00:00+0000'), Timezone::systemDefault());
     }
 
     // FIXME (CSH) BS.
@@ -588,6 +571,42 @@ namespace Components;
     public function endOfYear()
     {
       return $this->nextYear()->beginningOfYear()->prevDay();
+    }
+
+    /**
+     * @param integer $day_
+     *
+     * @return \Components\Date
+     */
+    public function withDay($day_)
+    {
+      $day_=min([abs((int)$day_), $this->getLengthOfMonth()]);
+
+      return self::parse($this->format("Y-m-{$day_}TH:i:s+0000"), Timezone::systemDefault());
+    }
+
+    /**
+     * @param integer $month_
+     *
+     * @return \Components\Date
+     */
+    public function withMonth($month_)
+    {
+      $month_=max(1, min([abs((int)$month_), 12]));
+
+      return self::parse($this->format("Y-{$month_}-dTH:i:s+0000"), Timezone::systemDefault());
+    }
+
+    /**
+     * @param integer $year_
+     *
+     * @return \Components\Date
+     */
+    public function withYear($year_)
+    {
+      $year_=max(1900, abs((int)$year_));
+
+      return self::parse($this->format("{$year_}-m-dTH:i:s+0000"), Timezone::systemDefault());
     }
     //--------------------------------------------------------------------------
 
@@ -629,7 +648,7 @@ namespace Components;
      */
     public function hashCode()
     {
-      return integer_hash($this->m_date->getTimestamp());
+      return \math\hashi($this->m_date->getTimestamp());
     }
 
     /**
@@ -658,6 +677,9 @@ namespace Components;
       return static::forISO8601($this->toISO8601());
     }
 
+    /**
+     * @see \Components\Serializable_Php::__sleep()
+     */
     public function __sleep()
     {
       $this->m_iso8601=$this->toISO8601();
@@ -665,6 +687,9 @@ namespace Components;
       return array('m_iso8601');
     }
 
+    /**
+     * @see \Components\Serializable_Php::__wakeup()
+     */
     public function __wakeup()
     {
       $utc=Timezone::utc()->internal();
